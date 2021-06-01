@@ -15,6 +15,7 @@ public class BookMapper {
                 .id(dto.getId())
                 .author(dto.getAuthor())
                 .title(dto.getTitle())
+                .isbn(dto.getIsbn())
                 .numberOfPages(bookDTO.getNumberOfPages()).build()
         ).orElseThrow(IllegalArgumentException::new);
   }
@@ -26,6 +27,7 @@ public class BookMapper {
                 .id(entity.getId())
                 .author(entity.getAuthor())
                 .title(entity.getTitle())
+                .isbn(entity.getIsbn())
                 .numberOfPages(entity.getNumberOfPages()).build()
         ).orElseThrow(IllegalArgumentException::new);
   }
