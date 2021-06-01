@@ -1,4 +1,4 @@
-package com.curvelo.model;
+package com.curvelo.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

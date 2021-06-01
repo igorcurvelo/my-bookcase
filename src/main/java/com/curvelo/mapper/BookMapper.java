@@ -1,7 +1,7 @@
 package com.curvelo.mapper;
 
 import com.curvelo.api.dto.BookDTO;
-import com.curvelo.model.Book;
+import com.curvelo.domain.model.Book;
 import java.util.Optional;
 import lombok.experimental.UtilityClass;
 

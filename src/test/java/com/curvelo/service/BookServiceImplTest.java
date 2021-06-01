@@ -7,7 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.curvelo.model.Book;
+import com.curvelo.domain.model.Book;
 import com.curvelo.repository.BookRepository;
 import java.util.List;
 import javax.persistence.EntityExistsException;

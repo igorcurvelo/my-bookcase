@@ -1,9 +1,10 @@
 package com.curvelo.service;
 
-import com.curvelo.model.Book;
+import com.curvelo.domain.model.Book;
 import com.curvelo.repository.BookRepository;
 import java.util.List;
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +30,11 @@ public class BookServiceImpl implements BookService {
     }
 
     return bookRepository.save(entity);
+  }
+
+  @Override
+  public Book findOne(Integer bookId) {
+    return bookRepository.findById(bookId)
+        .orElseThrow(() -> new EntityNotFoundException("Book not found"));
   }
 }
