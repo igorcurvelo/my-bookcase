@@ -53,4 +53,9 @@ public class BookController {
     return AvaliationMapper.toDTO(result);
   }
 
+  @GetMapping("/{bookId}/avaliation")
+  public AvaliationDTO postAvaliation(@PathVariable Integer bookId) {
+    var result = avaliationService.findByBook(bookId);
+    return AvaliationMapper.toDTO(result);
+  }
 }

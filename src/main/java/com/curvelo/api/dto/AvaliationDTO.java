@@ -10,5 +10,6 @@ public class AvaliationDTO {
   private final Integer id;
   private final Integer score;
   private final String comment;
+  private final BookDTO book;
 
 }

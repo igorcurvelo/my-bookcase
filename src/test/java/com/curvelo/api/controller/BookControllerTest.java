@@ -10,7 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.curvelo.MyBookcaseApplication;
 import com.curvelo.api.dto.AvaliationDTO;
+import com.curvelo.domain.model.Avaliation;
 import com.curvelo.domain.model.Book;
+import com.curvelo.repository.AvaliationRepository;
 import com.curvelo.repository.BookRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +38,9 @@ public class BookControllerTest {
   @Autowired
   private BookRepository bookRepository;
 
+  @Autowired
+  private AvaliationRepository avaliationRepository;
+
   private MockMvc mockMvc;
 
   private final Faker faker = new Faker();
@@ -43,10 +48,13 @@ public class BookControllerTest {
   @Before
   public void before() {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+    this.avaliationRepository.deleteAll();
+    this.bookRepository.deleteAll();
   }
 
   @Test
-  public void shouldCreateABookWithSuccess() throws Exception {
+  public void shouldReturnAListOfBookWithSuccess() throws Exception {
     var book1 = createBook();
     createBook();
     createBook();
@@ -59,6 +67,35 @@ public class BookControllerTest {
         .andExpect(jsonPath("$[0].title", is(book1.getTitle())))
         .andExpect(jsonPath("$[0].isbn", is(book1.getIsbn())))
         .andExpect(jsonPath("$[0].numberOfPages", is(book1.getNumberOfPages())));
+  }
+
+  @Test
+  public void shouldCreateABookWithSuccess() throws Exception {
+    var book = Book.builder()
+        .isbn("123456789")
+        .numberOfPages(250)
+        .author("J.R.R. Tolkien")
+        .title("Hobbit")
+        .build();
+
+    this.mockMvc.perform(post("/books")
+        .content(toJson(book))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id", notNullValue()))
+        .andExpect(jsonPath("$.title", is("Hobbit")))
+        .andExpect(jsonPath("$.author", is("J.R.R. Tolkien")))
+        .andExpect(jsonPath("$.isbn", is("123456789")))
+        .andExpect(jsonPath("$.numberOfPages", is(250)));
+
+    this.mockMvc.perform(get("/books"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", hasSize(1)))
+        .andExpect(jsonPath("$[0].id", notNullValue()))
+        .andExpect(jsonPath("$[0].title", is("Hobbit")))
+        .andExpect(jsonPath("$[0].author", is("J.R.R. Tolkien")))
+        .andExpect(jsonPath("$[0].isbn", is("123456789")))
+        .andExpect(jsonPath("$[0].numberOfPages", is(250)));
   }
 
   @Test
@@ -75,6 +112,27 @@ public class BookControllerTest {
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id", notNullValue()))
+        .andExpect(jsonPath("$.score", is(3)))
+        .andExpect(jsonPath("$.comment", is("Um bom livro")));
+  }
+
+  @Test
+  public void shouldReturnAAvaliationByBookWithSuccess() throws Exception {
+    var book = createBook();
+
+    var avaliation = Avaliation.builder()
+        .book(book)
+        .comment("Um bom livro")
+        .score(3)
+        .build();
+
+    avaliationRepository.save(avaliation);
+
+    this.mockMvc.perform(get("/books/"+book.getId()+"/avaliation")
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id", notNullValue()))
+        .andExpect(jsonPath("$.book.id", notNullValue()))
         .andExpect(jsonPath("$.score", is(3)))
         .andExpect(jsonPath("$.comment", is("Um bom livro")));
   }

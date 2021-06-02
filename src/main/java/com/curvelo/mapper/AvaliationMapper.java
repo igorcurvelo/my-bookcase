@@ -23,6 +23,7 @@ public class AvaliationMapper {
         .map(entity ->
             AvaliationDTO.builder()
                 .id(entity.getId())
+                .book(BookMapper.toDTO(avaliation.getBook()))
                 .score(entity.getScore())
                 .comment(entity.getComment()).build()
         ).orElseThrow(IllegalArgumentException::new);

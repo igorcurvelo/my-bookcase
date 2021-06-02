@@ -2,8 +2,9 @@ versão 0.0.1
 
 colocar sonar - ok
 criar testes unitarios - ok
-criar testes de integração
-api para criar a avaliação do livro
-api para remover a avaliação do livro
-api para recuperar as avaliações de um livro
+criar testes de integração - ok
+api para criar a avaliação do livro - ok
+api para recuperar a avaliação do livro - ok
+teste nos mappers
+adicionar ações por user
   fazer media das notas
