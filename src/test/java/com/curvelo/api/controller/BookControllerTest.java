@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.curvelo.MyBookcaseApplication;
 import com.curvelo.api.dto.AvaliationDTO;
 import com.curvelo.domain.model.Avaliation;
 import com.curvelo.domain.model.Book;
@@ -17,19 +16,16 @@ import com.curvelo.repository.BookRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@SpringBootTest(classes = {MyBookcaseApplication.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
 public class BookControllerTest {
 
   @Autowired
@@ -45,7 +41,7 @@ public class BookControllerTest {
 
   private final Faker faker = new Faker();
 
-  @Before
+  @BeforeEach
   public void before() {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 

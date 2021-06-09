@@ -3,17 +3,19 @@ package com.curvelo.service;
 import com.curvelo.domain.model.Avaliation;
 import com.curvelo.repository.AvaliationRepository;
 import javax.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AvaliationServiceImpl implements AvaliationService {
 
-  @Autowired
-  private BookService bookService;
+  private final BookService bookService;
+  private final AvaliationRepository avaliationRepository;
 
-  @Autowired
-  private AvaliationRepository avaliationRepository;
+  public AvaliationServiceImpl(BookService bookService,
+      AvaliationRepository avaliationRepository) {
+    this.bookService = bookService;
+    this.avaliationRepository = avaliationRepository;
+  }
 
   @Override
   public Avaliation create(Integer bookId, Avaliation avaliation) {

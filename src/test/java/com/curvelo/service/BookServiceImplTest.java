@@ -1,7 +1,7 @@
 package com.curvelo.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -10,14 +10,13 @@ import static org.mockito.Mockito.when;
 import com.curvelo.domain.model.Book;
 import com.curvelo.repository.BookRepository;
 import java.util.List;
-import javax.persistence.EntityExistsException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import javax.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
 public class BookServiceImplTest {
 
   @Mock
@@ -36,7 +35,7 @@ public class BookServiceImplTest {
 
     var result = bookService.findAll();
 
-    assertEquals(3, result.size());
+    assertThat(result).hasSize(3);
 
     verify(bookRepository, times(1)).findAll();
   }
@@ -62,17 +61,17 @@ public class BookServiceImplTest {
 
     var result = bookService.create(book);
 
-    assertNotNull(result.getId());
-    assertEquals("123456789", result.getIsbn());
-    assertEquals(Integer.valueOf(250), result.getNumberOfPages());
-    assertEquals("J.R.R. Tolkien", result.getAuthor());
-    assertEquals("Hobbit", result.getTitle());
+    assertThat(result.getId()).isNotNull();
+    assertThat(result.getIsbn()).isEqualTo("123456789");
+    assertThat(result.getNumberOfPages()).isEqualTo(250);
+    assertThat(result.getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.getTitle()).isEqualTo("Hobbit");
 
     verify(bookRepository, times(1)).save(book);
 
   }
 
-  @Test(expected = EntityExistsException.class)
+  @Test
   public void shouldReturnEntityExistsExceptionWhenExistABookWithTheSameIsbn() {
 
     var book = Book.builder()
@@ -85,7 +84,9 @@ public class BookServiceImplTest {
     when(bookRepository.existsByIsbn("123456789"))
         .thenReturn(true);
 
-    bookService.create(book);
+    assertThatThrownBy(() -> bookService.create(book))
+        .isInstanceOf(EntityNotFoundException.class)
+        .hasMessageContaining("Index: 2, Size: 2");
 
     verify(bookRepository, times(0)).save(any(Book.class));
   }
