@@ -3,10 +3,10 @@ package com.curvelo.mapper;
 import com.curvelo.api.dto.AvaliationDTO;
 import com.curvelo.domain.model.Avaliation;
 import java.util.Optional;
-import lombok.experimental.UtilityClass;
 
-@UtilityClass
 public class AvaliationMapper {
+
+  private AvaliationMapper() {}
 
   public static Avaliation toEntity(final AvaliationDTO avaliationDTO) {
     return Optional.ofNullable(avaliationDTO)

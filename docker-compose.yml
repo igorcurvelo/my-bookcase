@@ -4,3 +4,12 @@ services:
     image: sonarqube:8.4.1-community
     ports:
       - "9000:9000"
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: olevruc
+      MYSQL_DATABASE: bookcase
+      MYSQL_USER: curvelo
+      MYSQL_PASSWORD: olevruc
+    ports:
+      - '3306:3306'

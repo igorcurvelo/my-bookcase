@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class BookServiceImplTest {
+class BookServiceImplTest {
 
   @Mock
   private BookRepository bookRepository;
@@ -27,7 +27,7 @@ public class BookServiceImplTest {
   private BookServiceImpl bookService;
 
   @Test
-  public void shouldReturnAListWith3Books() {
+  void shouldReturnAListWith3Books() {
 
     var book = Book.builder().build();
 
@@ -42,7 +42,7 @@ public class BookServiceImplTest {
   }
 
   @Test
-  public void shouldCreateABookWithSuccess() {
+  void shouldCreateABookWithSuccess() {
 
     var book = Book.builder()
         .isbn("123456789")
@@ -73,7 +73,7 @@ public class BookServiceImplTest {
   }
 
   @Test
-  public void shouldReturnEntityExistsExceptionWhenExistABookWithTheSameIsbn() {
+  void shouldReturnEntityExistsExceptionWhenExistABookWithTheSameIsbn() {
 
     var book = Book.builder()
         .isbn("123456789")

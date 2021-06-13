@@ -3,10 +3,10 @@ package com.curvelo.mapper;
 import com.curvelo.api.dto.BookDTO;
 import com.curvelo.domain.model.Book;
 import java.util.Optional;
-import lombok.experimental.UtilityClass;
 
-@UtilityClass
 public class BookMapper {
+
+  private BookMapper() {}
 
   public static Book toEntity(final BookDTO bookDTO) {
     return Optional.ofNullable(bookDTO)

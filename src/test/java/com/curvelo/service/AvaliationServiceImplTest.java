@@ -20,7 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class AvaliationServiceImplTest {
+class AvaliationServiceImplTest {
 
   @Mock
   private AvaliationRepository avaliationRepository;
@@ -32,7 +32,7 @@ public class AvaliationServiceImplTest {
   private AvaliationServiceImpl avaliationService;
 
   @Test
-  public void shouldCreateAAvaliationWithSuccess() {
+  void shouldCreateAAvaliationWithSuccess() {
 
     var book = Book.builder()
         .id(1)
@@ -71,7 +71,7 @@ public class AvaliationServiceImplTest {
   }
 
   @Test
-  public void shouldReturnAAvaliationWithSuccess() {
+  void shouldReturnAAvaliationWithSuccess() {
 
     var book = Book.builder()
         .id(2)
@@ -106,7 +106,7 @@ public class AvaliationServiceImplTest {
   }
 
   @Test
-  public void shouldReturnEntityNotFoundExceptionWhenNotExistAAvaliationByBook() {
+  void shouldReturnEntityNotFoundExceptionWhenNotExistAAvaliationByBook() {
 
     when(avaliationRepository.findByBookId(3)).thenReturn(Optional.empty());
 

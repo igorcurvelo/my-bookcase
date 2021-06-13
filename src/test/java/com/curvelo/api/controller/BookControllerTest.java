@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
-public class BookControllerTest {
+class BookControllerTest {
 
   @Autowired
   private WebApplicationContext webApplicationContext;
@@ -50,7 +50,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void shouldReturnAListOfBookWithSuccess() throws Exception {
+  void shouldReturnAListOfBookWithSuccess() throws Exception {
     var book1 = createBook();
     createBook();
     createBook();
@@ -66,7 +66,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void shouldCreateABookWithSuccess() throws Exception {
+  void shouldCreateABookWithSuccess() throws Exception {
     var book = Book.builder()
         .isbn("123456789")
         .numberOfPages(250)
@@ -95,7 +95,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void shouldCreateAAvaliationWithSuccess() throws Exception {
+  void shouldCreateAAvaliationWithSuccess() throws Exception {
     var book1 = createBook();
 
     var avaliation = AvaliationDTO.builder()
@@ -113,7 +113,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void shouldReturnAAvaliationByBookWithSuccess() throws Exception {
+  void shouldReturnAAvaliationByBookWithSuccess() throws Exception {
     var book = createBook();
 
     var avaliation = Avaliation.builder()
