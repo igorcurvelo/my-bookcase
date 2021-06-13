@@ -10,13 +10,14 @@ import static org.mockito.Mockito.when;
 import com.curvelo.domain.model.Book;
 import com.curvelo.repository.BookRepository;
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
+import javax.persistence.EntityExistsException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class BookServiceImplTest {
 
   @Mock
@@ -85,8 +86,8 @@ public class BookServiceImplTest {
         .thenReturn(true);
 
     assertThatThrownBy(() -> bookService.create(book))
-        .isInstanceOf(EntityNotFoundException.class)
-        .hasMessageContaining("Index: 2, Size: 2");
+        .isInstanceOf(EntityExistsException.class)
+        .hasMessageContaining("book already registered");
 
     verify(bookRepository, times(0)).save(any(Book.class));
   }
