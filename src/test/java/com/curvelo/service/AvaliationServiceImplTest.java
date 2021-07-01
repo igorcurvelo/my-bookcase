@@ -1,7 +1,8 @@
 package com.curvelo.service;
 
 import static java.util.Optional.of;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,14 +13,14 @@ import com.curvelo.domain.model.Book;
 import com.curvelo.repository.AvaliationRepository;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-public class AvaliationServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+class AvaliationServiceImplTest {
 
   @Mock
   private AvaliationRepository avaliationRepository;
@@ -31,7 +32,7 @@ public class AvaliationServiceImplTest {
   private AvaliationServiceImpl avaliationService;
 
   @Test
-  public void shouldCreateAAvaliationWithSuccess() {
+  void shouldCreateAAvaliationWithSuccess() {
 
     var book = Book.builder()
         .id(1)
@@ -56,21 +57,21 @@ public class AvaliationServiceImplTest {
           .score(3)
           .build());
 
-    assertNotNull(result.getId());
-    assertEquals("Um bom livro", result.getComment());
-    assertEquals(Integer.valueOf(3), result.getScore());
-    assertEquals(Integer.valueOf(1), result.getBook().getId());
-    assertEquals("J.R.R. Tolkien", result.getBook().getAuthor());
-    assertEquals("Hobbit", result.getBook().getTitle());
-    assertEquals(Integer.valueOf(250), result.getBook().getNumberOfPages());
-    assertEquals("123456789", result.getBook().getIsbn());
+    assertThat(result.getId()).isNotNull();
+    assertThat(result.getComment()).isEqualTo("Um bom livro");
+    assertThat(result.getScore()).isEqualTo(3);
+    assertThat(result.getBook().getId()).isEqualTo(1);
+    assertThat(result.getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.getBook().getTitle()).isEqualTo("Hobbit");
+    assertThat(result.getBook().getNumberOfPages()).isEqualTo(250);
+    assertThat(result.getBook().getIsbn()).isEqualTo("123456789");
 
     verify(bookService, times(1)).findOne(1);
     verify(avaliationRepository, times(1)).save(any(Avaliation.class));
   }
 
   @Test
-  public void shouldReturnAAvaliationWithSuccess() {
+  void shouldReturnAAvaliationWithSuccess() {
 
     var book = Book.builder()
         .id(2)
@@ -92,24 +93,26 @@ public class AvaliationServiceImplTest {
 
     var result = avaliationService.findByBook(2);
 
-    assertEquals(Integer.valueOf(3), result.getId());
-    assertEquals("excelente leitura", result.getComment());
-    assertEquals(Integer.valueOf(4), result.getScore());
-    assertEquals(Integer.valueOf(2), result.getBook().getId());
-    assertEquals("J.R.R. Tolkien", result.getBook().getAuthor());
-    assertEquals("Hobbit", result.getBook().getTitle());
-    assertEquals(Integer.valueOf(250), result.getBook().getNumberOfPages());
-    assertEquals("123456789", result.getBook().getIsbn());
+    assertThat(result.getId()).isEqualTo(3);
+    assertThat(result.getComment()).isEqualTo("excelente leitura");
+    assertThat(result.getScore()).isEqualTo(4);
+    assertThat(result.getBook().getId()).isEqualTo(2);
+    assertThat(result.getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.getBook().getTitle()).isEqualTo("Hobbit");
+    assertThat(result.getBook().getNumberOfPages()).isEqualTo(250);
+    assertThat(result.getBook().getIsbn()).isEqualTo("123456789");
 
     verify(avaliationRepository, times(1)).findByBookId(2);
   }
 
-  @Test(expected = EntityNotFoundException.class)
-  public void shouldReturnEntityNotFoundExceptionWhenNotExistAAvaliationByBook() {
+  @Test
+  void shouldReturnEntityNotFoundExceptionWhenNotExistAAvaliationByBook() {
 
     when(avaliationRepository.findByBookId(3)).thenReturn(Optional.empty());
 
-    avaliationService.findByBook(3);
+    assertThatThrownBy(() -> avaliationService.findByBook(3))
+        .isInstanceOf(EntityNotFoundException.class)
+        .hasMessageContaining("This books doesn't have avaliation");
 
     verify(avaliationRepository, times(1)).findByBookId(3);
   }

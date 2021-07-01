@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.curvelo.MyBookcaseApplication;
 import com.curvelo.api.dto.AvaliationDTO;
 import com.curvelo.domain.model.Avaliation;
 import com.curvelo.domain.model.Book;
@@ -17,20 +16,17 @@ import com.curvelo.repository.BookRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-@SpringBootTest(classes = {MyBookcaseApplication.class})
-@RunWith(SpringJUnit4ClassRunner.class)
-public class BookControllerTest {
+@SpringBootTest
+class BookControllerTest {
 
   @Autowired
   private WebApplicationContext webApplicationContext;
@@ -45,7 +41,7 @@ public class BookControllerTest {
 
   private final Faker faker = new Faker();
 
-  @Before
+  @BeforeEach
   public void before() {
     this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
@@ -54,7 +50,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void shouldReturnAListOfBookWithSuccess() throws Exception {
+  void shouldReturnAListOfBookWithSuccess() throws Exception {
     var book1 = createBook();
     createBook();
     createBook();
@@ -70,7 +66,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void shouldCreateABookWithSuccess() throws Exception {
+  void shouldCreateABookWithSuccess() throws Exception {
     var book = Book.builder()
         .isbn("123456789")
         .numberOfPages(250)
@@ -99,7 +95,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void shouldCreateAAvaliationWithSuccess() throws Exception {
+  void shouldCreateAAvaliationWithSuccess() throws Exception {
     var book1 = createBook();
 
     var avaliation = AvaliationDTO.builder()
@@ -117,7 +113,7 @@ public class BookControllerTest {
   }
 
   @Test
-  public void shouldReturnAAvaliationByBookWithSuccess() throws Exception {
+  void shouldReturnAAvaliationByBookWithSuccess() throws Exception {
     var book = createBook();
 
     var avaliation = Avaliation.builder()
