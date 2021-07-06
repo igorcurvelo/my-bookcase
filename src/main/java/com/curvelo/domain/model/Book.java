@@ -23,13 +23,16 @@ public class Book {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
+  @Column(nullable = false)
   private String title;
 
-  @Column(unique = true)
+  @Column(unique = true, nullable = false)
   private String isbn;
 
+  @Column(nullable = false)
   private String author;
 
+  @Column(nullable = false)
   private Integer numberOfPages;
 
 }
