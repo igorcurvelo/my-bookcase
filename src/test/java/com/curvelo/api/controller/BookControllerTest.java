@@ -1,35 +1,34 @@
 package com.curvelo.api.controller;
 
+import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.curvelo.api.dto.AvaliationDTO;
 import com.curvelo.domain.model.Avaliation;
 import com.curvelo.domain.model.Book;
 import com.curvelo.repository.AvaliationRepository;
 import com.curvelo.repository.BookRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class BookControllerTest {
 
-  @Autowired
-  private WebApplicationContext webApplicationContext;
+  private final Faker faker = new Faker();
 
   @Autowired
   private BookRepository bookRepository;
@@ -37,36 +36,38 @@ class BookControllerTest {
   @Autowired
   private AvaliationRepository avaliationRepository;
 
-  private MockMvc mockMvc;
-
-  private final Faker faker = new Faker();
+  @LocalServerPort
+  int serverPort;
 
   @BeforeEach
-  public void before() {
-    this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+  public void setup() {
+    RestAssured.baseURI = "http://localhost";
+    RestAssured.port = serverPort;
 
     this.avaliationRepository.deleteAll();
     this.bookRepository.deleteAll();
   }
 
   @Test
-  void shouldReturnAListOfBookWithSuccess() throws Exception {
+  void shouldReturnAListOfBookWithSuccess() {
     var book1 = createBook();
     createBook();
     createBook();
 
-    this.mockMvc.perform(get("/books"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(3)))
-        .andExpect(jsonPath("$[0].id", is(book1.getId())))
-        .andExpect(jsonPath("$[0].author", is(book1.getAuthor())))
-        .andExpect(jsonPath("$[0].title", is(book1.getTitle())))
-        .andExpect(jsonPath("$[0].isbn", is(book1.getIsbn())))
-        .andExpect(jsonPath("$[0].numberOfPages", is(book1.getNumberOfPages())));
+    when()
+        .get("/books")
+        .then()
+        .statusCode(HttpStatus.OK.value())
+        .body("$", hasSize(3))
+        .body("[0].id", equalTo(book1.getId()))
+        .body("[0].author", equalTo(book1.getAuthor()))
+        .body("[0].title", equalTo(book1.getTitle()))
+        .body("[0].isbn", equalTo(book1.getIsbn()))
+        .body("[0].numberOfPages", equalTo(book1.getNumberOfPages()));
   }
 
   @Test
-  void shouldCreateABookWithSuccess() throws Exception {
+  void shouldCreateABookWithSuccess() {
     var book = Book.builder()
         .isbn("123456789")
         .numberOfPages(250)
@@ -74,28 +75,33 @@ class BookControllerTest {
         .title("Hobbit")
         .build();
 
-    this.mockMvc.perform(post("/books")
-        .content(toJson(book))
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id", notNullValue()))
-        .andExpect(jsonPath("$.title", is("Hobbit")))
-        .andExpect(jsonPath("$.author", is("J.R.R. Tolkien")))
-        .andExpect(jsonPath("$.isbn", is("123456789")))
-        .andExpect(jsonPath("$.numberOfPages", is(250)));
+    given()
+        .contentType(ContentType.JSON)
+        .body(book)
+      .when()
+        .post("/books")
+      .then()
+        .statusCode(HttpStatus.CREATED.value())
+        .body("id", notNullValue())
+        .body("author", equalTo("J.R.R. Tolkien"))
+        .body("title", equalTo("Hobbit"))
+        .body("isbn", equalTo("123456789"))
+        .body("numberOfPages", equalTo(250));
 
-    this.mockMvc.perform(get("/books"))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(1)))
-        .andExpect(jsonPath("$[0].id", notNullValue()))
-        .andExpect(jsonPath("$[0].title", is("Hobbit")))
-        .andExpect(jsonPath("$[0].author", is("J.R.R. Tolkien")))
-        .andExpect(jsonPath("$[0].isbn", is("123456789")))
-        .andExpect(jsonPath("$[0].numberOfPages", is(250)));
+    when()
+        .get("/books")
+      .then()
+        .statusCode(HttpStatus.OK.value())
+        .body("$", hasSize(1))
+        .body("[0].id", notNullValue())
+        .body("[0].title", equalTo("Hobbit"))
+        .body("[0].author", equalTo("J.R.R. Tolkien"))
+        .body("[0].isbn", equalTo("123456789"))
+        .body("[0].numberOfPages", equalTo(250));
   }
 
   @Test
-  void shouldCreateAAvaliationWithSuccess() throws Exception {
+  void shouldCreateAnAvaliationWithSuccess() {
     var book1 = createBook();
 
     var avaliation = AvaliationDTO.builder()
@@ -103,17 +109,20 @@ class BookControllerTest {
         .score(3)
         .build();
 
-    this.mockMvc.perform(post("/books/"+book1.getId()+"/avaliation")
-        .content(toJson(avaliation))
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isCreated())
-        .andExpect(jsonPath("$.id", notNullValue()))
-        .andExpect(jsonPath("$.score", is(3)))
-        .andExpect(jsonPath("$.comment", is("Um bom livro")));
+    given()
+        .contentType(ContentType.JSON)
+        .body(avaliation)
+      .when()
+        .post("/books/{id}/avaliation", book1.getId())
+      .then()
+        .statusCode(HttpStatus.CREATED.value())
+        .body("id", notNullValue())
+        .body("score", equalTo(3))
+        .body("comment", equalTo("Um bom livro"));
   }
 
   @Test
-  void shouldReturnAAvaliationByBookWithSuccess() throws Exception {
+  void shouldReturnAnAvaliationByBookWithSuccess() {
     var book = createBook();
 
     var avaliation = Avaliation.builder()
@@ -124,13 +133,15 @@ class BookControllerTest {
 
     avaliationRepository.save(avaliation);
 
-    this.mockMvc.perform(get("/books/"+book.getId()+"/avaliation")
-        .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.id", notNullValue()))
-        .andExpect(jsonPath("$.book.id", notNullValue()))
-        .andExpect(jsonPath("$.score", is(3)))
-        .andExpect(jsonPath("$.comment", is("Um bom livro")));
+    when()
+        .get("/books/{id}/avaliation", book.getId())
+      .then()
+        .contentType(ContentType.JSON)
+        .statusCode(HttpStatus.OK.value())
+        .body("id", notNullValue())
+        .body("book.id", notNullValue())
+        .body("score", equalTo(3))
+        .body("comment", equalTo("Um bom livro"));
   }
 
   private Book createBook() {
@@ -139,14 +150,5 @@ class BookControllerTest {
         .title(faker.book().title())
         .isbn(String.valueOf(faker.number().numberBetween(1, 9999)))
         .numberOfPages(faker.number().numberBetween(100, 300)).build());
-  }
-
-  private String toJson(Object value) {
-    try {
-      return new ObjectMapper().writeValueAsString(value);
-    } catch (JsonProcessingException e) {
-      e.printStackTrace();
-    }
-    return "Json invalid";
   }
 }
