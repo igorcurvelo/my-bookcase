@@ -9,22 +9,22 @@ import static org.hamcrest.Matchers.notNullValue;
 import com.curvelo.api.dto.AvaliationDTO;
 import com.curvelo.domain.model.Avaliation;
 import com.curvelo.domain.model.Book;
+import com.curvelo.domain.model.User;
+import com.curvelo.mapper.UserMapper;
 import com.curvelo.repository.AvaliationRepository;
 import com.curvelo.repository.BookRepository;
+import com.curvelo.repository.UserRepository;
 import com.github.javafaker.Faker;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 class BookControllerTest {
 
@@ -32,6 +32,9 @@ class BookControllerTest {
 
   @Autowired
   private BookRepository bookRepository;
+
+  @Autowired
+  private UserRepository userRepository;
 
   @Autowired
   private AvaliationRepository avaliationRepository;
@@ -103,9 +106,11 @@ class BookControllerTest {
   @Test
   void shouldCreateAnAvaliationWithSuccess() {
     var book1 = createBook();
+    var user = createUser();
 
     var avaliation = AvaliationDTO.builder()
         .comment("Um bom livro")
+        .user(UserMapper.toDTO(user))
         .score(3)
         .build();
 
@@ -117,6 +122,8 @@ class BookControllerTest {
       .then()
         .statusCode(HttpStatus.CREATED.value())
         .body("id", notNullValue())
+        .body("user.id", equalTo(user.getId()))
+        .body("book.id", equalTo(book1.getId()))
         .body("score", equalTo(3))
         .body("comment", equalTo("Um bom livro"));
   }
@@ -124,9 +131,11 @@ class BookControllerTest {
   @Test
   void shouldReturnAnAvaliationByBookWithSuccess() {
     var book = createBook();
+    var user = createUser();
 
     var avaliation = Avaliation.builder()
         .book(book)
+        .user(user)
         .comment("Um bom livro")
         .score(3)
         .build();
@@ -138,10 +147,18 @@ class BookControllerTest {
       .then()
         .contentType(ContentType.JSON)
         .statusCode(HttpStatus.OK.value())
-        .body("id", notNullValue())
-        .body("book.id", notNullValue())
-        .body("score", equalTo(3))
-        .body("comment", equalTo("Um bom livro"));
+        .body("[0].id", notNullValue())
+        .body("[0].book.id", equalTo(book.getId()))
+        .body("[0].user.id", equalTo(user.getId()))
+        .body("[0].score", equalTo(3))
+        .body("[0].comment", equalTo("Um bom livro"));
+  }
+
+  private User createUser() {
+    return userRepository.save(User.builder()
+        .id(99)
+        .name(faker.name().firstName())
+        .build());
   }
 
   private Book createBook() {

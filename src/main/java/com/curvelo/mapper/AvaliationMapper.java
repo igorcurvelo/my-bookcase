@@ -13,6 +13,7 @@ public class AvaliationMapper {
         .map(dto ->
             Avaliation.builder()
                 .id(dto.getId())
+                .user(UserMapper.toEntity(dto.getUser()))
                 .score(dto.getScore())
                 .comment(dto.getComment()).build()
         ).orElseThrow(IllegalArgumentException::new);
@@ -24,6 +25,7 @@ public class AvaliationMapper {
             AvaliationDTO.builder()
                 .id(entity.getId())
                 .book(BookMapper.toDTO(avaliation.getBook()))
+                .user(UserMapper.toDTO(avaliation.getUser()))
                 .score(entity.getScore())
                 .comment(entity.getComment()).build()
         ).orElseThrow(IllegalArgumentException::new);

@@ -6,4 +6,4 @@ CREATE TABLE `book` (
   `title` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_book_isbn` (`isbn`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

@@ -5,6 +5,6 @@ criar testes unitarios - ok
 criar testes de integração - ok
 api para criar a avaliação do livro - ok
 api para recuperar a avaliação do livro - ok
-teste nos mappers
+teste nos mappers - ok
 adicionar ações por user
   fazer media das notas

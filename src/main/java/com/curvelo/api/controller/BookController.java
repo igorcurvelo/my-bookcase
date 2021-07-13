@@ -52,8 +52,8 @@ public class BookController {
   }
 
   @GetMapping("/{bookId}/avaliation")
-  public AvaliationDTO postAvaliation(@PathVariable Integer bookId) {
+  public List<AvaliationDTO> getAllAvaliation(@PathVariable Integer bookId) {
     var result = avaliationService.findByBook(bookId);
-    return AvaliationMapper.toDTO(result);
+    return result.stream().map(AvaliationMapper::toDTO).collect(Collectors.toList());
   }
 }

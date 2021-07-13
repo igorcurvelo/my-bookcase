@@ -2,7 +2,8 @@ package com.curvelo.service;
 
 import com.curvelo.domain.model.Avaliation;
 import com.curvelo.repository.AvaliationRepository;
-import javax.persistence.EntityNotFoundException;
+import com.curvelo.repository.UserRepository;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,11 +11,14 @@ public class AvaliationServiceImpl implements AvaliationService {
 
   private final BookService bookService;
   private final AvaliationRepository avaliationRepository;
+  private final UserRepository userRepository;
 
   public AvaliationServiceImpl(BookService bookService,
-      AvaliationRepository avaliationRepository) {
+      AvaliationRepository avaliationRepository,
+      UserRepository userRepository) {
     this.bookService = bookService;
     this.avaliationRepository = avaliationRepository;
+    this.userRepository = userRepository;
   }
 
   @Override
@@ -28,9 +32,8 @@ public class AvaliationServiceImpl implements AvaliationService {
   }
 
   @Override
-  public Avaliation findByBook(Integer book) {
-    return avaliationRepository.findByBookId(book)
-        .orElseThrow(() -> new EntityNotFoundException("This books doesn't have avaliation"));
+  public List<Avaliation> findByBook(Integer book) {
+    return avaliationRepository.findByBookId(book);
   }
 
 }

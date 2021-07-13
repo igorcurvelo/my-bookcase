@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.curvelo.api.dto.AvaliationDTO;
+import com.curvelo.api.dto.UserDTO;
 import com.curvelo.domain.model.Avaliation;
 import com.curvelo.domain.model.Book;
+import com.curvelo.domain.model.User;
 import org.junit.jupiter.api.Test;
 
 class AvaliationMapperTest {
@@ -20,9 +22,15 @@ class AvaliationMapperTest {
         .title("Hobbit")
         .build();
 
+    var user = User.builder()
+        .id(99)
+        .name("Igor")
+        .build();
+
     var avaliation = Avaliation.builder()
         .id(21)
         .book(book)
+        .user(user)
         .comment("excelente livro")
         .score(9)
         .build();
@@ -31,6 +39,7 @@ class AvaliationMapperTest {
 
     assertThat(result.getId()).isEqualTo(21);
     assertThat(result.getBook().getId()).isEqualTo(12);
+    assertThat(result.getUser().getId()).isEqualTo(99);
     assertThat(result.getComment()).isEqualTo("excelente livro");
     assertThat(result.getScore()).isEqualTo(9);
   }
@@ -43,8 +52,14 @@ class AvaliationMapperTest {
 
   @Test
   void shouldMapperAvaliationDtoToAvaliationEntity() {
+    var user = UserDTO.builder()
+        .id(99)
+        .name("Igor")
+        .build();
+
     var avaliation = AvaliationDTO.builder()
         .id(21)
+        .user(user)
         .comment("excelente livro")
         .score(9)
         .build();
@@ -52,6 +67,7 @@ class AvaliationMapperTest {
     var result = AvaliationMapper.toEntity(avaliation);
 
     assertThat(result.getId()).isEqualTo(21);
+    assertThat(result.getUser().getId()).isEqualTo(99);
     assertThat(result.getComment()).isEqualTo("excelente livro");
     assertThat(result.getScore()).isEqualTo(9);
   }

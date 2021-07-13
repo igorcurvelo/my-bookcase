@@ -1,8 +1,6 @@
 package com.curvelo.service;
 
-import static java.util.Optional.of;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -10,9 +8,9 @@ import static org.mockito.Mockito.when;
 
 import com.curvelo.domain.model.Avaliation;
 import com.curvelo.domain.model.Book;
+import com.curvelo.domain.model.User;
 import com.curvelo.repository.AvaliationRepository;
-import java.util.Optional;
-import javax.persistence.EntityNotFoundException;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -71,7 +69,7 @@ class AvaliationServiceImplTest {
   }
 
   @Test
-  void shouldReturnAAvaliationWithSuccess() {
+  void shouldReturnManyAvaliationWithSuccess() {
 
     var book = Book.builder()
         .id(2)
@@ -81,39 +79,58 @@ class AvaliationServiceImplTest {
         .title("Hobbit")
         .build();
 
-    var avaliation = Avaliation.builder()
+    var user1 = User.builder()
+        .id(99)
+        .name("Igor")
+        .build();
+
+    var avaliation1 = Avaliation.builder()
         .id(3)
         .comment("excelente leitura")
         .score(4)
         .book(book)
+        .user(user1)
+        .build();
+
+    var user2 = User.builder()
+        .id(98)
+        .name("Igor C")
+        .build();
+
+    var avaliation2 = Avaliation.builder()
+        .id(4)
+        .comment("boa leitura")
+        .score(3)
+        .book(book)
+        .user(user2)
         .build();
 
     when(avaliationRepository.findByBookId(2))
-        .thenReturn(of(avaliation));
+        .thenReturn(Lists.list(avaliation1, avaliation2));
 
     var result = avaliationService.findByBook(2);
 
-    assertThat(result.getId()).isEqualTo(3);
-    assertThat(result.getComment()).isEqualTo("excelente leitura");
-    assertThat(result.getScore()).isEqualTo(4);
-    assertThat(result.getBook().getId()).isEqualTo(2);
-    assertThat(result.getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.getBook().getTitle()).isEqualTo("Hobbit");
-    assertThat(result.getBook().getNumberOfPages()).isEqualTo(250);
-    assertThat(result.getBook().getIsbn()).isEqualTo("123456789");
+    assertThat(result).hasSize(2);
+    assertThat(result.get(0).getId()).isEqualTo(3);
+    assertThat(result.get(0).getComment()).isEqualTo("excelente leitura");
+    assertThat(result.get(0).getScore()).isEqualTo(4);
+    assertThat(result.get(0).getUser().getId()).isEqualTo(99);
+    assertThat(result.get(0).getBook().getId()).isEqualTo(2);
+    assertThat(result.get(0).getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.get(0).getBook().getTitle()).isEqualTo("Hobbit");
+    assertThat(result.get(0).getBook().getNumberOfPages()).isEqualTo(250);
+    assertThat(result.get(0).getBook().getIsbn()).isEqualTo("123456789");
+
+    assertThat(result.get(1).getId()).isEqualTo(4);
+    assertThat(result.get(1).getComment()).isEqualTo("boa leitura");
+    assertThat(result.get(1).getScore()).isEqualTo(3);
+    assertThat(result.get(1).getUser().getId()).isEqualTo(98);
+    assertThat(result.get(1).getBook().getId()).isEqualTo(2);
+    assertThat(result.get(1).getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.get(1).getBook().getTitle()).isEqualTo("Hobbit");
+    assertThat(result.get(1).getBook().getNumberOfPages()).isEqualTo(250);
+    assertThat(result.get(1).getBook().getIsbn()).isEqualTo("123456789");
 
     verify(avaliationRepository, times(1)).findByBookId(2);
-  }
-
-  @Test
-  void shouldReturnEntityNotFoundExceptionWhenNotExistAAvaliationByBook() {
-
-    when(avaliationRepository.findByBookId(3)).thenReturn(Optional.empty());
-
-    assertThatThrownBy(() -> avaliationService.findByBook(3))
-        .isInstanceOf(EntityNotFoundException.class)
-        .hasMessageContaining("This books doesn't have avaliation");
-
-    verify(avaliationRepository, times(1)).findByBookId(3);
   }
 }
