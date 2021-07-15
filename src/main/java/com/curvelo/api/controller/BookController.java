@@ -2,6 +2,8 @@ package com.curvelo.api.controller;
 
 import com.curvelo.api.dto.AvaliationDTO;
 import com.curvelo.api.dto.BookDTO;
+import com.curvelo.api.dto.TotalAvaliationDTO;
+import com.curvelo.core.TotalizeAvaliation;
 import com.curvelo.mapper.AvaliationMapper;
 import com.curvelo.mapper.BookMapper;
 import com.curvelo.service.AvaliationService;
@@ -23,11 +25,14 @@ public class BookController {
 
   private final BookService bookService;
   private final AvaliationService avaliationService;
+  private final TotalizeAvaliation totalizeAvaliation;
 
   public BookController(BookService bookService,
-      AvaliationService avaliationService) {
+      AvaliationService avaliationService,
+      TotalizeAvaliation totalizeAvaliation) {
     this.bookService = bookService;
     this.avaliationService = avaliationService;
+    this.totalizeAvaliation = totalizeAvaliation;
   }
 
   @GetMapping
@@ -44,16 +49,22 @@ public class BookController {
     return BookMapper.toDTO(result);
   }
 
-  @PostMapping("/{bookId}/avaliation")
+  @PostMapping("/{bookId}/avaliations")
   @ResponseStatus(HttpStatus.CREATED)
   public AvaliationDTO postAvaliation(@PathVariable Integer bookId, @RequestBody AvaliationDTO body) {
     var result = avaliationService.create(bookId, AvaliationMapper.toEntity(body));
     return AvaliationMapper.toDTO(result);
   }
 
-  @GetMapping("/{bookId}/avaliation")
+  @GetMapping("/{bookId}/avaliations")
   public List<AvaliationDTO> getAllAvaliation(@PathVariable Integer bookId) {
     var result = avaliationService.findByBook(bookId);
     return result.stream().map(AvaliationMapper::toDTO).collect(Collectors.toList());
   }
+
+  @GetMapping("/{bookId}/avaliations/totalize")
+  public TotalAvaliationDTO getAllAvaliationTotalize(@PathVariable Integer bookId) {
+    return totalizeAvaliation.totalizeAvaliationsByBook(bookId);
+  }
+
 }

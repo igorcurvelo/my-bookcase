@@ -118,7 +118,7 @@ class BookControllerTest {
         .contentType(ContentType.JSON)
         .body(avaliation)
       .when()
-        .post("/books/{id}/avaliation", book1.getId())
+        .post("/books/{id}/avaliations", book1.getId())
       .then()
         .statusCode(HttpStatus.CREATED.value())
         .body("id", notNullValue())
@@ -143,7 +143,7 @@ class BookControllerTest {
     avaliationRepository.save(avaliation);
 
     when()
-        .get("/books/{id}/avaliation", book.getId())
+        .get("/books/{id}/avaliations", book.getId())
       .then()
         .contentType(ContentType.JSON)
         .statusCode(HttpStatus.OK.value())
@@ -152,6 +152,44 @@ class BookControllerTest {
         .body("[0].user.id", equalTo(user.getId()))
         .body("[0].score", equalTo(3))
         .body("[0].comment", equalTo("Um bom livro"));
+  }
+
+  @Test
+  void shouldReturnTotalizeAvaliationByBookWithSuccess() {
+    var book = createBook();
+    var user1 = createUser();
+    var user2 = createUser();
+
+    var avaliation1 = Avaliation.builder()
+        .book(book)
+        .user(user1)
+        .comment("Um bom livro")
+        .score(3)
+        .build();
+
+    var avaliation2 = Avaliation.builder()
+        .book(book)
+        .user(user2)
+        .comment("Ótima leitura")
+        .score(4)
+        .build();
+
+    avaliationRepository.save(avaliation1);
+    avaliationRepository.save(avaliation2);
+
+    when()
+        .get("/books/{id}/avaliations/totalize", book.getId())
+        .then()
+        .contentType(ContentType.JSON)
+        .statusCode(HttpStatus.OK.value())
+        .body("book.id", equalTo(book.getId()))
+        .body("book.title", equalTo(book.getTitle()))
+        .body("score", equalTo(3.5F))
+        .body("comments", hasSize(2))
+        .body("comments[0].user.id", equalTo(user1.getId()))
+        .body("comments[0].comment", equalTo(avaliation1.getComment()))
+        .body("comments[1].user.id", equalTo(user2.getId()))
+        .body("comments[1].comment", equalTo(avaliation2.getComment()));
   }
 
   private User createUser() {

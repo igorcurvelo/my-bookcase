@@ -24,6 +24,8 @@ public class AvaliationServiceImpl implements AvaliationService {
   @Override
   public Avaliation create(Integer bookId, Avaliation avaliation) {
 
+    // TODO adicionar validacao de user
+
     var book = bookService.findOne(bookId);
 
     avaliation.setBook(book);
