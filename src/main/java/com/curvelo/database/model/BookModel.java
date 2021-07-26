@@ -1,4 +1,4 @@
-package com.curvelo.domain.model;
+package com.curvelo.database.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,18 +12,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user")
+@Table(name = "book")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class BookModel {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @Column(nullable = false)
-  private String name;
+  private String title;
+
+  @Column(unique = true, nullable = false)
+  private String isbn;
+
+  @Column(nullable = false)
+  private String author;
+
+  @Column(nullable = false)
+  private Integer numberOfPages;
 
 }

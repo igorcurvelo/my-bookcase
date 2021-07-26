@@ -4,14 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.curvelo.api.dto.BookDTO;
-import com.curvelo.domain.model.Book;
+import com.curvelo.database.model.BookModel;
 import org.junit.jupiter.api.Test;
 
-class BookMapperTest {
+class BookModelMapperTest {
 
   @Test
   void shouldMapperBookEntityToBookDto() {
-    var book = Book.builder()
+    var book = BookModel.builder()
         .id(12)
         .isbn("123456789")
         .numberOfPages(250)

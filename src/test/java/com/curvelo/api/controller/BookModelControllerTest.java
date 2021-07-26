@@ -7,13 +7,13 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 
 import com.curvelo.api.dto.AvaliationDTO;
-import com.curvelo.domain.model.Avaliation;
-import com.curvelo.domain.model.Book;
-import com.curvelo.domain.model.User;
+import com.curvelo.database.model.AvaliationModel;
+import com.curvelo.database.model.BookModel;
+import com.curvelo.database.model.UserModel;
 import com.curvelo.mapper.UserMapper;
-import com.curvelo.repository.AvaliationRepository;
-import com.curvelo.repository.BookRepository;
-import com.curvelo.repository.UserRepository;
+import com.curvelo.database.repository.AvaliationRepository;
+import com.curvelo.database.repository.BookRepository;
+import com.curvelo.database.repository.UserRepository;
 import com.github.javafaker.Faker;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -26,7 +26,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class BookControllerTest {
+class BookModelControllerTest {
 
   private final Faker faker = new Faker();
 
@@ -71,7 +71,7 @@ class BookControllerTest {
 
   @Test
   void shouldCreateABookWithSuccess() {
-    var book = Book.builder()
+    var book = BookModel.builder()
         .isbn("123456789")
         .numberOfPages(250)
         .author("J.R.R. Tolkien")
@@ -133,9 +133,9 @@ class BookControllerTest {
     var book = createBook();
     var user = createUser();
 
-    var avaliation = Avaliation.builder()
-        .book(book)
-        .user(user)
+    var avaliation = AvaliationModel.builder()
+        .bookModel(book)
+        .userModel(user)
         .comment("Um bom livro")
         .score(3)
         .build();
@@ -160,16 +160,16 @@ class BookControllerTest {
     var user1 = createUser();
     var user2 = createUser();
 
-    var avaliation1 = Avaliation.builder()
-        .book(book)
-        .user(user1)
+    var avaliation1 = AvaliationModel.builder()
+        .bookModel(book)
+        .userModel(user1)
         .comment("Um bom livro")
         .score(3)
         .build();
 
-    var avaliation2 = Avaliation.builder()
-        .book(book)
-        .user(user2)
+    var avaliation2 = AvaliationModel.builder()
+        .bookModel(book)
+        .userModel(user2)
         .comment("Ótima leitura")
         .score(4)
         .build();
@@ -192,15 +192,15 @@ class BookControllerTest {
         .body("comments[1].comment", equalTo(avaliation2.getComment()));
   }
 
-  private User createUser() {
-    return userRepository.save(User.builder()
+  private UserModel createUser() {
+    return userRepository.save(UserModel.builder()
         .id(99)
         .name(faker.name().firstName())
         .build());
   }
 
-  private Book createBook() {
-    return bookRepository.save(Book.builder()
+  private BookModel createBook() {
+    return bookRepository.save(BookModel.builder()
         .author(faker.book().author())
         .title(faker.book().title())
         .isbn(String.valueOf(faker.number().numberBetween(1, 9999)))

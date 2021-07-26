@@ -1,7 +1,7 @@
 package com.curvelo.service;
 
-import com.curvelo.domain.model.Book;
-import com.curvelo.repository.BookRepository;
+import com.curvelo.database.model.BookModel;
+import com.curvelo.database.repository.BookRepository;
 import java.util.List;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -17,12 +17,12 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public List<Book> findAll() {
+  public List<BookModel> findAll() {
     return bookRepository.findAll();
   }
 
   @Override
-  public Book create(Book entity) {
+  public BookModel create(BookModel entity) {
     if(bookRepository.existsByIsbn(entity.getIsbn())) {
       throw new EntityExistsException("book already registered");
     }
@@ -31,7 +31,7 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public Book findOne(Integer bookId) {
+  public BookModel findOne(Integer bookId) {
     return bookRepository.findById(bookId)
         .orElseThrow(() -> new EntityNotFoundException("Book not found"));
   }

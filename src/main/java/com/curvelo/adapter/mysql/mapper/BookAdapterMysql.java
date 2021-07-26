@@ -1,29 +1,29 @@
-package com.curvelo.mapper;
+package com.curvelo.adapter.mysql.mapper;
 
-import com.curvelo.api.dto.BookDTO;
+import com.curvelo.core.domain.BookDomain;
 import com.curvelo.database.model.BookModel;
 import java.util.Optional;
 
-public class BookMapper {
+public class BookAdapterMysql {
 
-  private BookMapper() {}
+  private BookAdapterMysql() {}
 
-  public static BookModel toEntity(final BookDTO bookDTO) {
-    return Optional.ofNullable(bookDTO)
+  public static BookModel toEntity(final BookDomain bookDomain) {
+    return Optional.ofNullable(bookDomain)
         .map(dto ->
             BookModel.builder()
                 .id(dto.getId())
                 .author(dto.getAuthor())
                 .title(dto.getTitle())
                 .isbn(dto.getIsbn())
-                .numberOfPages(bookDTO.getNumberOfPages()).build()
+                .numberOfPages(bookDomain.getNumberOfPages()).build()
         ).orElseThrow(IllegalArgumentException::new);
   }
 
-  public static BookDTO toDTO(final BookModel bookModel) {
+  public static BookDomain toDomain(final BookModel bookModel) {
     return Optional.ofNullable(bookModel)
         .map(entity ->
-            BookDTO.builder()
+            BookDomain.builder()
                 .id(entity.getId())
                 .author(entity.getAuthor())
                 .title(entity.getTitle())
@@ -31,4 +31,5 @@ public class BookMapper {
                 .numberOfPages(entity.getNumberOfPages()).build()
         ).orElseThrow(IllegalArgumentException::new);
   }
+
 }

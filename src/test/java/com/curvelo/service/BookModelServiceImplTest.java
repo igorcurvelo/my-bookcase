@@ -7,8 +7,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.curvelo.domain.model.Book;
-import com.curvelo.repository.BookRepository;
+import com.curvelo.database.model.BookModel;
+import com.curvelo.database.repository.BookRepository;
 import java.util.List;
 import javax.persistence.EntityExistsException;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class BookServiceImplTest {
+class BookModelServiceImplTest {
 
   @Mock
   private BookRepository bookRepository;
@@ -29,7 +29,7 @@ class BookServiceImplTest {
   @Test
   void shouldReturnAListWith3Books() {
 
-    var book = Book.builder().build();
+    var book = BookModel.builder().build();
 
     when(bookRepository.findAll())
         .thenReturn(List.of(book, book, book));
@@ -44,7 +44,7 @@ class BookServiceImplTest {
   @Test
   void shouldCreateABookWithSuccess() {
 
-    var book = Book.builder()
+    var book = BookModel.builder()
         .isbn("123456789")
         .numberOfPages(250)
         .author("J.R.R. Tolkien")
@@ -52,7 +52,7 @@ class BookServiceImplTest {
         .build();
 
     when(bookRepository.save(book))
-        .thenReturn(Book.builder()
+        .thenReturn(BookModel.builder()
             .id(1)
             .isbn("123456789")
             .numberOfPages(250)
@@ -75,7 +75,7 @@ class BookServiceImplTest {
   @Test
   void shouldReturnEntityExistsExceptionWhenExistABookWithTheSameIsbn() {
 
-    var book = Book.builder()
+    var book = BookModel.builder()
         .isbn("123456789")
         .numberOfPages(250)
         .author("J.R.R. Tolkien")
@@ -89,7 +89,7 @@ class BookServiceImplTest {
         .isInstanceOf(EntityExistsException.class)
         .hasMessageContaining("book already registered");
 
-    verify(bookRepository, times(0)).save(any(Book.class));
+    verify(bookRepository, times(0)).save(any(BookModel.class));
   }
 
 }

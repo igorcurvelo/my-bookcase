@@ -6,10 +6,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.curvelo.domain.model.Avaliation;
-import com.curvelo.domain.model.Book;
-import com.curvelo.domain.model.User;
-import com.curvelo.repository.AvaliationRepository;
+import com.curvelo.database.model.AvaliationModel;
+import com.curvelo.database.model.BookModel;
+import com.curvelo.database.model.UserModel;
+import com.curvelo.database.repository.AvaliationRepository;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class AvaliationServiceImplTest {
+class AvaliationModelServiceImplTest {
 
   @Mock
   private AvaliationRepository avaliationRepository;
@@ -32,7 +32,7 @@ class AvaliationServiceImplTest {
   @Test
   void shouldCreateAAvaliationWithSuccess() {
 
-    var book = Book.builder()
+    var book = BookModel.builder()
         .id(1)
         .isbn("123456789")
         .numberOfPages(250)
@@ -41,16 +41,16 @@ class AvaliationServiceImplTest {
         .build();
 
     when(bookService.findOne(1)).thenReturn(book);
-    when(avaliationRepository.save(any(Avaliation.class)))
-        .thenReturn(Avaliation.builder()
+    when(avaliationRepository.save(any(AvaliationModel.class)))
+        .thenReturn(AvaliationModel.builder()
           .id(2)
-          .book(book)
+          .bookModel(book)
           .comment("Um bom livro")
           .score(3)
           .build());
 
     var result = avaliationService.create(1,
-        Avaliation.builder()
+        AvaliationModel.builder()
           .comment("Um bom livro")
           .score(3)
           .build());
@@ -58,20 +58,20 @@ class AvaliationServiceImplTest {
     assertThat(result.getId()).isNotNull();
     assertThat(result.getComment()).isEqualTo("Um bom livro");
     assertThat(result.getScore()).isEqualTo(3);
-    assertThat(result.getBook().getId()).isEqualTo(1);
-    assertThat(result.getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.getBook().getTitle()).isEqualTo("Hobbit");
-    assertThat(result.getBook().getNumberOfPages()).isEqualTo(250);
-    assertThat(result.getBook().getIsbn()).isEqualTo("123456789");
+    assertThat(result.getBookModel().getId()).isEqualTo(1);
+    assertThat(result.getBookModel().getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.getBookModel().getTitle()).isEqualTo("Hobbit");
+    assertThat(result.getBookModel().getNumberOfPages()).isEqualTo(250);
+    assertThat(result.getBookModel().getIsbn()).isEqualTo("123456789");
 
     verify(bookService, times(1)).findOne(1);
-    verify(avaliationRepository, times(1)).save(any(Avaliation.class));
+    verify(avaliationRepository, times(1)).save(any(AvaliationModel.class));
   }
 
   @Test
   void shouldReturnManyAvaliationWithSuccess() {
 
-    var book = Book.builder()
+    var book = BookModel.builder()
         .id(2)
         .isbn("123456789")
         .numberOfPages(250)
@@ -79,30 +79,30 @@ class AvaliationServiceImplTest {
         .title("Hobbit")
         .build();
 
-    var user1 = User.builder()
+    var user1 = UserModel.builder()
         .id(99)
         .name("Igor")
         .build();
 
-    var avaliation1 = Avaliation.builder()
+    var avaliation1 = AvaliationModel.builder()
         .id(3)
         .comment("excelente leitura")
         .score(4)
-        .book(book)
-        .user(user1)
+        .bookModel(book)
+        .userModel(user1)
         .build();
 
-    var user2 = User.builder()
+    var user2 = UserModel.builder()
         .id(98)
         .name("Igor C")
         .build();
 
-    var avaliation2 = Avaliation.builder()
+    var avaliation2 = AvaliationModel.builder()
         .id(4)
         .comment("boa leitura")
         .score(3)
-        .book(book)
-        .user(user2)
+        .bookModel(book)
+        .userModel(user2)
         .build();
 
     when(avaliationRepository.findByBookId(2))
@@ -114,22 +114,22 @@ class AvaliationServiceImplTest {
     assertThat(result.get(0).getId()).isEqualTo(3);
     assertThat(result.get(0).getComment()).isEqualTo("excelente leitura");
     assertThat(result.get(0).getScore()).isEqualTo(4);
-    assertThat(result.get(0).getUser().getId()).isEqualTo(99);
-    assertThat(result.get(0).getBook().getId()).isEqualTo(2);
-    assertThat(result.get(0).getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.get(0).getBook().getTitle()).isEqualTo("Hobbit");
-    assertThat(result.get(0).getBook().getNumberOfPages()).isEqualTo(250);
-    assertThat(result.get(0).getBook().getIsbn()).isEqualTo("123456789");
+    assertThat(result.get(0).getUserModel().getId()).isEqualTo(99);
+    assertThat(result.get(0).getBookModel().getId()).isEqualTo(2);
+    assertThat(result.get(0).getBookModel().getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.get(0).getBookModel().getTitle()).isEqualTo("Hobbit");
+    assertThat(result.get(0).getBookModel().getNumberOfPages()).isEqualTo(250);
+    assertThat(result.get(0).getBookModel().getIsbn()).isEqualTo("123456789");
 
     assertThat(result.get(1).getId()).isEqualTo(4);
     assertThat(result.get(1).getComment()).isEqualTo("boa leitura");
     assertThat(result.get(1).getScore()).isEqualTo(3);
-    assertThat(result.get(1).getUser().getId()).isEqualTo(98);
-    assertThat(result.get(1).getBook().getId()).isEqualTo(2);
-    assertThat(result.get(1).getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.get(1).getBook().getTitle()).isEqualTo("Hobbit");
-    assertThat(result.get(1).getBook().getNumberOfPages()).isEqualTo(250);
-    assertThat(result.get(1).getBook().getIsbn()).isEqualTo("123456789");
+    assertThat(result.get(1).getUserModel().getId()).isEqualTo(98);
+    assertThat(result.get(1).getBookModel().getId()).isEqualTo(2);
+    assertThat(result.get(1).getBookModel().getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.get(1).getBookModel().getTitle()).isEqualTo("Hobbit");
+    assertThat(result.get(1).getBookModel().getNumberOfPages()).isEqualTo(250);
+    assertThat(result.get(1).getBookModel().getIsbn()).isEqualTo("123456789");
 
     verify(avaliationRepository, times(1)).findByBookId(2);
   }

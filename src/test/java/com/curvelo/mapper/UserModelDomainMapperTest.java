@@ -4,14 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.curvelo.api.dto.UserDTO;
-import com.curvelo.domain.model.User;
+import com.curvelo.database.model.UserModel;
 import org.junit.jupiter.api.Test;
 
-class UserMapperTest {
+class UserModelDomainMapperTest {
 
   @Test
   void shouldMapperUserEntityToUserDto() {
-    var user = User.builder()
+    var user = UserModel.builder()
         .id(99)
         .name("Igor")
         .build();

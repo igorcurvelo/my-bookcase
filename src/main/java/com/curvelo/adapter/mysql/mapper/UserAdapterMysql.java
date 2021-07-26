@@ -1,15 +1,15 @@
-package com.curvelo.mapper;
+package com.curvelo.adapter.mysql.mapper;
 
-import com.curvelo.api.dto.UserDTO;
+import com.curvelo.core.domain.UserDomain;
 import com.curvelo.database.model.UserModel;
 import java.util.Optional;
 
-public class UserMapper {
+public class UserAdapterMysql {
 
-  private UserMapper() {}
+  private UserAdapterMysql() {}
 
-  public static UserModel toEntity(final UserDTO userDTO) {
-    return Optional.ofNullable(userDTO)
+  public static UserModel toEntity(final UserDomain userDomain) {
+    return Optional.ofNullable(userDomain)
         .map(dto ->
             UserModel.builder()
                 .id(dto.getId())
@@ -17,10 +17,10 @@ public class UserMapper {
         ).orElseThrow(IllegalArgumentException::new);
   }
 
-  public static UserDTO toDTO(final UserModel userModel) {
+  public static UserDomain toDomain(final UserModel userModel) {
     return Optional.ofNullable(userModel)
         .map(entity ->
-            UserDTO.builder()
+            UserDomain.builder()
                 .id(entity.getId())
                 .name(entity.getName()).build()
         ).orElseThrow(IllegalArgumentException::new);

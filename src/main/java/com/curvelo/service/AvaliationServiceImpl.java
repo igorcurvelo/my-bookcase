@@ -1,8 +1,8 @@
 package com.curvelo.service;
 
-import com.curvelo.domain.model.Avaliation;
-import com.curvelo.repository.AvaliationRepository;
-import com.curvelo.repository.UserRepository;
+import com.curvelo.database.model.AvaliationModel;
+import com.curvelo.database.repository.AvaliationRepository;
+import com.curvelo.database.repository.UserRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -22,19 +22,19 @@ public class AvaliationServiceImpl implements AvaliationService {
   }
 
   @Override
-  public Avaliation create(Integer bookId, Avaliation avaliation) {
+  public AvaliationModel create(Integer bookId, AvaliationModel avaliationModel) {
 
     // TODO adicionar validacao de user
 
     var book = bookService.findOne(bookId);
 
-    avaliation.setBook(book);
+    avaliationModel.setBookModel(book);
 
-    return avaliationRepository.save(avaliation);
+    return avaliationRepository.save(avaliationModel);
   }
 
   @Override
-  public List<Avaliation> findByBook(Integer book) {
+  public List<AvaliationModel> findByBook(Integer book) {
     return avaliationRepository.findByBookId(book);
   }
 

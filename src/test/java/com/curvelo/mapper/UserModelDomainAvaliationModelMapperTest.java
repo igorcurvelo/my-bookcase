@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.curvelo.api.dto.UserDTO;
 import org.junit.jupiter.api.Test;
 
-class UserAvaliationMapperTest {
+class UserModelDomainAvaliationModelMapperTest {
 
   @Test
   void shouldMapperUserAvaliation() {

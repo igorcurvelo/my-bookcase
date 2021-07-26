@@ -5,16 +5,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.curvelo.api.dto.AvaliationDTO;
 import com.curvelo.api.dto.UserDTO;
-import com.curvelo.domain.model.Avaliation;
-import com.curvelo.domain.model.Book;
-import com.curvelo.domain.model.User;
+import com.curvelo.database.model.AvaliationModel;
+import com.curvelo.database.model.BookModel;
+import com.curvelo.database.model.UserModel;
 import org.junit.jupiter.api.Test;
 
-class AvaliationMapperTest {
+class AvaliationModelMapperTest {
 
   @Test
   void shouldMapperAvaliationEntityToAvaliationDto() {
-    var book = Book.builder()
+    var book = BookModel.builder()
         .id(12)
         .isbn("123456789")
         .numberOfPages(250)
@@ -22,15 +22,15 @@ class AvaliationMapperTest {
         .title("Hobbit")
         .build();
 
-    var user = User.builder()
+    var user = UserModel.builder()
         .id(99)
         .name("Igor")
         .build();
 
-    var avaliation = Avaliation.builder()
+    var avaliation = AvaliationModel.builder()
         .id(21)
-        .book(book)
-        .user(user)
+        .bookModel(book)
+        .userModel(user)
         .comment("excelente livro")
         .score(9)
         .build();
@@ -67,7 +67,7 @@ class AvaliationMapperTest {
     var result = AvaliationMapper.toEntity(avaliation);
 
     assertThat(result.getId()).isEqualTo(21);
-    assertThat(result.getUser().getId()).isEqualTo(99);
+    assertThat(result.getUserModel().getId()).isEqualTo(99);
     assertThat(result.getComment()).isEqualTo("excelente livro");
     assertThat(result.getScore()).isEqualTo(9);
   }

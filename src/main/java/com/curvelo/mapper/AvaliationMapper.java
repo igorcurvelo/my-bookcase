@@ -1,31 +1,31 @@
 package com.curvelo.mapper;
 
 import com.curvelo.api.dto.AvaliationDTO;
-import com.curvelo.domain.model.Avaliation;
+import com.curvelo.database.model.AvaliationModel;
 import java.util.Optional;
 
 public class AvaliationMapper {
 
   private AvaliationMapper() {}
 
-  public static Avaliation toEntity(final AvaliationDTO avaliationDTO) {
+  public static AvaliationModel toEntity(final AvaliationDTO avaliationDTO) {
     return Optional.ofNullable(avaliationDTO)
         .map(dto ->
-            Avaliation.builder()
+            AvaliationModel.builder()
                 .id(dto.getId())
-                .user(UserMapper.toEntity(dto.getUser()))
+                .userModel(UserMapper.toEntity(dto.getUser()))
                 .score(dto.getScore())
                 .comment(dto.getComment()).build()
         ).orElseThrow(IllegalArgumentException::new);
   }
 
-  public static AvaliationDTO toDTO(final Avaliation avaliation) {
-    return Optional.ofNullable(avaliation)
+  public static AvaliationDTO toDTO(final AvaliationModel avaliationModel) {
+    return Optional.ofNullable(avaliationModel)
         .map(entity ->
             AvaliationDTO.builder()
                 .id(entity.getId())
-                .book(BookMapper.toDTO(avaliation.getBook()))
-                .user(UserMapper.toDTO(avaliation.getUser()))
+                .book(BookMapper.toDTO(avaliationModel.getBookModel()))
+                .user(UserMapper.toDTO(avaliationModel.getUserModel()))
                 .score(entity.getScore())
                 .comment(entity.getComment()).build()
         ).orElseThrow(IllegalArgumentException::new);

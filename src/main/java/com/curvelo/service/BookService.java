@@ -1,13 +1,13 @@
 package com.curvelo.service;
 
-import com.curvelo.domain.model.Book;
+import com.curvelo.database.model.BookModel;
 import java.util.List;
 
 public interface BookService {
 
-  List<Book> findAll();
+  List<BookModel> findAll();
 
-  Book create(Book toEntity);
+  BookModel create(BookModel toEntity);
 
-  Book findOne(Integer bookId);
+  BookModel findOne(Integer bookId);
 }

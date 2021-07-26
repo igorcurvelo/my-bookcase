@@ -1,11 +1,11 @@
 package com.curvelo.service;
 
-import com.curvelo.domain.model.Avaliation;
+import com.curvelo.database.model.AvaliationModel;
 import java.util.List;
 
 public interface AvaliationService {
 
-  Avaliation create(Integer bookId, Avaliation avaliation);
+  AvaliationModel create(Integer bookId, AvaliationModel avaliationModel);
 
-  List<Avaliation> findByBook(Integer book);
+  List<AvaliationModel> findByBook(Integer book);
 }

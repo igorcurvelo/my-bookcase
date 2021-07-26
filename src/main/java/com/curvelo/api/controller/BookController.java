@@ -1,9 +1,10 @@
 package com.curvelo.api.controller;
 
+import com.curvelo.adapter.rest.mapper.TotalAvaliationAdapterRest;
 import com.curvelo.api.dto.AvaliationDTO;
 import com.curvelo.api.dto.BookDTO;
 import com.curvelo.api.dto.TotalAvaliationDTO;
-import com.curvelo.core.TotalizeAvaliation;
+import com.curvelo.core.usecase.TotalizeAvaliationUseCase;
 import com.curvelo.mapper.AvaliationMapper;
 import com.curvelo.mapper.BookMapper;
 import com.curvelo.service.AvaliationService;
@@ -25,14 +26,14 @@ public class BookController {
 
   private final BookService bookService;
   private final AvaliationService avaliationService;
-  private final TotalizeAvaliation totalizeAvaliation;
+  private final TotalizeAvaliationUseCase totalizeAvaliationUseCase;
 
   public BookController(BookService bookService,
       AvaliationService avaliationService,
-      TotalizeAvaliation totalizeAvaliation) {
+      TotalizeAvaliationUseCase totalizeAvaliationUseCase) {
     this.bookService = bookService;
     this.avaliationService = avaliationService;
-    this.totalizeAvaliation = totalizeAvaliation;
+    this.totalizeAvaliationUseCase = totalizeAvaliationUseCase;
   }
 
   @GetMapping
@@ -64,7 +65,7 @@ public class BookController {
 
   @GetMapping("/{bookId}/avaliations/totalize")
   public TotalAvaliationDTO getAllAvaliationTotalize(@PathVariable Integer bookId) {
-    return totalizeAvaliation.totalizeAvaliationsByBook(bookId);
+    return TotalAvaliationAdapterRest.toDTO(totalizeAvaliationUseCase.totalizeAvaliationsByBook(bookId));
   }
 
 }
