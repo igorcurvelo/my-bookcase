@@ -3,14 +3,14 @@ package com.curvelo.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.curvelo.api.dto.AvaliationDTO;
+import com.curvelo.api.dto.ReviewDTO;
 import com.curvelo.api.dto.UserDTO;
-import com.curvelo.database.model.AvaliationModel;
+import com.curvelo.database.model.ReviewModel;
 import com.curvelo.database.model.BookModel;
 import com.curvelo.database.model.UserModel;
 import org.junit.jupiter.api.Test;
 
-class AvaliationModelMapperTest {
+class ReviewModelMapperTest {
 
   @Test
   void shouldMapperAvaliationEntityToAvaliationDto() {
@@ -27,7 +27,7 @@ class AvaliationModelMapperTest {
         .name("Igor")
         .build();
 
-    var avaliation = AvaliationModel.builder()
+    var avaliation = ReviewModel.builder()
         .id(21)
         .bookModel(book)
         .userModel(user)
@@ -35,7 +35,7 @@ class AvaliationModelMapperTest {
         .score(9)
         .build();
 
-    var result = AvaliationMapper.toDTO(avaliation);
+    var result = ReviewMapper.toDTO(avaliation);
 
     assertThat(result.getId()).isEqualTo(21);
     assertThat(result.getBook().getId()).isEqualTo(12);
@@ -46,7 +46,7 @@ class AvaliationModelMapperTest {
 
   @Test
   void shouldReturnIllegalArgumentExceptionWhenEntityIsNull() {
-    assertThatThrownBy(() -> AvaliationMapper.toDTO(null))
+    assertThatThrownBy(() -> ReviewMapper.toDTO(null))
         .isInstanceOf(IllegalArgumentException.class);
   }
 
@@ -57,14 +57,14 @@ class AvaliationModelMapperTest {
         .name("Igor")
         .build();
 
-    var avaliation = AvaliationDTO.builder()
+    var avaliation = ReviewDTO.builder()
         .id(21)
         .user(user)
         .comment("excelente livro")
         .score(9)
         .build();
 
-    var result = AvaliationMapper.toEntity(avaliation);
+    var result = ReviewMapper.toEntity(avaliation);
 
     assertThat(result.getId()).isEqualTo(21);
     assertThat(result.getUserModel().getId()).isEqualTo(99);
@@ -74,7 +74,7 @@ class AvaliationModelMapperTest {
 
   @Test
   void shouldReturnIllegalArgumentExceptionWhenDtoIsNull() {
-    assertThatThrownBy(() -> AvaliationMapper.toEntity(null))
+    assertThatThrownBy(() -> ReviewMapper.toEntity(null))
         .isInstanceOf(IllegalArgumentException.class);
   }
 }

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class UserAvaliationDomain {
+public class UserReviewDomain {
 
   private final String comment;
   private final UserDomain user;

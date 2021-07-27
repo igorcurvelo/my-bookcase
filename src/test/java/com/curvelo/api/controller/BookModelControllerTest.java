@@ -6,12 +6,12 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 
-import com.curvelo.api.dto.AvaliationDTO;
-import com.curvelo.database.model.AvaliationModel;
+import com.curvelo.api.dto.ReviewDTO;
+import com.curvelo.database.model.ReviewModel;
 import com.curvelo.database.model.BookModel;
 import com.curvelo.database.model.UserModel;
 import com.curvelo.mapper.UserMapper;
-import com.curvelo.database.repository.AvaliationRepository;
+import com.curvelo.database.repository.ReviewRepository;
 import com.curvelo.database.repository.BookRepository;
 import com.curvelo.database.repository.UserRepository;
 import com.github.javafaker.Faker;
@@ -37,7 +37,7 @@ class BookModelControllerTest {
   private UserRepository userRepository;
 
   @Autowired
-  private AvaliationRepository avaliationRepository;
+  private ReviewRepository reviewRepository;
 
   @LocalServerPort
   int serverPort;
@@ -47,7 +47,7 @@ class BookModelControllerTest {
     RestAssured.baseURI = "http://localhost";
     RestAssured.port = serverPort;
 
-    this.avaliationRepository.deleteAll();
+    this.reviewRepository.deleteAll();
     this.bookRepository.deleteAll();
   }
 
@@ -108,7 +108,7 @@ class BookModelControllerTest {
     var book1 = createBook();
     var user = createUser();
 
-    var avaliation = AvaliationDTO.builder()
+    var avaliation = ReviewDTO.builder()
         .comment("Um bom livro")
         .user(UserMapper.toDTO(user))
         .score(3)
@@ -133,14 +133,14 @@ class BookModelControllerTest {
     var book = createBook();
     var user = createUser();
 
-    var avaliation = AvaliationModel.builder()
+    var avaliation = ReviewModel.builder()
         .bookModel(book)
         .userModel(user)
         .comment("Um bom livro")
         .score(3)
         .build();
 
-    avaliationRepository.save(avaliation);
+    reviewRepository.save(avaliation);
 
     when()
         .get("/books/{id}/avaliations", book.getId())
@@ -160,22 +160,22 @@ class BookModelControllerTest {
     var user1 = createUser();
     var user2 = createUser();
 
-    var avaliation1 = AvaliationModel.builder()
+    var avaliation1 = ReviewModel.builder()
         .bookModel(book)
         .userModel(user1)
         .comment("Um bom livro")
         .score(3)
         .build();
 
-    var avaliation2 = AvaliationModel.builder()
+    var avaliation2 = ReviewModel.builder()
         .bookModel(book)
         .userModel(user2)
         .comment("Ótima leitura")
         .score(4)
         .build();
 
-    avaliationRepository.save(avaliation1);
-    avaliationRepository.save(avaliation2);
+    reviewRepository.save(avaliation1);
+    reviewRepository.save(avaliation2);
 
     when()
         .get("/books/{id}/avaliations/totalize", book.getId())

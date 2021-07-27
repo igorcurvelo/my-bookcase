@@ -15,13 +15,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "avaliation")
+@Table(name = "review")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AvaliationModel {
+public class ReviewModel {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

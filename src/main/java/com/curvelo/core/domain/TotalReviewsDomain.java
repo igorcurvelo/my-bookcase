@@ -6,10 +6,10 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class TotalAvaliationDomain {
+public class TotalReviewsDomain {
 
   private final Double score;
-  private final List<UserAvaliationDomain> comments;
+  private final List<UserReviewDomain> comments;
   private final BookDomain book;
 
 }

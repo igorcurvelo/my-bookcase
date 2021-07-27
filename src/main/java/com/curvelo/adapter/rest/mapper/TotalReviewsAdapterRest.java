@@ -1,23 +1,23 @@
 package com.curvelo.adapter.rest.mapper;
 
-import com.curvelo.api.dto.TotalAvaliationDTO;
-import com.curvelo.core.domain.TotalAvaliationDomain;
+import com.curvelo.api.dto.TotalReviewsDTO;
+import com.curvelo.core.domain.TotalReviewsDomain;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class TotalAvaliationAdapterRest {
+public class TotalReviewsAdapterRest {
 
-  private TotalAvaliationAdapterRest() {}
+  private TotalReviewsAdapterRest() {}
 
-  public static TotalAvaliationDTO toDTO(final TotalAvaliationDomain totalAvaliationDomain) {
-    return Optional.ofNullable(totalAvaliationDomain)
+  public static TotalReviewsDTO toDTO(final TotalReviewsDomain totalReviewsDomain) {
+    return Optional.ofNullable(totalReviewsDomain)
         .map(domain ->
-            TotalAvaliationDTO.builder()
+            TotalReviewsDTO.builder()
                 .score(domain.getScore())
                 .book(BookAdapterRest.toDTO(domain.getBook()))
                 .comments(domain.getComments()
                     .stream()
-                    .map(UserAvaliationAdapterRest::toDTO)
+                    .map(UserReviewAdapterRest::toDTO)
                     .collect(Collectors.toList()))
                 .build()
         ).orElseThrow(IllegalArgumentException::new);

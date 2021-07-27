@@ -1,16 +1,16 @@
-package com.curvelo.core.domain;
+package com.curvelo.api.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Builder
 @Getter
-public class AvaliationDomain {
+public class ReviewDTO {
 
   private final Integer id;
   private final Integer score;
   private final String comment;
-  private final BookDomain book;
-  private final UserDomain user;
+  private final BookDTO book;
+  private final UserDTO user;
 
 }

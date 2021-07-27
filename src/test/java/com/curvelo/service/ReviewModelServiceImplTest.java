@@ -6,10 +6,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.curvelo.database.model.AvaliationModel;
+import com.curvelo.database.model.ReviewModel;
 import com.curvelo.database.model.BookModel;
 import com.curvelo.database.model.UserModel;
-import com.curvelo.database.repository.AvaliationRepository;
+import com.curvelo.database.repository.ReviewRepository;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,16 +18,16 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class AvaliationModelServiceImplTest {
+class ReviewModelServiceImplTest {
 
   @Mock
-  private AvaliationRepository avaliationRepository;
+  private ReviewRepository reviewRepository;
 
   @Mock
   private BookService bookService;
 
   @InjectMocks
-  private AvaliationServiceImpl avaliationService;
+  private ReviewServiceImpl avaliationService;
 
   @Test
   void shouldCreateAAvaliationWithSuccess() {
@@ -41,8 +41,8 @@ class AvaliationModelServiceImplTest {
         .build();
 
     when(bookService.findOne(1)).thenReturn(book);
-    when(avaliationRepository.save(any(AvaliationModel.class)))
-        .thenReturn(AvaliationModel.builder()
+    when(reviewRepository.save(any(ReviewModel.class)))
+        .thenReturn(ReviewModel.builder()
           .id(2)
           .bookModel(book)
           .comment("Um bom livro")
@@ -50,7 +50,7 @@ class AvaliationModelServiceImplTest {
           .build());
 
     var result = avaliationService.create(1,
-        AvaliationModel.builder()
+        ReviewModel.builder()
           .comment("Um bom livro")
           .score(3)
           .build());
@@ -65,7 +65,7 @@ class AvaliationModelServiceImplTest {
     assertThat(result.getBookModel().getIsbn()).isEqualTo("123456789");
 
     verify(bookService, times(1)).findOne(1);
-    verify(avaliationRepository, times(1)).save(any(AvaliationModel.class));
+    verify(reviewRepository, times(1)).save(any(ReviewModel.class));
   }
 
   @Test
@@ -84,7 +84,7 @@ class AvaliationModelServiceImplTest {
         .name("Igor")
         .build();
 
-    var avaliation1 = AvaliationModel.builder()
+    var avaliation1 = ReviewModel.builder()
         .id(3)
         .comment("excelente leitura")
         .score(4)
@@ -97,7 +97,7 @@ class AvaliationModelServiceImplTest {
         .name("Igor C")
         .build();
 
-    var avaliation2 = AvaliationModel.builder()
+    var avaliation2 = ReviewModel.builder()
         .id(4)
         .comment("boa leitura")
         .score(3)
@@ -105,7 +105,7 @@ class AvaliationModelServiceImplTest {
         .userModel(user2)
         .build();
 
-    when(avaliationRepository.findByBookId(2))
+    when(reviewRepository.findByBookId(2))
         .thenReturn(Lists.list(avaliation1, avaliation2));
 
     var result = avaliationService.findByBook(2);
@@ -131,6 +131,6 @@ class AvaliationModelServiceImplTest {
     assertThat(result.get(1).getBookModel().getNumberOfPages()).isEqualTo(250);
     assertThat(result.get(1).getBookModel().getIsbn()).isEqualTo("123456789");
 
-    verify(avaliationRepository, times(1)).findByBookId(2);
+    verify(reviewRepository, times(1)).findByBookId(2);
   }
 }

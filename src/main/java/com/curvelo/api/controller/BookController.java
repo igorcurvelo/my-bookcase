@@ -1,13 +1,13 @@
 package com.curvelo.api.controller;
 
-import com.curvelo.adapter.rest.mapper.TotalAvaliationAdapterRest;
-import com.curvelo.api.dto.AvaliationDTO;
+import com.curvelo.adapter.rest.mapper.TotalReviewsAdapterRest;
+import com.curvelo.api.dto.ReviewDTO;
 import com.curvelo.api.dto.BookDTO;
-import com.curvelo.api.dto.TotalAvaliationDTO;
-import com.curvelo.core.usecase.TotalizeAvaliationUseCase;
-import com.curvelo.mapper.AvaliationMapper;
+import com.curvelo.api.dto.TotalReviewsDTO;
+import com.curvelo.core.usecase.CalculateReviewsUseCase;
+import com.curvelo.mapper.ReviewMapper;
 import com.curvelo.mapper.BookMapper;
-import com.curvelo.service.AvaliationService;
+import com.curvelo.service.ReviewService;
 import com.curvelo.service.BookService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,15 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
 
   private final BookService bookService;
-  private final AvaliationService avaliationService;
-  private final TotalizeAvaliationUseCase totalizeAvaliationUseCase;
+  private final ReviewService reviewService;
+  private final CalculateReviewsUseCase calculateReviewsUseCase;
 
   public BookController(BookService bookService,
-      AvaliationService avaliationService,
-      TotalizeAvaliationUseCase totalizeAvaliationUseCase) {
+      ReviewService reviewService,
+      CalculateReviewsUseCase calculateReviewsUseCase) {
     this.bookService = bookService;
-    this.avaliationService = avaliationService;
-    this.totalizeAvaliationUseCase = totalizeAvaliationUseCase;
+    this.reviewService = reviewService;
+    this.calculateReviewsUseCase = calculateReviewsUseCase;
   }
 
   @GetMapping
@@ -52,20 +52,20 @@ public class BookController {
 
   @PostMapping("/{bookId}/avaliations")
   @ResponseStatus(HttpStatus.CREATED)
-  public AvaliationDTO postAvaliation(@PathVariable Integer bookId, @RequestBody AvaliationDTO body) {
-    var result = avaliationService.create(bookId, AvaliationMapper.toEntity(body));
-    return AvaliationMapper.toDTO(result);
+  public ReviewDTO postAvaliation(@PathVariable Integer bookId, @RequestBody ReviewDTO body) {
+    var result = reviewService.create(bookId, ReviewMapper.toEntity(body));
+    return ReviewMapper.toDTO(result);
   }
 
   @GetMapping("/{bookId}/avaliations")
-  public List<AvaliationDTO> getAllAvaliation(@PathVariable Integer bookId) {
-    var result = avaliationService.findByBook(bookId);
-    return result.stream().map(AvaliationMapper::toDTO).collect(Collectors.toList());
+  public List<ReviewDTO> getAllAvaliation(@PathVariable Integer bookId) {
+    var result = reviewService.findByBook(bookId);
+    return result.stream().map(ReviewMapper::toDTO).collect(Collectors.toList());
   }
 
   @GetMapping("/{bookId}/avaliations/totalize")
-  public TotalAvaliationDTO getAllAvaliationTotalize(@PathVariable Integer bookId) {
-    return TotalAvaliationAdapterRest.toDTO(totalizeAvaliationUseCase.totalizeAvaliationsByBook(bookId));
+  public TotalReviewsDTO getAllAvaliationTotalize(@PathVariable Integer bookId) {
+    return TotalReviewsAdapterRest.toDTO(calculateReviewsUseCase.calculateReviewsByBook(bookId));
   }
 
 }
