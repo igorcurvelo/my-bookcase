@@ -104,11 +104,11 @@ class BookModelControllerTest {
   }
 
   @Test
-  void shouldCreateAnAvaliationWithSuccess() {
+  void shouldCreateAReviewWithSuccess() {
     var book1 = createBook();
     var user = createUser();
 
-    var avaliation = ReviewDTO.builder()
+    var review = ReviewDTO.builder()
         .comment("Um bom livro")
         .user(UserMapper.toDTO(user))
         .score(3)
@@ -116,9 +116,9 @@ class BookModelControllerTest {
 
     given()
         .contentType(ContentType.JSON)
-        .body(avaliation)
+        .body(review)
       .when()
-        .post("/books/{id}/avaliations", book1.getId())
+        .post("/books/{id}/reviews", book1.getId())
       .then()
         .statusCode(HttpStatus.CREATED.value())
         .body("id", notNullValue())
@@ -129,21 +129,21 @@ class BookModelControllerTest {
   }
 
   @Test
-  void shouldReturnAnAvaliationByBookWithSuccess() {
+  void shouldReturnAReviewByBookWithSuccess() {
     var book = createBook();
     var user = createUser();
 
-    var avaliation = ReviewModel.builder()
-        .bookModel(book)
-        .userModel(user)
+    var review = ReviewModel.builder()
+        .book(book)
+        .user(user)
         .comment("Um bom livro")
         .score(3)
         .build();
 
-    reviewRepository.save(avaliation);
+    reviewRepository.save(review);
 
     when()
-        .get("/books/{id}/avaliations", book.getId())
+        .get("/books/{id}/reviews", book.getId())
       .then()
         .contentType(ContentType.JSON)
         .statusCode(HttpStatus.OK.value())
@@ -155,30 +155,30 @@ class BookModelControllerTest {
   }
 
   @Test
-  void shouldReturnTotalizeAvaliationByBookWithSuccess() {
+  void shouldReturnCalculateReviewByBookWithSuccess() {
     var book = createBook();
     var user1 = createUser();
     var user2 = createUser();
 
-    var avaliation1 = ReviewModel.builder()
-        .bookModel(book)
-        .userModel(user1)
+    var review1 = ReviewModel.builder()
+        .book(book)
+        .user(user1)
         .comment("Um bom livro")
         .score(3)
         .build();
 
-    var avaliation2 = ReviewModel.builder()
-        .bookModel(book)
-        .userModel(user2)
+    var review2 = ReviewModel.builder()
+        .book(book)
+        .user(user2)
         .comment("Ótima leitura")
         .score(4)
         .build();
 
-    reviewRepository.save(avaliation1);
-    reviewRepository.save(avaliation2);
+    reviewRepository.save(review1);
+    reviewRepository.save(review2);
 
     when()
-        .get("/books/{id}/avaliations/totalize", book.getId())
+        .get("/books/{id}/reviews/calculate", book.getId())
         .then()
         .contentType(ContentType.JSON)
         .statusCode(HttpStatus.OK.value())
@@ -187,9 +187,9 @@ class BookModelControllerTest {
         .body("score", equalTo(3.5F))
         .body("comments", hasSize(2))
         .body("comments[0].user.id", equalTo(user1.getId()))
-        .body("comments[0].comment", equalTo(avaliation1.getComment()))
+        .body("comments[0].comment", equalTo(review1.getComment()))
         .body("comments[1].user.id", equalTo(user2.getId()))
-        .body("comments[1].comment", equalTo(avaliation2.getComment()));
+        .body("comments[1].comment", equalTo(review2.getComment()));
   }
 
   private UserModel createUser() {

@@ -13,7 +13,7 @@ public class ReviewMapper {
         .map(dto ->
             ReviewModel.builder()
                 .id(dto.getId())
-                .userModel(UserMapper.toEntity(dto.getUser()))
+                .user(UserMapper.toEntity(dto.getUser()))
                 .score(dto.getScore())
                 .comment(dto.getComment()).build()
         ).orElseThrow(IllegalArgumentException::new);
@@ -24,8 +24,8 @@ public class ReviewMapper {
         .map(entity ->
             ReviewDTO.builder()
                 .id(entity.getId())
-                .book(BookMapper.toDTO(reviewModel.getBookModel()))
-                .user(UserMapper.toDTO(reviewModel.getUserModel()))
+                .book(BookMapper.toDTO(reviewModel.getBook()))
+                .user(UserMapper.toDTO(reviewModel.getUser()))
                 .score(entity.getScore())
                 .comment(entity.getComment()).build()
         ).orElseThrow(IllegalArgumentException::new);

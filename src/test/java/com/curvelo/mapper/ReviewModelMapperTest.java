@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 class ReviewModelMapperTest {
 
   @Test
-  void shouldMapperAvaliationEntityToAvaliationDto() {
+  void shouldMapperReviewEntityToReviewDto() {
     var book = BookModel.builder()
         .id(12)
         .isbn("123456789")
@@ -27,15 +27,15 @@ class ReviewModelMapperTest {
         .name("Igor")
         .build();
 
-    var avaliation = ReviewModel.builder()
+    var review = ReviewModel.builder()
         .id(21)
-        .bookModel(book)
-        .userModel(user)
+        .book(book)
+        .user(user)
         .comment("excelente livro")
         .score(9)
         .build();
 
-    var result = ReviewMapper.toDTO(avaliation);
+    var result = ReviewMapper.toDTO(review);
 
     assertThat(result.getId()).isEqualTo(21);
     assertThat(result.getBook().getId()).isEqualTo(12);
@@ -51,23 +51,23 @@ class ReviewModelMapperTest {
   }
 
   @Test
-  void shouldMapperAvaliationDtoToAvaliationEntity() {
+  void shouldMapperReviewDtoToReviewEntity() {
     var user = UserDTO.builder()
         .id(99)
         .name("Igor")
         .build();
 
-    var avaliation = ReviewDTO.builder()
+    var review = ReviewDTO.builder()
         .id(21)
         .user(user)
         .comment("excelente livro")
         .score(9)
         .build();
 
-    var result = ReviewMapper.toEntity(avaliation);
+    var result = ReviewMapper.toEntity(review);
 
     assertThat(result.getId()).isEqualTo(21);
-    assertThat(result.getUserModel().getId()).isEqualTo(99);
+    assertThat(result.getUser().getId()).isEqualTo(99);
     assertThat(result.getComment()).isEqualTo("excelente livro");
     assertThat(result.getScore()).isEqualTo(9);
   }

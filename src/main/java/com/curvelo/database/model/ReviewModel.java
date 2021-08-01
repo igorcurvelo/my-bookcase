@@ -29,11 +29,11 @@ public class ReviewModel {
 
   @ManyToOne
   @JoinColumn(nullable = false)
-  private BookModel bookModel;
+  private BookModel book;
 
   @ManyToOne
   @JoinColumn(nullable = false)
-  private UserModel userModel;
+  private UserModel user;
 
   @Column(nullable = false)
   private Integer score;

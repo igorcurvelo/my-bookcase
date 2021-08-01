@@ -6,7 +6,9 @@ import com.curvelo.core.repository.ReviewDomainRepository;
 import com.curvelo.database.repository.ReviewRepository;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ReviewMysqlRepository implements ReviewDomainRepository {
 
   private final ReviewRepository reviewRepository;

@@ -8,15 +8,6 @@ public class UserAdapterMysql {
 
   private UserAdapterMysql() {}
 
-  public static UserModel toEntity(final UserDomain userDomain) {
-    return Optional.ofNullable(userDomain)
-        .map(dto ->
-            UserModel.builder()
-                .id(dto.getId())
-                .name(dto.getName()).build()
-        ).orElseThrow(IllegalArgumentException::new);
-  }
-
   public static UserDomain toDomain(final UserModel userModel) {
     return Optional.ofNullable(userModel)
         .map(entity ->

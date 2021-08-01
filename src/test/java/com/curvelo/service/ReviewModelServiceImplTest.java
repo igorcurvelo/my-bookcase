@@ -27,10 +27,10 @@ class ReviewModelServiceImplTest {
   private BookService bookService;
 
   @InjectMocks
-  private ReviewServiceImpl avaliationService;
+  private ReviewServiceImpl reviewService;
 
   @Test
-  void shouldCreateAAvaliationWithSuccess() {
+  void shouldCreateAReviewWithSuccess() {
 
     var book = BookModel.builder()
         .id(1)
@@ -44,12 +44,12 @@ class ReviewModelServiceImplTest {
     when(reviewRepository.save(any(ReviewModel.class)))
         .thenReturn(ReviewModel.builder()
           .id(2)
-          .bookModel(book)
+          .book(book)
           .comment("Um bom livro")
           .score(3)
           .build());
 
-    var result = avaliationService.create(1,
+    var result = reviewService.create(1,
         ReviewModel.builder()
           .comment("Um bom livro")
           .score(3)
@@ -58,18 +58,18 @@ class ReviewModelServiceImplTest {
     assertThat(result.getId()).isNotNull();
     assertThat(result.getComment()).isEqualTo("Um bom livro");
     assertThat(result.getScore()).isEqualTo(3);
-    assertThat(result.getBookModel().getId()).isEqualTo(1);
-    assertThat(result.getBookModel().getAuthor()).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.getBookModel().getTitle()).isEqualTo("Hobbit");
-    assertThat(result.getBookModel().getNumberOfPages()).isEqualTo(250);
-    assertThat(result.getBookModel().getIsbn()).isEqualTo("123456789");
+    assertThat(result.getBook().getId()).isEqualTo(1);
+    assertThat(result.getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.getBook().getTitle()).isEqualTo("Hobbit");
+    assertThat(result.getBook().getNumberOfPages()).isEqualTo(250);
+    assertThat(result.getBook().getIsbn()).isEqualTo("123456789");
 
     verify(bookService, times(1)).findOne(1);
     verify(reviewRepository, times(1)).save(any(ReviewModel.class));
   }
 
   @Test
-  void shouldReturnManyAvaliationWithSuccess() {
+  void shouldReturnManyReviewsWithSuccess() {
 
     var book = BookModel.builder()
         .id(2)
@@ -84,12 +84,12 @@ class ReviewModelServiceImplTest {
         .name("Igor")
         .build();
 
-    var avaliation1 = ReviewModel.builder()
+    var review1 = ReviewModel.builder()
         .id(3)
         .comment("excelente leitura")
         .score(4)
-        .bookModel(book)
-        .userModel(user1)
+        .book(book)
+        .user(user1)
         .build();
 
     var user2 = UserModel.builder()
@@ -97,39 +97,39 @@ class ReviewModelServiceImplTest {
         .name("Igor C")
         .build();
 
-    var avaliation2 = ReviewModel.builder()
+    var review2 = ReviewModel.builder()
         .id(4)
         .comment("boa leitura")
         .score(3)
-        .bookModel(book)
-        .userModel(user2)
+        .book(book)
+        .user(user2)
         .build();
 
     when(reviewRepository.findByBookId(2))
-        .thenReturn(Lists.list(avaliation1, avaliation2));
+        .thenReturn(Lists.list(review1, review2));
 
-    var result = avaliationService.findByBook(2);
+    var result = reviewService.findByBook(2);
 
     assertThat(result).hasSize(2);
     assertThat(result.get(0).getId()).isEqualTo(3);
     assertThat(result.get(0).getComment()).isEqualTo("excelente leitura");
     assertThat(result.get(0).getScore()).isEqualTo(4);
-    assertThat(result.get(0).getUserModel().getId()).isEqualTo(99);
-    assertThat(result.get(0).getBookModel().getId()).isEqualTo(2);
-    assertThat(result.get(0).getBookModel().getAuthor()).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.get(0).getBookModel().getTitle()).isEqualTo("Hobbit");
-    assertThat(result.get(0).getBookModel().getNumberOfPages()).isEqualTo(250);
-    assertThat(result.get(0).getBookModel().getIsbn()).isEqualTo("123456789");
+    assertThat(result.get(0).getUser().getId()).isEqualTo(99);
+    assertThat(result.get(0).getBook().getId()).isEqualTo(2);
+    assertThat(result.get(0).getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.get(0).getBook().getTitle()).isEqualTo("Hobbit");
+    assertThat(result.get(0).getBook().getNumberOfPages()).isEqualTo(250);
+    assertThat(result.get(0).getBook().getIsbn()).isEqualTo("123456789");
 
     assertThat(result.get(1).getId()).isEqualTo(4);
     assertThat(result.get(1).getComment()).isEqualTo("boa leitura");
     assertThat(result.get(1).getScore()).isEqualTo(3);
-    assertThat(result.get(1).getUserModel().getId()).isEqualTo(98);
-    assertThat(result.get(1).getBookModel().getId()).isEqualTo(2);
-    assertThat(result.get(1).getBookModel().getAuthor()).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.get(1).getBookModel().getTitle()).isEqualTo("Hobbit");
-    assertThat(result.get(1).getBookModel().getNumberOfPages()).isEqualTo(250);
-    assertThat(result.get(1).getBookModel().getIsbn()).isEqualTo("123456789");
+    assertThat(result.get(1).getUser().getId()).isEqualTo(98);
+    assertThat(result.get(1).getBook().getId()).isEqualTo(2);
+    assertThat(result.get(1).getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.get(1).getBook().getTitle()).isEqualTo("Hobbit");
+    assertThat(result.get(1).getBook().getNumberOfPages()).isEqualTo(250);
+    assertThat(result.get(1).getBook().getIsbn()).isEqualTo("123456789");
 
     verify(reviewRepository, times(1)).findByBookId(2);
   }

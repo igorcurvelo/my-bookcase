@@ -8,24 +8,13 @@ public class ReviewAdapterMysql {
 
   private ReviewAdapterMysql() {}
 
-  public static ReviewModel toEntity(final ReviewDomain reviewDomain) {
-    return Optional.ofNullable(reviewDomain)
-        .map(dto ->
-            ReviewModel.builder()
-                .id(dto.getId())
-                .userModel(UserAdapterMysql.toEntity(dto.getUser()))
-                .score(dto.getScore())
-                .comment(dto.getComment()).build()
-        ).orElseThrow(IllegalArgumentException::new);
-  }
-
   public static ReviewDomain toDomain(final ReviewModel reviewModel) {
     return Optional.ofNullable(reviewModel)
         .map(entity ->
             ReviewDomain.builder()
                 .id(entity.getId())
-                .book(BookAdapterMysql.toDomain(reviewModel.getBookModel()))
-                .user(UserAdapterMysql.toDomain(reviewModel.getUserModel()))
+                .book(BookAdapterMysql.toDomain(reviewModel.getBook()))
+                .user(UserAdapterMysql.toDomain(reviewModel.getUser()))
                 .score(entity.getScore())
                 .comment(entity.getComment()).build()
         ).orElseThrow(IllegalArgumentException::new);

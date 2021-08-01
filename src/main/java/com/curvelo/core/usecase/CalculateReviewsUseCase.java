@@ -8,6 +8,7 @@ import com.curvelo.core.repository.ReviewDomainRepository;
 import com.curvelo.core.repository.BookDomainRepository;
 import java.util.Collections;
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,7 +24,7 @@ public class CalculateReviewsUseCase {
     this.bookDomainRepository = bookDomainRepository;
   }
 
-  public TotalReviewsDomain calculateReviewsByBook(final int bookId) {
+  public TotalReviewsDomain calculateReviewsByBook(final int bookId) throws EntityNotFoundException {
     var book = bookDomainRepository.findById(bookId);
 
     var reviews = reviewDomainRepository.findByBookId(

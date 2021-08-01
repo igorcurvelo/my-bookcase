@@ -50,21 +50,21 @@ public class BookController {
     return BookMapper.toDTO(result);
   }
 
-  @PostMapping("/{bookId}/avaliations")
+  @PostMapping("/{bookId}/reviews")
   @ResponseStatus(HttpStatus.CREATED)
-  public ReviewDTO postAvaliation(@PathVariable Integer bookId, @RequestBody ReviewDTO body) {
+  public ReviewDTO postReview(@PathVariable Integer bookId, @RequestBody ReviewDTO body) {
     var result = reviewService.create(bookId, ReviewMapper.toEntity(body));
     return ReviewMapper.toDTO(result);
   }
 
-  @GetMapping("/{bookId}/avaliations")
-  public List<ReviewDTO> getAllAvaliation(@PathVariable Integer bookId) {
+  @GetMapping("/{bookId}/reviews")
+  public List<ReviewDTO> getAllReview(@PathVariable Integer bookId) {
     var result = reviewService.findByBook(bookId);
     return result.stream().map(ReviewMapper::toDTO).collect(Collectors.toList());
   }
 
-  @GetMapping("/{bookId}/avaliations/totalize")
-  public TotalReviewsDTO getAllAvaliationTotalize(@PathVariable Integer bookId) {
+  @GetMapping("/{bookId}/reviews/calculate")
+  public TotalReviewsDTO getAllCalculateReview(@PathVariable Integer bookId) {
     return TotalReviewsAdapterRest.toDTO(calculateReviewsUseCase.calculateReviewsByBook(bookId));
   }
 

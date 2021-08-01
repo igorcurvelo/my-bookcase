@@ -8,18 +8,6 @@ public class BookAdapterMysql {
 
   private BookAdapterMysql() {}
 
-  public static BookModel toEntity(final BookDomain bookDomain) {
-    return Optional.ofNullable(bookDomain)
-        .map(dto ->
-            BookModel.builder()
-                .id(dto.getId())
-                .author(dto.getAuthor())
-                .title(dto.getTitle())
-                .isbn(dto.getIsbn())
-                .numberOfPages(bookDomain.getNumberOfPages()).build()
-        ).orElseThrow(IllegalArgumentException::new);
-  }
-
   public static BookDomain toDomain(final BookModel bookModel) {
     return Optional.ofNullable(bookModel)
         .map(entity ->

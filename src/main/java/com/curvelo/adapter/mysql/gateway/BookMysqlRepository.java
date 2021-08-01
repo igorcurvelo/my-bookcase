@@ -5,7 +5,9 @@ import com.curvelo.core.domain.BookDomain;
 import com.curvelo.core.repository.BookDomainRepository;
 import com.curvelo.database.repository.BookRepository;
 import javax.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BookMysqlRepository implements BookDomainRepository {
 
   private final BookRepository bookRepository;

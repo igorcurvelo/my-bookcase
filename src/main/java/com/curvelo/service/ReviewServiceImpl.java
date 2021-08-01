@@ -28,7 +28,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     var book = bookService.findOne(bookId);
 
-    reviewModel.setBookModel(book);
+    reviewModel.setBook(book);
 
     return reviewRepository.save(reviewModel);
   }

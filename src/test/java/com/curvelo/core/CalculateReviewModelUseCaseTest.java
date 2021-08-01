@@ -1,15 +1,16 @@
 package com.curvelo.core;
 
-import static com.curvelo.ComposeDomain.createReview;
 import static com.curvelo.ComposeDomain.createBook;
+import static com.curvelo.ComposeDomain.createReview;
 import static com.curvelo.ComposeDomain.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-import com.curvelo.core.repository.ReviewDomainRepository;
 import com.curvelo.core.repository.BookDomainRepository;
+import com.curvelo.core.repository.ReviewDomainRepository;
 import com.curvelo.core.usecase.CalculateReviewsUseCase;
+import java.util.Collections;
 import javax.persistence.EntityNotFoundException;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
@@ -66,29 +67,29 @@ class CalculateReviewModelUseCaseTest {
   @Test
   public void shouldReturnDefaultTotalReviewsByBookWhenBookDoesNotExist() {
     when(bookDomainRepository.findById(123))
-        .thenThrow(EntityNotFoundException.class);
+        .thenThrow(new EntityNotFoundException("Book not found"));
 
     assertThatThrownBy(() -> calculateReviewsUseCase.calculateReviewsByBook(123))
         .isInstanceOf(EntityNotFoundException.class)
         .hasMessageContaining("Book not found");
   }
 
-//  @Test
-//  public void shouldReturnDefaultTotalizeAvaliationByBookWhenAvaliationDoesntExist() {
-//    var book = createBook(11).build();
-//
-//    when(bookRepository.findById(book.getId()))
-//        .thenReturn(Optional.of(book));
-//
-//    when(avaliationRepository.findByBookId(book.getId()))
-//        .thenReturn(Collections.emptyList());
-//
-//    var result = totalizeAvaliationUseCase.totalizeAvaliationsByBook(book.getId());
-//
-//    assertThat(result.getScore()).isEqualTo(0.0);
-//    assertThat(result.getBook().getId()).isEqualTo(book.getId());
-//    assertThat(result.getBook().getTitle()).isEqualTo(book.getTitle());
-//    assertThat(result.getComments()).hasSize(0);
-//  }
+  @Test
+  public void shouldReturnDefaultTotalReviewsByBookWhenReviewsDoesNotExist() {
+    var book = createBook(11).build();
+
+    when(bookDomainRepository.findById(book.getId()))
+        .thenReturn(book);
+
+    when(reviewDomainRepository.findByBookId(book.getId()))
+        .thenReturn(Collections.emptyList());
+
+    var result = calculateReviewsUseCase.calculateReviewsByBook(book.getId());
+
+    assertThat(result.getScore()).isEqualTo(0.0);
+    assertThat(result.getBook().getId()).isEqualTo(book.getId());
+    assertThat(result.getBook().getTitle()).isEqualTo(book.getTitle());
+    assertThat(result.getComments()).hasSize(0);
+  }
 
 }
