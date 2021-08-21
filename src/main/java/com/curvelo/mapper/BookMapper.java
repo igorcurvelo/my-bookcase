@@ -1,17 +1,17 @@
 package com.curvelo.mapper;
 
 import com.curvelo.api.dto.BookDTO;
-import com.curvelo.domain.model.Book;
+import com.curvelo.database.model.BookModel;
 import java.util.Optional;
 
 public class BookMapper {
 
   private BookMapper() {}
 
-  public static Book toEntity(final BookDTO bookDTO) {
+  public static BookModel toEntity(final BookDTO bookDTO) {
     return Optional.ofNullable(bookDTO)
         .map(dto ->
-            Book.builder()
+            BookModel.builder()
                 .id(dto.getId())
                 .author(dto.getAuthor())
                 .title(dto.getTitle())
@@ -20,8 +20,8 @@ public class BookMapper {
         ).orElseThrow(IllegalArgumentException::new);
   }
 
-  public static BookDTO toDTO(final Book book) {
-    return Optional.ofNullable(book)
+  public static BookDTO toDTO(final BookModel bookModel) {
+    return Optional.ofNullable(bookModel)
         .map(entity ->
             BookDTO.builder()
                 .id(entity.getId())

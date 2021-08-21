@@ -1,10 +1,12 @@
+
 # Projeto para estudos usando como case uma estante virtual - my-bookcase
 
-##Tecnologias e versões:
+## Tecnologias e versões:
 
 - Java 11
 - Maven 3.8.1
-- Spring Boot 2.4.4
+- Spring Boot 2.5.2
+- Swagger 2
 - JaCoCo 0.8.3
 - Mysql 5.7
 - [Testcontainers](https://testcontainers.org) Mysql 1.15.3
@@ -28,6 +30,12 @@ Para executar a aplicação pela sua IDE:
 ## Rodando a aplicação via Terminal
 Para executar o comando no terminal:
 
-`java -jar targert/my-bookcase-{current_version}.jar`
+`java -jar target/my-bookcase-{current_version}.jar`
 
 Confira o log e com tudo correto a aplicação estará disponível na porta `8080`
+
+## Testando os endpoints pelo swagger
+
+Acesse pelo brower a url `http://localhost:8080/swagger-ui/`
+
+
