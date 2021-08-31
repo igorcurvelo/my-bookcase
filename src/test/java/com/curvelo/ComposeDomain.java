@@ -27,12 +27,11 @@ public class ComposeDomain {
   }
 
   public static ReviewDomainBuilder createReview(final int reviewId,
-      final UserDomain userDomain, final BookDomain bookDomain) {
+      final UserDomain userDomain) {
     return ReviewDomain.builder()
         .id(reviewId)
         .comment("excelente leitura")
         .score(4)
-        .book(bookDomain)
         .user(userDomain);
   }
 

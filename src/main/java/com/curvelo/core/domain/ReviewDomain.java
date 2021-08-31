@@ -10,7 +10,6 @@ public class ReviewDomain {
   private final Integer id;
   private final Integer score;
   private final String comment;
-  private final BookDomain book;
   private final UserDomain user;
 
 }

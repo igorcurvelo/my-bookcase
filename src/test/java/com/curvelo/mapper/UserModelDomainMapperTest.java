@@ -1,7 +1,6 @@
 package com.curvelo.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.curvelo.api.dto.UserDTO;
 import com.curvelo.database.model.UserModel;
@@ -20,12 +19,6 @@ class UserModelDomainMapperTest {
 
     assertThat(result.getId()).isEqualTo(99);
     assertThat(result.getName()).isEqualTo("Igor");
-  }
-
-  @Test
-  void shouldReturnIllegalArgumentExceptionWhenEntityIsNull() {
-    assertThatThrownBy(() -> UserMapper.toDTO(null))
-        .isInstanceOf(IllegalArgumentException.class);
   }
 
   @Test

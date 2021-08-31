@@ -1,12 +1,11 @@
 package com.curvelo.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.curvelo.api.dto.ReviewDTO;
 import com.curvelo.api.dto.UserDTO;
-import com.curvelo.database.model.ReviewModel;
 import com.curvelo.database.model.BookModel;
+import com.curvelo.database.model.ReviewModel;
 import com.curvelo.database.model.UserModel;
 import org.junit.jupiter.api.Test;
 
@@ -45,12 +44,6 @@ class ReviewModelMapperTest {
   }
 
   @Test
-  void shouldReturnIllegalArgumentExceptionWhenEntityIsNull() {
-    assertThatThrownBy(() -> ReviewMapper.toDTO(null))
-        .isInstanceOf(IllegalArgumentException.class);
-  }
-
-  @Test
   void shouldMapperReviewDtoToReviewEntity() {
     var user = UserDTO.builder()
         .id(99)
@@ -70,11 +63,5 @@ class ReviewModelMapperTest {
     assertThat(result.getUser().getId()).isEqualTo(99);
     assertThat(result.getComment()).isEqualTo("excelente livro");
     assertThat(result.getScore()).isEqualTo(9);
-  }
-
-  @Test
-  void shouldReturnIllegalArgumentExceptionWhenDtoIsNull() {
-    assertThatThrownBy(() -> ReviewMapper.toEntity(null))
-        .isInstanceOf(IllegalArgumentException.class);
   }
 }

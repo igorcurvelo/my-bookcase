@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.curvelo.database.repository.BookRepository;
+import com.curvelo.database.repository.ReviewRepository;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,9 @@ class BookMysqlRepositoryTest {
 
   @Mock
   private BookRepository bookRepository;
+
+  @Mock
+  private ReviewRepository reviewRepository;
 
   @InjectMocks
   private BookMysqlRepository bookMysqlRepository;

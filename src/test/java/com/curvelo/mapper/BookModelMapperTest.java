@@ -1,7 +1,6 @@
 package com.curvelo.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.curvelo.api.dto.BookDTO;
 import com.curvelo.database.model.BookModel;
@@ -29,12 +28,6 @@ class BookModelMapperTest {
   }
 
   @Test
-  void shouldReturnIllegalArgumentExceptionWhenEntityIsNull() {
-    assertThatThrownBy(() -> BookMapper.toDTO(null))
-        .isInstanceOf(IllegalArgumentException.class);
-  }
-
-  @Test
   void shouldMapperBookDtoToBookEntity() {
     var dto = BookDTO.builder()
         .id(12)
@@ -51,12 +44,6 @@ class BookModelMapperTest {
     assertThat(result.getNumberOfPages()).isEqualTo(250);
     assertThat(result.getAuthor()).isEqualTo("J.R.R. Tolkien");
     assertThat(result.getTitle()).isEqualTo("Hobbit");
-  }
-
-  @Test
-  void shouldReturnIllegalArgumentExceptionWhenDtoIsNull() {
-    assertThatThrownBy(() -> BookMapper.toEntity(null))
-        .isInstanceOf(IllegalArgumentException.class);
   }
 
 }

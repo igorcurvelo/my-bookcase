@@ -2,22 +2,27 @@ package com.curvelo.adapter.mysql.mapper;
 
 import com.curvelo.core.domain.BookDomain;
 import com.curvelo.database.model.BookModel;
-import java.util.Optional;
+import com.curvelo.database.model.ReviewModel;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookAdapterMysql {
 
   private BookAdapterMysql() {}
 
-  public static BookDomain toDomain(final BookModel bookModel) {
-    return Optional.ofNullable(bookModel)
-        .map(entity ->
-            BookDomain.builder()
-                .id(entity.getId())
-                .author(entity.getAuthor())
-                .title(entity.getTitle())
-                .isbn(entity.getIsbn())
-                .numberOfPages(entity.getNumberOfPages()).build()
-        ).orElseThrow(IllegalArgumentException::new);
+  public static BookDomain toDomain(final BookModel bookModel,
+      final List<ReviewModel> reviews) {
+    return BookDomain.builder()
+                .id(bookModel.getId())
+                .author(bookModel.getAuthor())
+                .title(bookModel.getTitle())
+                .isbn(bookModel.getIsbn())
+                .numberOfPages(bookModel.getNumberOfPages())
+                .reviews(reviews
+                    .stream()
+                    .map(ReviewAdapterMysql::toDomain)
+                    .collect(Collectors.toList()))
+                .build();
   }
 
 }

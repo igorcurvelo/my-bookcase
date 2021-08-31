@@ -8,11 +8,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import com.curvelo.core.repository.BookDomainRepository;
-import com.curvelo.core.repository.ReviewDomainRepository;
 import com.curvelo.core.usecase.CalculateReviewsUseCase;
+import java.util.Arrays;
 import java.util.Collections;
 import javax.persistence.EntityNotFoundException;
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,9 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class CalculateReviewModelUseCaseTest {
 
   @Mock
-  private ReviewDomainRepository reviewDomainRepository;
-
-  @Mock
   private BookDomainRepository bookDomainRepository;
 
   @InjectMocks
@@ -33,18 +29,17 @@ class CalculateReviewModelUseCaseTest {
 
   @Test
   public void shouldCalculateTwoReviewsByBook() {
-    var book = createBook(11).build();
     var user1 = createUser(99).build();
-    var review1 = createReview(1, user1, book).build();
+    var review1 = createReview(1, user1).build();
 
     var user2 = createUser(98).name("Curvelo").build();
-    var review2 = createReview(2, user2, book)
+    var review2 = createReview(2, user2)
         .comment("boa leitura")
         .score(3)
         .build();
 
-    when(reviewDomainRepository.findByBookId(book.getId()))
-        .thenReturn(Lists.list(review1, review2));
+    var book = createBook(11)
+        .reviews(Arrays.asList(review1, review2)).build();
 
     when(bookDomainRepository.findById(book.getId()))
         .thenReturn(book);
@@ -76,13 +71,11 @@ class CalculateReviewModelUseCaseTest {
 
   @Test
   public void shouldReturnDefaultTotalReviewsByBookWhenReviewsDoesNotExist() {
-    var book = createBook(11).build();
+    var book = createBook(11)
+        .reviews(Collections.emptyList()).build();
 
     when(bookDomainRepository.findById(book.getId()))
         .thenReturn(book);
-
-    when(reviewDomainRepository.findByBookId(book.getId()))
-        .thenReturn(Collections.emptyList());
 
     var result = calculateReviewsUseCase.calculateReviewsByBook(book.getId());
 
