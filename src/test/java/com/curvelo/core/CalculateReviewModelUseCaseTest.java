@@ -28,7 +28,7 @@ class CalculateReviewModelUseCaseTest {
   private CalculateReviewsUseCase calculateReviewsUseCase;
 
   @Test
-  public void shouldCalculateTwoReviewsByBook() {
+  void shouldCalculateTwoReviewsByBook() {
     var user1 = createUser(99).build();
     var review1 = createReview(1, user1).build();
 
@@ -60,7 +60,7 @@ class CalculateReviewModelUseCaseTest {
   }
 
   @Test
-  public void shouldReturnDefaultTotalReviewsByBookWhenBookDoesNotExist() {
+  void shouldReturnDefaultTotalReviewsByBookWhenBookDoesNotExist() {
     when(bookDomainRepository.findById(123))
         .thenThrow(new EntityNotFoundException("Book not found"));
 
@@ -70,7 +70,7 @@ class CalculateReviewModelUseCaseTest {
   }
 
   @Test
-  public void shouldReturnDefaultTotalReviewsByBookWhenReviewsDoesNotExist() {
+  void shouldReturnDefaultTotalReviewsByBookWhenReviewsDoesNotExist() {
     var book = createBook(11)
         .reviews(Collections.emptyList()).build();
 
@@ -82,7 +82,7 @@ class CalculateReviewModelUseCaseTest {
     assertThat(result.getScore()).isEqualTo(0.0);
     assertThat(result.getBook().getId()).isEqualTo(book.getId());
     assertThat(result.getBook().getTitle()).isEqualTo(book.getTitle());
-    assertThat(result.getComments()).hasSize(0);
+    assertThat(result.getComments()).isEmpty();
   }
 
 }

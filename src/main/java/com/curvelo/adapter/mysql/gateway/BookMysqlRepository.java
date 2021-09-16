@@ -21,7 +21,7 @@ public class BookMysqlRepository implements BookDomainRepository {
   }
 
   @Override
-  public BookDomain findById(int bookId) throws EntityNotFoundException {
+  public BookDomain findById(int bookId) {
     var reviewsModel = reviewRepository.findByBookId(bookId);
 
     return bookRepository.findById(bookId)

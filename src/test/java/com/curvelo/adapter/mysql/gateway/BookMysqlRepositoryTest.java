@@ -49,7 +49,7 @@ class BookMysqlRepositoryTest {
   }
 
   @Test
-  public void shouldReturnExceptionWhenBookDoesNotExist() {
+  void shouldReturnExceptionWhenBookDoesNotExist() {
     when(bookRepository.findById(123))
         .thenThrow(new EntityNotFoundException("Book not found"));
 

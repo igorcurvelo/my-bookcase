@@ -1,10 +1,12 @@
-versão 0.0.1
+week 3
 
-colocar sonar - ok
-criar testes unitarios - ok
-criar testes de integração - ok
-api para criar a avaliação do livro - ok
-api para recuperar a avaliação do livro - ok
-teste nos mappers - ok
-adicionar ações por userModel
-  fazer media das notas
+ajustar os mapper/adapter - ok
+ajustar o use-case mudando os calc para a class de dominio - ok
+ajustar testes - ok
+criar classe isbn - dominio rico
+criar classe author - dominio rico
+
+alterar o book domain para receber uma lista de autores, porém mantendo o modelo igual.
+
+proximas
+criar validação na criação de usuarios
