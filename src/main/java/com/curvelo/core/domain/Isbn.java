@@ -5,15 +5,15 @@ import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
 @Getter
-public class IsbnDomain {
+public class Isbn {
 
   private String value;
 
-  public static IsbnDomain from(final String isbn) {
-    return new IsbnDomain(isbn);
+  public static Isbn from(final String isbn) {
+    return new Isbn(isbn);
   }
 
-  private IsbnDomain(final String value) {
+  private Isbn(final String value) {
     validate(value);
 
     this.value = value;
@@ -25,7 +25,7 @@ public class IsbnDomain {
         .orElseThrow(() -> new IllegalArgumentException("ISBN is invalid"));
 
     if (isbn.length() != 13) {
-      throw new IllegalArgumentException("ISBN must have 13 characters");
+        throw new IllegalArgumentException("ISBN must have 13 characters");
     }
 
     if (!StringUtils.isNumeric(isbn)) {

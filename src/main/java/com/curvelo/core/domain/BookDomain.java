@@ -12,8 +12,8 @@ public class BookDomain {
 
   private final Integer id;
   private final String title;
+//  private final Isbn isbn;
   private final String isbn;
-//  private final IsbnDomain isbnDomain;
   private final String author;
   private final Integer numberOfPages;
   private final List<ReviewDomain> reviews;
