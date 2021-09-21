@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 @Getter
 public class Isbn {
 
-  private String value;
+  private final String value;
 
   public static Isbn from(final String isbn) {
     return new Isbn(isbn);
@@ -21,7 +21,7 @@ public class Isbn {
 
   private void validate(final String value) {
     var isbn = Optional.ofNullable(value)
-        .map(v -> v.replaceAll("-", ""))
+        .map(v -> v.replace("-", ""))
         .orElseThrow(() -> new IllegalArgumentException("ISBN is invalid"));
 
     if (isbn.length() != 13) {

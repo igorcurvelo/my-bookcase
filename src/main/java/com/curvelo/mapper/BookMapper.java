@@ -1,8 +1,13 @@
 package com.curvelo.mapper;
 
 import com.curvelo.api.dto.BookDTO;
+import com.curvelo.constant.Constants;
 import com.curvelo.database.model.BookModel;
+import java.util.List;
 
+/**
+ * quando a criacao do livro for migrada para o use-case, esse mapper nao sera mais necessario.
+ */
 public class BookMapper {
 
   private BookMapper() {}
@@ -10,7 +15,7 @@ public class BookMapper {
   public static BookModel toEntity(final BookDTO bookDTO) {
     return BookModel.builder()
                 .id(bookDTO.getId())
-                .author(bookDTO.getAuthor())
+                .author(String.join(Constants.SEPARATOR_AUTHOR_MODEL, bookDTO.getAuthors()))
                 .title(bookDTO.getTitle())
                 .isbn(bookDTO.getIsbn())
                 .numberOfPages(bookDTO.getNumberOfPages()).build();
@@ -19,7 +24,7 @@ public class BookMapper {
   public static BookDTO toDTO(final BookModel bookModel) {
     return BookDTO.builder()
                 .id(bookModel.getId())
-                .author(bookModel.getAuthor())
+                .authors(List.of(bookModel.getAuthor()))
                 .title(bookModel.getTitle())
                 .isbn(bookModel.getIsbn())
                 .numberOfPages(bookModel.getNumberOfPages()).build();

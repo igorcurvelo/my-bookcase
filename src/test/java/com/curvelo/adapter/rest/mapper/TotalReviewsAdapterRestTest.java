@@ -35,8 +35,9 @@ class TotalReviewsAdapterRestTest {
 
     assertThat(result.getBook().getId()).isEqualTo(22);
     assertThat(result.getBook().getTitle()).isEqualTo("Hobbit");
-    assertThat(result.getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.getBook().getIsbn()).isEqualTo("123456789");
+    assertThat(result.getBook().getAuthors()).hasSize(1);
+    assertThat(result.getBook().getAuthors().get(0)).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.getBook().getIsbn()).isEqualTo("9788533615540");
     assertThat(result.getBook().getNumberOfPages()).isEqualTo(250);
 
     assertThat(result.getComments()).hasSize(2);

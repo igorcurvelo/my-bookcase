@@ -1,8 +1,10 @@
 package com.curvelo.adapter.rest.mapper;
 
 import com.curvelo.api.dto.BookDTO;
+import com.curvelo.core.domain.Author;
 import com.curvelo.core.domain.BookDomain;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class BookAdapterRest {
 
@@ -13,9 +15,10 @@ public class BookAdapterRest {
         .map(entity ->
             BookDTO.builder()
                 .id(entity.getId())
-                .author(entity.getAuthor())
+                .authors(entity.getAuthors().stream()
+                    .map(Author::getName).collect(Collectors.toList()))
                 .title(entity.getTitle())
-                .isbn(entity.getIsbn())
+                .isbn(entity.getIsbn().getValue())
                 .numberOfPages(entity.getNumberOfPages()).build()
         ).orElseThrow(IllegalArgumentException::new);
   }

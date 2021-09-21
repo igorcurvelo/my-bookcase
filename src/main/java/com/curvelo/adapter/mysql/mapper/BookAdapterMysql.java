@@ -1,6 +1,7 @@
 package com.curvelo.adapter.mysql.mapper;
 
 import com.curvelo.core.domain.BookDomain;
+import com.curvelo.core.domain.Isbn;
 import com.curvelo.database.model.BookModel;
 import com.curvelo.database.model.ReviewModel;
 import java.util.List;
@@ -14,9 +15,9 @@ public class BookAdapterMysql {
       final List<ReviewModel> reviews) {
     return BookDomain.builder()
                 .id(bookModel.getId())
-                .author(bookModel.getAuthor())
+                .authors(AuthorAdapterMysql.toDomain(bookModel.getAuthor()))
                 .title(bookModel.getTitle())
-                .isbn(bookModel.getIsbn())
+                .isbn(Isbn.from(bookModel.getIsbn()))
                 .numberOfPages(bookModel.getNumberOfPages())
                 .reviews(reviews
                     .stream()
@@ -24,5 +25,4 @@ public class BookAdapterMysql {
                     .collect(Collectors.toList()))
                 .build();
   }
-
 }

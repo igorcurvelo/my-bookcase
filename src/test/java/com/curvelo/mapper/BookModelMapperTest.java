@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.curvelo.api.dto.BookDTO;
 import com.curvelo.database.model.BookModel;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class BookModelMapperTest {
@@ -23,7 +24,8 @@ class BookModelMapperTest {
     assertThat(result.getId()).isEqualTo(12);
     assertThat(result.getIsbn()).isEqualTo("123456789");
     assertThat(result.getNumberOfPages()).isEqualTo(250);
-    assertThat(result.getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.getAuthors()).hasSize(1);
+    assertThat(result.getAuthors().get(0)).isEqualTo("J.R.R. Tolkien");
     assertThat(result.getTitle()).isEqualTo("Hobbit");
   }
 
@@ -33,7 +35,7 @@ class BookModelMapperTest {
         .id(12)
         .isbn("123456789")
         .numberOfPages(250)
-        .author("J.R.R. Tolkien")
+        .authors(List.of("J.R.R. Tolkien"))
         .title("Hobbit")
         .build();
 

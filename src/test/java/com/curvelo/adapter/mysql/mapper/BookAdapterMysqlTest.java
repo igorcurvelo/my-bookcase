@@ -19,9 +19,10 @@ class BookAdapterMysqlTest {
     var result = BookAdapterMysql.toDomain(book, List.of(review));
 
     assertThat(result.getId()).isEqualTo(1);
-    assertThat(result.getIsbn()).isEqualTo("123456789");
+    assertThat(result.getIsbn().getValue()).isEqualTo("9788533615540");
     assertThat(result.getNumberOfPages()).isEqualTo(250);
-    assertThat(result.getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.getAuthors()).hasSize(1);
+    assertThat(result.getAuthors().get(0).getName()).isEqualTo("J.R.R. Tolkien");
     assertThat(result.getTitle()).isEqualTo("Hobbit");
 
     assertThat(result.getReviews()).hasSize(1);
