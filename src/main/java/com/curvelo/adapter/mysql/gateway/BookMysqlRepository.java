@@ -28,4 +28,10 @@ public class BookMysqlRepository implements BookDomainRepository {
         .map(model -> BookAdapterMysql.toDomain(model, reviewsModel))
         .orElseThrow(() -> new EntityNotFoundException("Book not found"));
   }
+
+  @Override
+  public BookDomain save(BookDomain book) {
+    var bookSaved = bookRepository.save(BookAdapterMysql.toModel(book));
+    return BookAdapterMysql.toDomain(bookSaved);
+  }
 }

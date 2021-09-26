@@ -5,4 +5,6 @@ import com.curvelo.core.domain.BookDomain;
 public interface BookDomainRepository {
 
   BookDomain findById(int bookId);
+
+  BookDomain save(BookDomain book);
 }

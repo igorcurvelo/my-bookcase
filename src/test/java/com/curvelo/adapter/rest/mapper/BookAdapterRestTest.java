@@ -1,7 +1,6 @@
 package com.curvelo.adapter.rest.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.curvelo.core.domain.Author;
 import com.curvelo.core.domain.BookDomain;
@@ -29,12 +28,6 @@ class BookAdapterRestTest {
     assertThat(result.getAuthors()).hasSize(1);
     assertThat(result.getAuthors().get(0)).isEqualTo("J.R.R. Tolkien");
     assertThat(result.getTitle()).isEqualTo("Hobbit");
-  }
-
-  @Test
-  void shouldReturnIllegalArgumentExceptionWhenDomainIsNull() {
-    assertThatThrownBy(() -> BookAdapterRest.toDTO(null))
-        .isInstanceOf(IllegalArgumentException.class);
   }
 
 }

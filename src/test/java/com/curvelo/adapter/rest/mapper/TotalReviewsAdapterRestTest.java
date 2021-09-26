@@ -3,7 +3,6 @@ package com.curvelo.adapter.rest.mapper;
 import static com.curvelo.ComposeDomain.createBook;
 import static com.curvelo.ComposeDomain.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.curvelo.core.domain.TotalReviewsDomain;
 import com.curvelo.core.domain.UserReviewDomain;
@@ -51,12 +50,6 @@ class TotalReviewsAdapterRestTest {
 
     assertThat(result.getScore()).isEqualTo(4D);
 
-  }
-
-  @Test
-  void shouldReturnIllegalArgumentExceptionWhenDomainIsNull() {
-    assertThatThrownBy(() -> BookAdapterRest.toDTO(null))
-        .isInstanceOf(IllegalArgumentException.class);
   }
 
 }

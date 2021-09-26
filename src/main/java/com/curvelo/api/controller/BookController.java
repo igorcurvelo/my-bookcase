@@ -1,10 +1,12 @@
 package com.curvelo.api.controller;
 
+import com.curvelo.adapter.rest.mapper.BookAdapterRest;
 import com.curvelo.adapter.rest.mapper.TotalReviewsAdapterRest;
 import com.curvelo.api.dto.ReviewDTO;
 import com.curvelo.api.dto.BookDTO;
 import com.curvelo.api.dto.TotalReviewsDTO;
 import com.curvelo.core.usecase.CalculateReviewsUseCase;
+import com.curvelo.core.usecase.CreateBookUseCase;
 import com.curvelo.mapper.ReviewMapper;
 import com.curvelo.mapper.BookMapper;
 import com.curvelo.service.ReviewService;
@@ -27,13 +29,16 @@ public class BookController {
   private final BookService bookService;
   private final ReviewService reviewService;
   private final CalculateReviewsUseCase calculateReviewsUseCase;
+  private final CreateBookUseCase createBookUseCase;
 
   public BookController(BookService bookService,
       ReviewService reviewService,
-      CalculateReviewsUseCase calculateReviewsUseCase) {
+      CalculateReviewsUseCase calculateReviewsUseCase,
+      CreateBookUseCase createBookUseCase) {
     this.bookService = bookService;
     this.reviewService = reviewService;
     this.calculateReviewsUseCase = calculateReviewsUseCase;
+    this.createBookUseCase = createBookUseCase;
   }
 
   @GetMapping
@@ -46,8 +51,8 @@ public class BookController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public BookDTO post(@RequestBody BookDTO input) {
-    var result = bookService.create(BookMapper.toEntity(input));
-    return BookMapper.toDTO(result);
+    var result = createBookUseCase.create(BookAdapterRest.toDomain(input));
+    return BookAdapterRest.toDTO(result);
   }
 
   @PostMapping("/{bookId}/reviews")

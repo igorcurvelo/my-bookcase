@@ -28,7 +28,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class BookModelControllerTest {
+class BookControllerTest {
 
   private final Faker faker = new Faker();
 
@@ -88,7 +88,7 @@ class BookModelControllerTest {
   @Test
   void shouldCreateABookWithSuccess() {
     var book = BookDTO.builder()
-        .isbn("123456789")
+        .isbn("9788533615540")
         .numberOfPages(250)
         .authors(List.of("J.R.R. Tolkien"))
         .title("Hobbit")
@@ -104,7 +104,7 @@ class BookModelControllerTest {
         .body("id", notNullValue())
         .body("authors[0]", equalTo("J.R.R. Tolkien"))
         .body("title", equalTo("Hobbit"))
-        .body("isbn", equalTo("123456789"))
+        .body("isbn", equalTo("9788533615540"))
         .body("numberOfPages", equalTo(250));
 
     when()
@@ -115,8 +115,32 @@ class BookModelControllerTest {
         .body("[0].id", notNullValue())
         .body("[0].title", equalTo("Hobbit"))
         .body("[0].authors[0]", equalTo("J.R.R. Tolkien"))
-        .body("[0].isbn", equalTo("123456789"))
+        .body("[0].isbn", equalTo("9788533615540"))
         .body("[0].numberOfPages", equalTo(250));
+  }
+
+//  @Test verificar como fica o handler de exception
+  void shouldReturnHttpStatus409WhenIsbnAlreadyExist() {
+    bookRepository.save(BookModel.builder()
+        .isbn("9788533615540")
+        .numberOfPages(250)
+        .author("J.R.R. Tolkien")
+        .title("Hobbit").build());
+
+    var book = BookDTO.builder()
+        .isbn("9788533615540")
+        .numberOfPages(250)
+        .authors(List.of("J.R.R. Tolkien"))
+        .title("Hobbit")
+        .build();
+
+    given()
+        .contentType(ContentType.JSON)
+        .body(book)
+        .when()
+        .post("/books")
+        .then()
+        .statusCode(HttpStatus.CONFLICT.value());
   }
 
   @Test

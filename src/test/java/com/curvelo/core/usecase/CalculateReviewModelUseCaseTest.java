@@ -1,4 +1,4 @@
-package com.curvelo.core;
+package com.curvelo.core.usecase;
 
 import static com.curvelo.ComposeDomain.createBook;
 import static com.curvelo.ComposeDomain.createReview;
@@ -8,7 +8,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import com.curvelo.core.repository.BookDomainRepository;
-import com.curvelo.core.usecase.CalculateReviewsUseCase;
 import java.util.Arrays;
 import java.util.Collections;
 import javax.persistence.EntityNotFoundException;
@@ -79,7 +78,7 @@ class CalculateReviewModelUseCaseTest {
 
     var result = calculateReviewsUseCase.calculateReviewsByBook(book.getId());
 
-    assertThat(result.getScore()).isEqualTo(0.0);
+    assertThat(result.getScore()).isZero();
     assertThat(result.getBook().getId()).isEqualTo(book.getId());
     assertThat(result.getBook().getTitle()).isEqualTo(book.getTitle());
     assertThat(result.getComments()).isEmpty();

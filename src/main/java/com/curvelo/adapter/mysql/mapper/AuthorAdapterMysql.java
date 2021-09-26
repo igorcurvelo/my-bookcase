@@ -24,4 +24,8 @@ public class AuthorAdapterMysql {
         .orElseThrow(() -> new IllegalArgumentException("Error on author"));
   }
 
+  public static String toModel(List<Author> authors) {
+    return authors.stream().map(Author::getName).collect(
+        Collectors.joining(SEPARATOR_AUTHOR_MODEL));
+  }
 }
