@@ -3,10 +3,14 @@ week 3
 ajustar os mapper/adapter - ok
 ajustar o use-case mudando os calc para a class de dominio - ok
 ajustar testes - ok
-criar classe isbn - dominio rico
-criar classe author - dominio rico
+criar classe isbn - dominio rico - ok
+criar classe author - dominio rico - ok
 
-alterar o book domain para receber uma lista de autores, porém mantendo o modelo igual.
+alterar o book domain para receber uma lista de autores, porém mantendo o modelo igual. - ok
 
 proximas
 criar validação na criação de usuarios
+handler de exceptions
+migrar a listagem de books
+migrar criação dos reviews
+migrar listagem de reviews

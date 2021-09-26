@@ -6,7 +6,7 @@ import com.curvelo.database.model.BookModel;
 import java.util.List;
 
 /**
- * quando a criacao do livro for migrada para o use-case, esse mapper nao sera mais necessario.
+ * quando todos os endpoints forem migrados para o use-case, esse mapper nao sera mais necessario.
  */
 public class BookMapper {
 
