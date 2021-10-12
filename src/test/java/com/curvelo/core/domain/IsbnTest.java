@@ -15,6 +15,13 @@ class IsbnTest {
   }
 
   @Test
+  void shouldReturnIllegalArgumentExceptionWhenTheValueIsNull() {
+    assertThatThrownBy(() -> Isbn.from(null))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("ISBN is invalid");
+  }
+
+  @Test
   void shouldReturnIllegalArgumentExceptionWhenTheValueHasMoreThan13Characters() {
     assertThatThrownBy(() -> Isbn.from("978-0-306-40615-12"))
         .isInstanceOf(IllegalArgumentException.class)
