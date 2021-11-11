@@ -3,7 +3,6 @@ package com.curvelo.adapter.rest.mapper;
 import static com.curvelo.ComposeDomain.createBook;
 import static com.curvelo.ComposeDomain.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.curvelo.core.domain.TotalReviewsDomain;
 import com.curvelo.core.domain.UserReviewDomain;
@@ -35,8 +34,9 @@ class TotalReviewsAdapterRestTest {
 
     assertThat(result.getBook().getId()).isEqualTo(22);
     assertThat(result.getBook().getTitle()).isEqualTo("Hobbit");
-    assertThat(result.getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.getBook().getIsbn()).isEqualTo("123456789");
+    assertThat(result.getBook().getAuthors()).hasSize(1);
+    assertThat(result.getBook().getAuthors().get(0)).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.getBook().getIsbn()).isEqualTo("9788533615540");
     assertThat(result.getBook().getNumberOfPages()).isEqualTo(250);
 
     assertThat(result.getComments()).hasSize(2);
@@ -50,12 +50,6 @@ class TotalReviewsAdapterRestTest {
 
     assertThat(result.getScore()).isEqualTo(4D);
 
-  }
-
-  @Test
-  void shouldReturnIllegalArgumentExceptionWhenDomainIsNull() {
-    assertThatThrownBy(() -> BookAdapterRest.toDTO(null))
-        .isInstanceOf(IllegalArgumentException.class);
   }
 
 }

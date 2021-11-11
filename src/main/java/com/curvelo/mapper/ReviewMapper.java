@@ -2,33 +2,26 @@ package com.curvelo.mapper;
 
 import com.curvelo.api.dto.ReviewDTO;
 import com.curvelo.database.model.ReviewModel;
-import java.util.Optional;
 
 public class ReviewMapper {
 
   private ReviewMapper() {}
 
   public static ReviewModel toEntity(final ReviewDTO reviewDTO) {
-    return Optional.ofNullable(reviewDTO)
-        .map(dto ->
-            ReviewModel.builder()
-                .id(dto.getId())
-                .user(UserMapper.toEntity(dto.getUser()))
-                .score(dto.getScore())
-                .comment(dto.getComment()).build()
-        ).orElseThrow(IllegalArgumentException::new);
+    return ReviewModel.builder()
+                .id(reviewDTO.getId())
+                .user(UserMapper.toEntity(reviewDTO.getUser()))
+                .score(reviewDTO.getScore())
+                .comment(reviewDTO.getComment()).build();
   }
 
   public static ReviewDTO toDTO(final ReviewModel reviewModel) {
-    return Optional.ofNullable(reviewModel)
-        .map(entity ->
-            ReviewDTO.builder()
-                .id(entity.getId())
+    return ReviewDTO.builder()
+                .id(reviewModel.getId())
                 .book(BookMapper.toDTO(reviewModel.getBook()))
                 .user(UserMapper.toDTO(reviewModel.getUser()))
-                .score(entity.getScore())
-                .comment(entity.getComment()).build()
-        ).orElseThrow(IllegalArgumentException::new);
+                .score(reviewModel.getScore())
+                .comment(reviewModel.getComment()).build();
   }
 
 }

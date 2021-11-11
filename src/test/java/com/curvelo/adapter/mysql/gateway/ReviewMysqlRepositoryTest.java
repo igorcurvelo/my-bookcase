@@ -50,27 +50,17 @@ class ReviewMysqlRepositoryTest {
     assertThat(result.get(0).getComment()).isEqualTo("excelente leitura");
     assertThat(result.get(0).getScore()).isEqualTo(4);
     assertThat(result.get(0).getUser().getId()).isEqualTo(21);
-    assertThat(result.get(0).getBook().getId()).isEqualTo(11);
-    assertThat(result.get(0).getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.get(0).getBook().getTitle()).isEqualTo("Hobbit");
-    assertThat(result.get(0).getBook().getNumberOfPages()).isEqualTo(250);
-    assertThat(result.get(0).getBook().getIsbn()).isEqualTo("123456789");
 
     assertThat(result.get(1).getId()).isEqualTo(122);
     assertThat(result.get(1).getComment()).isEqualTo("excelente leitura");
     assertThat(result.get(1).getScore()).isEqualTo(4);
     assertThat(result.get(1).getUser().getId()).isEqualTo(22);
-    assertThat(result.get(1).getBook().getId()).isEqualTo(11);
-    assertThat(result.get(1).getBook().getAuthor()).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.get(1).getBook().getTitle()).isEqualTo("Hobbit");
-    assertThat(result.get(1).getBook().getNumberOfPages()).isEqualTo(250);
-    assertThat(result.get(1).getBook().getIsbn()).isEqualTo("123456789");
 
     verify(reviewRepository, times(1)).findByBookId(12);
   }
 
   @Test
-  public void shouldReturnExceptionWhenBookDoesNotExist() {
+  void shouldReturnExceptionWhenBookDoesNotExist() {
     when(reviewRepository.findByBookId(123))
         .thenThrow(new EntityNotFoundException("Book not found"));
 

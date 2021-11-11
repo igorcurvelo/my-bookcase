@@ -1,34 +1,32 @@
 package com.curvelo.mapper;
 
 import com.curvelo.api.dto.BookDTO;
+import com.curvelo.constant.Constants;
 import com.curvelo.database.model.BookModel;
-import java.util.Optional;
+import java.util.List;
 
+/**
+ * quando todos os endpoints forem migrados para o use-case, esse mapper nao sera mais necessario.
+ */
 public class BookMapper {
 
   private BookMapper() {}
 
   public static BookModel toEntity(final BookDTO bookDTO) {
-    return Optional.ofNullable(bookDTO)
-        .map(dto ->
-            BookModel.builder()
-                .id(dto.getId())
-                .author(dto.getAuthor())
-                .title(dto.getTitle())
-                .isbn(dto.getIsbn())
-                .numberOfPages(bookDTO.getNumberOfPages()).build()
-        ).orElseThrow(IllegalArgumentException::new);
+    return BookModel.builder()
+                .id(bookDTO.getId())
+                .author(String.join(Constants.SEPARATOR_AUTHOR_MODEL, bookDTO.getAuthors()))
+                .title(bookDTO.getTitle())
+                .isbn(bookDTO.getIsbn())
+                .numberOfPages(bookDTO.getNumberOfPages()).build();
   }
 
   public static BookDTO toDTO(final BookModel bookModel) {
-    return Optional.ofNullable(bookModel)
-        .map(entity ->
-            BookDTO.builder()
-                .id(entity.getId())
-                .author(entity.getAuthor())
-                .title(entity.getTitle())
-                .isbn(entity.getIsbn())
-                .numberOfPages(entity.getNumberOfPages()).build()
-        ).orElseThrow(IllegalArgumentException::new);
+    return BookDTO.builder()
+                .id(bookModel.getId())
+                .authors(List.of(bookModel.getAuthor()))
+                .title(bookModel.getTitle())
+                .isbn(bookModel.getIsbn())
+                .numberOfPages(bookModel.getNumberOfPages()).build();
   }
 }

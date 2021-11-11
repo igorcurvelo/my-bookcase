@@ -6,17 +6,19 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 
+import com.curvelo.api.dto.BookDTO;
 import com.curvelo.api.dto.ReviewDTO;
-import com.curvelo.database.model.ReviewModel;
 import com.curvelo.database.model.BookModel;
+import com.curvelo.database.model.ReviewModel;
 import com.curvelo.database.model.UserModel;
-import com.curvelo.mapper.UserMapper;
-import com.curvelo.database.repository.ReviewRepository;
 import com.curvelo.database.repository.BookRepository;
+import com.curvelo.database.repository.ReviewRepository;
 import com.curvelo.database.repository.UserRepository;
+import com.curvelo.mapper.UserMapper;
 import com.github.javafaker.Faker;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class BookModelControllerTest {
+class BookControllerTest {
 
   private final Faker faker = new Faker();
 
@@ -53,9 +55,23 @@ class BookModelControllerTest {
 
   @Test
   void shouldReturnAListOfBookWithSuccess() {
-    var book1 = createBook();
-    createBook();
-    createBook();
+    var book1 = bookRepository.save(BookModel.builder()
+        .isbn("9788533615540")
+        .numberOfPages(250)
+        .author("J.R.R. Tolkien")
+        .title("Hobbit").build());
+
+    bookRepository.save(BookModel.builder()
+        .isbn("9788533613393")
+        .numberOfPages(250)
+        .author("J.R.R. Tolkien")
+        .title("O Retorno do Rei").build());
+
+    bookRepository.save(BookModel.builder()
+        .isbn("9788533613379")
+        .numberOfPages(250)
+        .author("J.R.R. Tolkien")
+        .title("A Sociedade do Anel").build());
 
     when()
         .get("/books")
@@ -63,7 +79,7 @@ class BookModelControllerTest {
         .statusCode(HttpStatus.OK.value())
         .body("$", hasSize(3))
         .body("[0].id", equalTo(book1.getId()))
-        .body("[0].author", equalTo(book1.getAuthor()))
+        .body("[0].authors[0]", equalTo(book1.getAuthor()))
         .body("[0].title", equalTo(book1.getTitle()))
         .body("[0].isbn", equalTo(book1.getIsbn()))
         .body("[0].numberOfPages", equalTo(book1.getNumberOfPages()));
@@ -71,10 +87,10 @@ class BookModelControllerTest {
 
   @Test
   void shouldCreateABookWithSuccess() {
-    var book = BookModel.builder()
-        .isbn("123456789")
+    var book = BookDTO.builder()
+        .isbn("9788533615540")
         .numberOfPages(250)
-        .author("J.R.R. Tolkien")
+        .authors(List.of("J.R.R. Tolkien"))
         .title("Hobbit")
         .build();
 
@@ -86,9 +102,9 @@ class BookModelControllerTest {
       .then()
         .statusCode(HttpStatus.CREATED.value())
         .body("id", notNullValue())
-        .body("author", equalTo("J.R.R. Tolkien"))
+        .body("authors[0]", equalTo("J.R.R. Tolkien"))
         .body("title", equalTo("Hobbit"))
-        .body("isbn", equalTo("123456789"))
+        .body("isbn", equalTo("9788533615540"))
         .body("numberOfPages", equalTo(250));
 
     when()
@@ -98,9 +114,33 @@ class BookModelControllerTest {
         .body("$", hasSize(1))
         .body("[0].id", notNullValue())
         .body("[0].title", equalTo("Hobbit"))
-        .body("[0].author", equalTo("J.R.R. Tolkien"))
-        .body("[0].isbn", equalTo("123456789"))
+        .body("[0].authors[0]", equalTo("J.R.R. Tolkien"))
+        .body("[0].isbn", equalTo("9788533615540"))
         .body("[0].numberOfPages", equalTo(250));
+  }
+
+//  @Test verificar como fica o handler de exception
+  void shouldReturnHttpStatus409WhenIsbnAlreadyExist() {
+    bookRepository.save(BookModel.builder()
+        .isbn("9788533615540")
+        .numberOfPages(250)
+        .author("J.R.R. Tolkien")
+        .title("Hobbit").build());
+
+    var book = BookDTO.builder()
+        .isbn("9788533615540")
+        .numberOfPages(250)
+        .authors(List.of("J.R.R. Tolkien"))
+        .title("Hobbit")
+        .build();
+
+    given()
+        .contentType(ContentType.JSON)
+        .body(book)
+        .when()
+        .post("/books")
+        .then()
+        .statusCode(HttpStatus.CONFLICT.value());
   }
 
   @Test
@@ -203,7 +243,7 @@ class BookModelControllerTest {
     return bookRepository.save(BookModel.builder()
         .author(faker.book().author())
         .title(faker.book().title())
-        .isbn(String.valueOf(faker.number().numberBetween(1, 9999)))
+        .isbn("9788533615540")
         .numberOfPages(faker.number().numberBetween(100, 300)).build());
   }
 }

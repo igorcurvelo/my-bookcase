@@ -14,7 +14,7 @@ public class ComposeModel {
   public static BookModelBuilder createBook(final int bookId) {
     return BookModel.builder()
         .id(bookId)
-        .isbn("123456789")
+        .isbn("9788533615540")
         .numberOfPages(250)
         .author("J.R.R. Tolkien")
         .title("Hobbit");

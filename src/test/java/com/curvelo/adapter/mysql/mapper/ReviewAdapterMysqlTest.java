@@ -1,7 +1,6 @@
 package com.curvelo.adapter.mysql.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.curvelo.database.model.BookModel;
 import com.curvelo.database.model.ReviewModel;
@@ -36,16 +35,9 @@ class ReviewAdapterMysqlTest {
     var result = ReviewAdapterMysql.toDomain(review);
 
     assertThat(result.getId()).isEqualTo(21);
-    assertThat(result.getBook().getId()).isEqualTo(12);
     assertThat(result.getUser().getId()).isEqualTo(99);
     assertThat(result.getComment()).isEqualTo("excelente livro");
     assertThat(result.getScore()).isEqualTo(9);
-  }
-
-  @Test
-  void shouldReturnIllegalArgumentExceptionWhenModelIsNull() {
-    assertThatThrownBy(() -> ReviewAdapterMysql.toDomain(null))
-        .isInstanceOf(IllegalArgumentException.class);
   }
 
 }
