@@ -1,10 +1,10 @@
 package com.curvelo.core.repository;
 
-import com.curvelo.core.domain.BookDomain;
+import com.curvelo.core.domain.Book;
 
 public interface BookDomainRepository {
 
-  BookDomain findById(int bookId);
+  Book findById(int bookId);
 
-  BookDomain save(BookDomain book);
+  Book save(Book book);
 }

@@ -1,8 +1,7 @@
 package com.curvelo;
 
 import com.curvelo.core.domain.Author;
-import com.curvelo.core.domain.BookDomain;
-import com.curvelo.core.domain.BookDomain.BookDomainBuilder;
+import com.curvelo.core.domain.Book;
 import com.curvelo.core.domain.Isbn;
 import com.curvelo.core.domain.ReviewDomain;
 import com.curvelo.core.domain.ReviewDomain.ReviewDomainBuilder;
@@ -14,13 +13,22 @@ public class ComposeDomain {
 
   private ComposeDomain() {}
 
-  public static BookDomainBuilder createBook(final int bookId) {
-    return BookDomain.builder()
-        .id(bookId)
-        .isbn(Isbn.from("9788533615540"))
-        .numberOfPages(250)
-        .authors(List.of(Author.from("J.R.R. Tolkien")))
-        .title("Hobbit");
+  public static Book createBook(final int bookId) {
+    return Book.of(
+        bookId,
+        "Hobbit",
+        Isbn.from("9788533615540"),
+        List.of(Author.of("J.R.R. Tolkien")),
+            250, null);
+  }
+
+  public static Book createBook(final int bookId, final List<ReviewDomain> reviews) {
+    return Book.of(
+            bookId,
+            "Hobbit",
+            Isbn.from("9788533615540"),
+            List.of(Author.of("J.R.R. Tolkien")),
+            250, reviews);
   }
 
   public static UserDomainBuilder createUser(final int userId) {

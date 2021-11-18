@@ -1,13 +1,14 @@
 package com.curvelo.adapter.mysql.mapper;
 
-import static com.curvelo.constant.Constants.SEPARATOR_AUTHOR_MODEL;
-
 import com.curvelo.core.domain.Author;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.curvelo.constant.Constants.SEPARATOR_AUTHOR_MODEL;
 
 public class AuthorAdapterMysql {
 
@@ -20,7 +21,7 @@ public class AuthorAdapterMysql {
 
     return Optional.of(authorModel)
         .map(authors -> Arrays.stream(authors.split(SEPARATOR_AUTHOR_MODEL))
-            .map(Author::from).collect(Collectors.toList()))
+            .map(Author::of).collect(Collectors.toList()))
         .orElseThrow(() -> new IllegalArgumentException("Error on author"));
   }
 

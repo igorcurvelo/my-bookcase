@@ -1,7 +1,7 @@
 package com.curvelo.adapter.mysql.gateway;
 
 import com.curvelo.adapter.mysql.mapper.BookAdapterMysql;
-import com.curvelo.core.domain.BookDomain;
+import com.curvelo.core.domain.Book;
 import com.curvelo.core.repository.BookDomainRepository;
 import com.curvelo.database.repository.BookRepository;
 import com.curvelo.database.repository.ReviewRepository;
@@ -21,7 +21,7 @@ public class BookMysqlRepository implements BookDomainRepository {
   }
 
   @Override
-  public BookDomain findById(int bookId) {
+  public Book findById(int bookId) {
     var reviewsModel = reviewRepository.findByBookId(bookId);
 
     return bookRepository.findById(bookId)
@@ -30,7 +30,7 @@ public class BookMysqlRepository implements BookDomainRepository {
   }
 
   @Override
-  public BookDomain save(BookDomain book) {
+  public Book save(Book book) {
     var bookSaved = bookRepository.save(BookAdapterMysql.toModel(book));
     return BookAdapterMysql.toDomain(bookSaved);
   }

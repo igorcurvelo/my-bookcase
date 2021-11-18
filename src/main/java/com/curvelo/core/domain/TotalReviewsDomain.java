@@ -10,6 +10,6 @@ public class TotalReviewsDomain {
 
   private final Double score;
   private final List<UserReviewDomain> comments;
-  private final BookDomain book;
+  private final Book book;
 
 }
