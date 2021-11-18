@@ -15,7 +15,7 @@ public class Book {
   private final Isbn isbn;
   private final List<Author> authors;
   private final Integer numberOfPages;
-  private final List<ReviewDomain> reviews;
+  private final List<Review> reviews;
 
   public static Book of(
           final Integer id,
@@ -23,7 +23,7 @@ public class Book {
           final Isbn isbn,
           final List<Author> authors,
           final Integer numberOfPages,
-          final List<ReviewDomain> reviews) {
+          final List<Review> reviews) {
     return new Book(id, title, isbn, authors, numberOfPages, reviews);
   }
 
@@ -33,7 +33,7 @@ public class Book {
           final Isbn isbn,
           final List<Author> authors,
           final Integer numberOfPages,
-          final List<ReviewDomain> reviews) {
+          final List<Review> reviews) {
     this.id = id;
     this.title = title;
     this.isbn = isbn;
@@ -44,18 +44,15 @@ public class Book {
 
   public Double getAverageScore() {
     return this.reviews.stream()
-        .map(ReviewDomain::getScore)
+        .map(Review::getScore)
         .mapToDouble(Integer::doubleValue)
         .average().orElse(0.0);
   }
 
-  public List<UserReviewDomain> getComments() {
+  public List<UserReview> getComments() {
     return this.reviews.stream()
         .map(review ->
-            UserReviewDomain.builder()
-                .comment(review.getComment())
-                .user(review.getUser())
-                .build())
+            UserReview.of(review.getComment(), review.getUser()))
         .collect(Collectors.toList());
   }
 

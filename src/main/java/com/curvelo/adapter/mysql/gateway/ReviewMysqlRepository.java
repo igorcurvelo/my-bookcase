@@ -1,7 +1,7 @@
 package com.curvelo.adapter.mysql.gateway;
 
 import com.curvelo.adapter.mysql.mapper.ReviewAdapterMysql;
-import com.curvelo.core.domain.ReviewDomain;
+import com.curvelo.core.domain.Review;
 import com.curvelo.core.repository.ReviewDomainRepository;
 import com.curvelo.database.repository.ReviewRepository;
 import java.util.List;
@@ -19,7 +19,7 @@ public class ReviewMysqlRepository implements ReviewDomainRepository {
   }
 
   @Override
-  public List<ReviewDomain> findByBookId(int bookId) {
+  public List<Review> findByBookId(int bookId) {
     return reviewRepository.findByBookId(bookId)
         .stream().map(ReviewAdapterMysql::toDomain)
         .collect(Collectors.toList());

@@ -1,7 +1,7 @@
 package com.curvelo.adapter.rest.mapper;
 
 import com.curvelo.api.dto.TotalReviewsDTO;
-import com.curvelo.core.domain.TotalReviewsDomain;
+import com.curvelo.core.domain.TotalReviews;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -9,8 +9,8 @@ public class TotalReviewsAdapterRest {
 
   private TotalReviewsAdapterRest() {}
 
-  public static TotalReviewsDTO toDTO(final TotalReviewsDomain totalReviewsDomain) {
-    return Optional.ofNullable(totalReviewsDomain)
+  public static TotalReviewsDTO toDTO(final TotalReviews totalReviews) {
+    return Optional.ofNullable(totalReviews)
         .map(domain ->
             TotalReviewsDTO.builder()
                 .score(domain.getScore())

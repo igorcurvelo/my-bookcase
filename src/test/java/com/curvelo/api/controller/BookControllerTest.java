@@ -35,7 +35,7 @@ class BookControllerTest {
         .build();
 
     final var book = Book
-            .of(12,"Hobbit", Isbn.from("978-8532530783"),
+            .of(12,"Hobbit", Isbn.of("978-8532530783"),
                     List.of(Author.of("J.R.R. Tolkien")), 253, null);
 
     Mockito.when(createBookUseCase.create(Mockito.any(Book.class))).thenReturn(book);

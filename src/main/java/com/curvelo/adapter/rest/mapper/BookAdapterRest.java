@@ -25,7 +25,7 @@ public class BookAdapterRest {
     return Book.of(
             dto.getId(),
             dto.getTitle(),
-            Isbn.from(dto.getIsbn()),
+            Isbn.of(dto.getIsbn()),
             dto.getAuthors().stream().map(Author::of).collect(Collectors.toList()),
             dto.getNumberOfPages(), null);
   }

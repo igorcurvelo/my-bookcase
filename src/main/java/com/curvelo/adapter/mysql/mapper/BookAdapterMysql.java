@@ -16,7 +16,7 @@ public class BookAdapterMysql {
     return Book.of(
             bookModel.getId(),
             bookModel.getTitle(),
-            Isbn.from(bookModel.getIsbn()),
+            Isbn.of(bookModel.getIsbn()),
             AuthorAdapterMysql.toDomain(bookModel.getAuthor()),
             bookModel.getNumberOfPages(), null);
   }
@@ -26,7 +26,7 @@ public class BookAdapterMysql {
     return Book.of(
             bookModel.getId(),
             bookModel.getTitle(),
-            Isbn.from(bookModel.getIsbn()),
+            Isbn.of(bookModel.getIsbn()),
             AuthorAdapterMysql.toDomain(bookModel.getAuthor()),
             bookModel.getNumberOfPages(),
             reviews.stream().map(ReviewAdapterMysql::toDomain).collect(Collectors.toList()));

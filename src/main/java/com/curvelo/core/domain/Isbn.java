@@ -9,7 +9,7 @@ public class Isbn {
 
   private final String value;
 
-  public static Isbn from(final String isbn) {
+  public static Isbn of(final String isbn) {
     return new Isbn(isbn);
   }
 

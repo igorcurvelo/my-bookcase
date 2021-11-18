@@ -1,14 +1,14 @@
 package com.curvelo.adapter.rest.mapper;
 
-import com.curvelo.core.domain.TotalReviewsDomain;
-import com.curvelo.core.domain.UserReviewDomain;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
 import static com.curvelo.ComposeDomain.createBook;
 import static com.curvelo.ComposeDomain.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.curvelo.core.domain.TotalReviews;
+import com.curvelo.core.domain.User;
+import com.curvelo.core.domain.UserReview;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 
 class TotalReviewsAdapterRestTest {
 
@@ -16,20 +16,14 @@ class TotalReviewsAdapterRestTest {
   void shouldMapperTotalReviewDomainToTotalReviewDto() {
     var book = createBook(22);
 
-    var user1 = createUser(11).build();
-    var user2 = createUser(12).name("Luiza").build();
+    var user1 = createUser(11);
+    var user2 = User.of(12, "Luiza");
 
-    var userReviewDomain1 = UserReviewDomain.builder()
-        .user(user1).comment("Ótimo livro").build();
+    var userReviewDomain1 = UserReview.of("Ótimo livro", user1);
+    var userReviewDomain2 = UserReview.of("Boa leitura", user2);
 
-    var userReviewDomain2 = UserReviewDomain.builder()
-        .user(user2).comment("Boa leitura").build();
-
-    var totalReviewsDomain = TotalReviewsDomain.builder()
-        .book(book)
-        .comments(List.of(userReviewDomain1, userReviewDomain2))
-        .score(4D)
-        .build();
+    var totalReviewsDomain = TotalReviews.of(
+        4D, List.of(userReviewDomain1, userReviewDomain2), book);
 
     var result = TotalReviewsAdapterRest.toDTO(totalReviewsDomain);
 
