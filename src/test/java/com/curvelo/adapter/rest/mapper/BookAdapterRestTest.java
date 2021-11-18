@@ -14,7 +14,7 @@ class BookAdapterRestTest {
   @Test
   void shouldMapperBookDomainToBookDto() {
     var book = Book.of(
-            12, "Hobbit", Isbn.from("9788533615540"), List.of(Author.of("J.R.R. Tolkien")),
+            12, "Hobbit", Isbn.of("9788533615540"), List.of(Author.of("J.R.R. Tolkien")),
             250, null);
 
     var result = BookAdapterRest.toDTO(book);

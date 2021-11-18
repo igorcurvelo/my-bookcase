@@ -9,35 +9,35 @@ class IsbnTest {
 
   @Test
   void shouldCreateAObjectIsbnWithSuccess() {
-    var isbn = Isbn.from("978-0-306-40615-7");
+    var isbn = Isbn.of("978-0-306-40615-7");
     assertThat(isbn).isNotNull();
     assertThat(isbn.getValue()).isEqualTo("978-0-306-40615-7");
   }
 
   @Test
   void shouldReturnIllegalArgumentExceptionWhenTheValueIsNull() {
-    assertThatThrownBy(() -> Isbn.from(null))
+    assertThatThrownBy(() -> Isbn.of(null))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("ISBN is invalid");
   }
 
   @Test
   void shouldReturnIllegalArgumentExceptionWhenTheValueHasMoreThan13Characters() {
-    assertThatThrownBy(() -> Isbn.from("978-0-306-40615-12"))
+    assertThatThrownBy(() -> Isbn.of("978-0-306-40615-12"))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("ISBN must have 13 characters");
   }
 
   @Test
   void shouldReturnIllegalArgumentExceptionWhenTheValueHasLetters() {
-    assertThatThrownBy(() -> Isbn.from("978-0-306-4a615-7"))
+    assertThatThrownBy(() -> Isbn.of("978-0-306-4a615-7"))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("ISBN must be a number");
   }
 
   @Test
   void shouldReturnIllegalArgumentExceptionWhenTheValueIsInvalid() {
-    assertThatThrownBy(() -> Isbn.from("978-0-306-40615-8"))
+    assertThatThrownBy(() -> Isbn.of("978-0-306-40615-8"))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("ISBN invalid");
   }

@@ -3,17 +3,16 @@ package com.curvelo.adapter.rest.mapper;
 import static com.curvelo.ComposeDomain.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.curvelo.core.domain.UserReviewDomain;
+import com.curvelo.core.domain.UserReview;
 import org.junit.jupiter.api.Test;
 
 class UserReviewAdapterRestTest {
 
   @Test
   void shouldMapperUserDomainToUserDto() {
-    var user = createUser(11).build();
+    var user = createUser(11);
 
-    var userReviewDomain = UserReviewDomain.builder()
-        .user(user).comment("Ótimo livro").build();
+    var userReviewDomain = UserReview.of("Ótimo livro", user);
 
     var result = UserReviewAdapterRest.toDTO(userReviewDomain);
 

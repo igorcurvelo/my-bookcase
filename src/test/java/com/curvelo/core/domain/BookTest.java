@@ -1,24 +1,23 @@
 package com.curvelo.core.domain;
 
-import org.junit.jupiter.api.Test;
+import static com.curvelo.ComposeDomain.createBook;
+import static com.curvelo.ComposeDomain.createReview;
+import static com.curvelo.ComposeDomain.createUser;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
-
-import static com.curvelo.ComposeDomain.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class BookTest {
 
   @Test
   void shouldCalculateAverageScore() {
-    var user1 = createUser(99).build();
-    var review1 = createReview(1, user1).build();
+    var user1 = createUser(99);
+    var review1 = createReview(1, user1);
 
-    var user2 = createUser(98).name("Curvelo").build();
-    var review2 = createReview(2, user2)
-        .comment("boa leitura")
-        .score(3)
-        .build();
+    var user2 = User.of(98, "Curvelo");
+    var review2 = Review.of(
+        2, 3, "boa leitura", user2);
 
     var book = createBook(11, Arrays.asList(review1, review2));
 
@@ -34,14 +33,12 @@ class BookTest {
 
   @Test
   void shouldReturnAllComments() {
-    var user1 = createUser(99).build();
-    var review1 = createReview(1, user1).build();
+    var user1 = createUser(99);
+    var review1 = createReview(1, user1);
 
-    var user2 = createUser(98).name("Curvelo").build();
-    var review2 = createReview(2, user2)
-        .comment("boa leitura")
-        .score(3)
-        .build();
+    var user2 = User.of(98, "Curvelo");
+    var review2 = Review.of(
+        2, 3, "boa leitura", user2);
 
     var book = createBook(11, Arrays.asList(review1, review2));
 

@@ -1,18 +1,18 @@
 package com.curvelo.adapter.mysql.mapper;
 
-import com.curvelo.core.domain.ReviewDomain;
+import com.curvelo.core.domain.Review;
 import com.curvelo.database.model.ReviewModel;
 
 public class ReviewAdapterMysql {
 
   private ReviewAdapterMysql() {}
 
-  public static ReviewDomain toDomain(final ReviewModel reviewModel) {
-    return ReviewDomain.builder()
-                .id(reviewModel.getId())
-                .user(UserAdapterMysql.toDomain(reviewModel.getUser()))
-                .score(reviewModel.getScore())
-                .comment(reviewModel.getComment()).build();
+  public static Review toDomain(final ReviewModel reviewModel) {
+    return Review.of(
+        reviewModel.getId(),
+        reviewModel.getScore(),
+        reviewModel.getComment(),
+        UserAdapterMysql.toDomain(reviewModel.getUser()));
   }
 
 }

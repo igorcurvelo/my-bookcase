@@ -1,9 +1,9 @@
 package com.curvelo.core.repository;
 
-import com.curvelo.core.domain.ReviewDomain;
+import com.curvelo.core.domain.Review;
 import java.util.List;
 
 public interface ReviewDomainRepository {
 
-  List<ReviewDomain> findByBookId(int bookId);
+  List<Review> findByBookId(int bookId);
 }
