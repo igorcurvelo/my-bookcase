@@ -8,14 +8,12 @@ public class Author {
 
   private final String name;
 
-  public static Author from(final String name) {
+  public static Author of(final String name) {
     return new Author(name);
   }
 
   private Author(final String name) {
-    Objects.requireNonNull(name);
-
-    this.name = name;
+    this.name = Objects.requireNonNull(name);
   }
 
 }

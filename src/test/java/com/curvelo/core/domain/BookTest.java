@@ -1,14 +1,13 @@
 package com.curvelo.core.domain;
 
-import static com.curvelo.ComposeDomain.createBook;
-import static com.curvelo.ComposeDomain.createReview;
-import static com.curvelo.ComposeDomain.createUser;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
-class BookDomainTest {
+import java.util.Arrays;
+
+import static com.curvelo.ComposeDomain.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
+class BookTest {
 
   @Test
   void shouldCalculateAverageScore() {
@@ -21,15 +20,14 @@ class BookDomainTest {
         .score(3)
         .build();
 
-    var book = createBook(11)
-        .reviews(Arrays.asList(review1, review2)).build();
+    var book = createBook(11, Arrays.asList(review1, review2));
 
     assertThat(book.getAverageScore()).isEqualTo(3.5);
   }
 
   @Test
   void shouldCalculateAverageScoreWhenBookWithoutReviews() {
-    var book = createBook(12).build();
+    var book = createBook(12);
 
     assertThat(book.getAverageScore()).isZero();
   }
@@ -45,8 +43,7 @@ class BookDomainTest {
         .score(3)
         .build();
 
-    var book = createBook(11)
-        .reviews(Arrays.asList(review1, review2)).build();
+    var book = createBook(11, Arrays.asList(review1, review2));
 
     assertThat(book.getComments()).hasSize(2);
     assertThat(book.getComments().get(0).getUser().getId()).isEqualTo(user1.getId());
@@ -60,7 +57,7 @@ class BookDomainTest {
 
   @Test
   void shouldReturnAEmptyListOfCommentsWhenBookWithoutReviews() {
-    var book = createBook(12).build();
+    var book = createBook(12);
 
     assertThat(book.getComments()).isEmpty();
   }

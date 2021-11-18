@@ -1,6 +1,6 @@
 package com.curvelo.core.usecase;
 
-import com.curvelo.core.domain.BookDomain;
+import com.curvelo.core.domain.Book;
 import com.curvelo.core.repository.BookDomainRepository;
 import com.curvelo.core.repository.IsbnDomainRepository;
 import javax.persistence.EntityExistsException;
@@ -18,7 +18,7 @@ public class CreateBookUseCase {
     this.isbnDomainRepository = isbnDomainRepository;
   }
 
-  public BookDomain create(BookDomain book) {
+  public Book create(Book book) {
     if(isbnDomainRepository.existsByIsbn(book.getIsbn())) {
       throw new EntityExistsException("book already registered");
     }

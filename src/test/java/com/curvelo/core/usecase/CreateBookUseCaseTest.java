@@ -1,18 +1,19 @@
 package com.curvelo.core.usecase;
 
-import static com.curvelo.ComposeDomain.createBook;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
-
 import com.curvelo.core.repository.BookDomainRepository;
 import com.curvelo.core.repository.IsbnDomainRepository;
-import javax.persistence.EntityExistsException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import javax.persistence.EntityExistsException;
+
+import static com.curvelo.ComposeDomain.createBook;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CreateBookUseCaseTest {
@@ -28,7 +29,7 @@ class CreateBookUseCaseTest {
 
   @Test
   void shouldCreateABook() {
-    var book = createBook(11).build();
+    var book = createBook(11);
 
     when(isbnDomainRepository.existsByIsbn(book.getIsbn())).thenReturn(false);
     when(bookDomainRepository.save(book)).thenReturn(book);
@@ -48,7 +49,7 @@ class CreateBookUseCaseTest {
 
   @Test
   void shouldReturnErrorEntityExistExceptionWhenIsbnAlreadyExists() {
-    var book = createBook(11).build();
+    var book = createBook(11);
 
     when(isbnDomainRepository.existsByIsbn(book.getIsbn())).thenReturn(true);
 

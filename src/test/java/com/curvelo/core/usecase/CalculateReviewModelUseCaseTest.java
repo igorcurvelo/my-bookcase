@@ -1,21 +1,20 @@
 package com.curvelo.core.usecase;
 
-import static com.curvelo.ComposeDomain.createBook;
-import static com.curvelo.ComposeDomain.createReview;
-import static com.curvelo.ComposeDomain.createUser;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
-
 import com.curvelo.core.repository.BookDomainRepository;
-import java.util.Arrays;
-import java.util.Collections;
-import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
+import java.util.Collections;
+
+import static com.curvelo.ComposeDomain.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CalculateReviewModelUseCaseTest {
@@ -37,8 +36,7 @@ class CalculateReviewModelUseCaseTest {
         .score(3)
         .build();
 
-    var book = createBook(11)
-        .reviews(Arrays.asList(review1, review2)).build();
+    var book = createBook(11, Arrays.asList(review1, review2));
 
     when(bookDomainRepository.findById(book.getId()))
         .thenReturn(book);
@@ -70,8 +68,7 @@ class CalculateReviewModelUseCaseTest {
 
   @Test
   void shouldReturnDefaultTotalReviewsByBookWhenReviewsDoesNotExist() {
-    var book = createBook(11)
-        .reviews(Collections.emptyList()).build();
+    var book = createBook(11, Collections.emptyList());
 
     when(bookDomainRepository.findById(book.getId()))
         .thenReturn(book);

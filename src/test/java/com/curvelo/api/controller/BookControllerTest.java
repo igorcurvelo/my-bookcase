@@ -1,19 +1,20 @@
 package com.curvelo.api.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.curvelo.api.dto.BookDTO;
 import com.curvelo.core.domain.Author;
-import com.curvelo.core.domain.BookDomain;
+import com.curvelo.core.domain.Book;
 import com.curvelo.core.domain.Isbn;
 import com.curvelo.core.usecase.CreateBookUseCase;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
 class BookControllerTest {
@@ -33,14 +34,11 @@ class BookControllerTest {
         .title("Hobbit")
         .build();
 
-    final var book = BookDomain.builder()
-        .id(12)
-        .isbn(Isbn.from("978-8532530783"))
-        .numberOfPages(253)
-        .authors(List.of(Author.from("J.R.R. Tolkien")))
-        .title("Hobbit").build();
+    final var book = Book
+            .of(12,"Hobbit", Isbn.from("978-8532530783"),
+                    List.of(Author.of("J.R.R. Tolkien")), 253, null);
 
-    Mockito.when(createBookUseCase.create(Mockito.any(BookDomain.class))).thenReturn(book);
+    Mockito.when(createBookUseCase.create(Mockito.any(Book.class))).thenReturn(book);
 
     final var result = bookController.post(bookDto);
 

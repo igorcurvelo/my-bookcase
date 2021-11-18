@@ -1,19 +1,20 @@
 package com.curvelo.adapter.rest.mapper;
 
+import com.curvelo.core.domain.TotalReviewsDomain;
+import com.curvelo.core.domain.UserReviewDomain;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
 import static com.curvelo.ComposeDomain.createBook;
 import static com.curvelo.ComposeDomain.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import com.curvelo.core.domain.TotalReviewsDomain;
-import com.curvelo.core.domain.UserReviewDomain;
-import java.util.List;
-import org.junit.jupiter.api.Test;
 
 class TotalReviewsAdapterRestTest {
 
   @Test
   void shouldMapperTotalReviewDomainToTotalReviewDto() {
-    var book = createBook(22).build();
+    var book = createBook(22);
 
     var user1 = createUser(11).build();
     var user2 = createUser(12).name("Luiza").build();

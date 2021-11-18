@@ -1,14 +1,14 @@
 package com.curvelo.core.domain;
 
+import lombok.Getter;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import lombok.Builder;
-import lombok.Getter;
 
 @Getter
-public class BookDomain {
+public class Book {
 
   private final Integer id;
   private final String title;
@@ -17,9 +17,23 @@ public class BookDomain {
   private final Integer numberOfPages;
   private final List<ReviewDomain> reviews;
 
-  @Builder
-  public BookDomain(Integer id, String title, Isbn isbn, List<Author> authors,
-      Integer numberOfPages, List<ReviewDomain> reviews) {
+  public static Book of(
+          final Integer id,
+          final String title,
+          final Isbn isbn,
+          final List<Author> authors,
+          final Integer numberOfPages,
+          final List<ReviewDomain> reviews) {
+    return new Book(id, title, isbn, authors, numberOfPages, reviews);
+  }
+
+  private Book(
+          final Integer id,
+          final String title,
+          final Isbn isbn,
+          final List<Author> authors,
+          final Integer numberOfPages,
+          final List<ReviewDomain> reviews) {
     this.id = id;
     this.title = title;
     this.isbn = isbn;
