@@ -1,12 +1,13 @@
 package com.curvelo.core.domain;
 
-import static com.curvelo.ComposeDomain.createBook;
-import static com.curvelo.ComposeDomain.createReview;
-import static com.curvelo.ComposeDomain.createUser;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
+import java.util.List;
+
+import static com.curvelo.ComposeDomain.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class BookTest {
 
@@ -57,6 +58,19 @@ class BookTest {
     var book = createBook(12);
 
     assertThat(book.getComments()).isEmpty();
+  }
+
+  @Test
+  void shouldReturnNullExceptionWhenAListOfAuthorsIsEmpty() {
+    assertThatThrownBy(() ->
+      Book.of(
+              1,
+              "title",
+              Isbn.of("9788533615540"),
+              List.of(),
+              123,
+              null
+      )).isInstanceOf(NullPointerException.class);
   }
 
 }

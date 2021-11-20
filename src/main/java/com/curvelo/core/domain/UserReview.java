@@ -2,6 +2,8 @@ package com.curvelo.core.domain;
 
 import lombok.Getter;
 
+import java.util.Objects;
+
 @Getter
 public class UserReview {
 
@@ -14,6 +16,6 @@ public class UserReview {
 
   private UserReview(String comment, User user) {
     this.comment = comment;
-    this.user = user;
+    this.user = Objects.requireNonNull(user);
   }
 }

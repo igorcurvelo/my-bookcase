@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -35,11 +36,18 @@ public class Book {
           final Integer numberOfPages,
           final List<Review> reviews) {
     this.id = id;
-    this.title = title;
-    this.isbn = isbn;
-    this.authors = authors;
-    this.numberOfPages = numberOfPages;
+    this.title = Objects.requireNonNull(title);
+    this.isbn = Objects.requireNonNull(isbn);
+    this.authors = verifyRequireList(authors);
+    this.numberOfPages = Objects.requireNonNull(numberOfPages);
     this.reviews = Optional.ofNullable(reviews).orElse(Collections.emptyList());
+  }
+
+  private List<Author> verifyRequireList(List<Author> authors) {
+    if (Objects.nonNull(authors) && !authors.isEmpty()) {
+      return authors;
+    }
+    throw new NullPointerException();
   }
 
   public Double getAverageScore() {

@@ -1,7 +1,9 @@
 package com.curvelo.core.domain;
 
-import java.util.List;
 import lombok.Getter;
+
+import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class TotalReviews {
@@ -21,8 +23,8 @@ public class TotalReviews {
       final Double score,
       final List<UserReview> comments,
       final Book book) {
-    this.score = score;
+    this.score = Objects.requireNonNull(score);
     this.comments = comments;
-    this.book = book;
+    this.book = Objects.requireNonNull(book);
   }
 }
