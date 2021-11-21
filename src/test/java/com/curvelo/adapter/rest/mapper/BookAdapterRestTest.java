@@ -1,23 +1,23 @@
 package com.curvelo.adapter.rest.mapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.curvelo.core.domain.Author;
 import com.curvelo.core.domain.Book;
 import com.curvelo.core.domain.Isbn;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 class BookAdapterRestTest {
 
   @Test
   void shouldMapperBookDomainToBookDto() {
-    var book = Book.of(
-            12, "Hobbit", Isbn.of("9788533615540"), List.of(Author.of("J.R.R. Tolkien")),
+    final var book = Book.of(
+            12, "Hobbit", Isbn.of("9788533615540"),
+            List.of(Author.of("J.R.R. Tolkien")),
             250, null);
 
-    var result = BookAdapterRest.toDTO(book);
+    final var result = new BookAdapterRest().toDTO(book);
 
     assertThat(result.getId()).isEqualTo(12);
     assertThat(result.getIsbn()).isEqualTo("9788533615540");
