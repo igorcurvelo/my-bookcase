@@ -22,14 +22,14 @@ class UserReviewAdapterRestTest {
   private UserReviewAdapterRest userReviewAdapterRest;
 
   @Test
-  void shouldMapperUserDomainToUserDto() {
-    var user = createUser(11);
+  void shouldMapperUserReviewDomainToUserReviewDto() {
+    final var user = createUser(11);
 
-    var userReviewDomain = UserReview.of("Ótimo livro", user);
+    final var userReviewDomain = UserReview.of("Ótimo livro", user);
 
     Mockito.when(userAdapterRest.toDTO(user)).thenReturn(new UserDTO(11, "Igor"));
 
-    var result = userReviewAdapterRest.toDTO(userReviewDomain);
+    final var result = userReviewAdapterRest.toDTO(userReviewDomain);
 
     assertThat(result.getUser().getId()).isEqualTo(11);
     assertThat(result.getUser().getName()).isEqualTo("Igor");
