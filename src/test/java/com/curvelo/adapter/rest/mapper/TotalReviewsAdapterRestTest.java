@@ -4,28 +4,56 @@ import static com.curvelo.ComposeDomain.createBook;
 import static com.curvelo.ComposeDomain.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.curvelo.api.dto.BookDTO;
+import com.curvelo.api.dto.UserDTO;
+import com.curvelo.api.dto.UserReviewDTO;
 import com.curvelo.core.domain.TotalReviews;
 import com.curvelo.core.domain.User;
 import com.curvelo.core.domain.UserReview;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class TotalReviewsAdapterRestTest {
+
+  @Mock
+  private BookAdapterRest bookAdapterRest;
+
+  @Mock
+  private UserReviewAdapterRest userReviewAdapterRest;
+
+  @InjectMocks
+  private TotalReviewsAdapterRest totalReviewsAdapterRest;
 
   @Test
   void shouldMapperTotalReviewDomainToTotalReviewDto() {
-    var book = createBook(22);
+    final var book = createBook(22);
+    final var bookDto = new BookDTO(book.getId(),
+        book.getTitle(), book.getIsbn().getValue(), List.of("J.R.R. Tolkien"), 250);
 
-    var user1 = createUser(11);
-    var user2 = User.of(12, "Luiza");
+    final var user1 = createUser(11);
+    final var user2 = User.of(12, "Luiza");
 
-    var userReviewDomain1 = UserReview.of("Ótimo livro", user1);
-    var userReviewDomain2 = UserReview.of("Boa leitura", user2);
+    final var userReviewDomain1 = UserReview.of("Ótimo livro", user1);
+    final var userReviewDomain2 = UserReview.of("Boa leitura", user2);
 
-    var totalReviewsDomain = TotalReviews.of(
+    final var totalReviewsDomain = TotalReviews.of(
         4D, List.of(userReviewDomain1, userReviewDomain2), book);
 
-    var result = TotalReviewsAdapterRest.toDTO(totalReviewsDomain);
+    Mockito.when(bookAdapterRest.toDTO(book)).thenReturn(bookDto);
+    Mockito.when(userReviewAdapterRest.toDTO(userReviewDomain1))
+        .thenReturn(new UserReviewDTO(userReviewDomain1.getComment(),
+            new UserDTO(11, "Igor")));
+    Mockito.when(userReviewAdapterRest.toDTO(userReviewDomain2))
+        .thenReturn(new UserReviewDTO(userReviewDomain2.getComment(),
+            new UserDTO(12, "Luiza")));
+
+    final var result = totalReviewsAdapterRest.toDTO(totalReviewsDomain);
 
     assertThat(result.getBook().getId()).isEqualTo(22);
     assertThat(result.getBook().getTitle()).isEqualTo("Hobbit");

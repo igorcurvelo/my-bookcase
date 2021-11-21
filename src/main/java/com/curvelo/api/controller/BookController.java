@@ -30,15 +30,22 @@ public class BookController {
   private final ReviewService reviewService;
   private final CalculateReviewsUseCase calculateReviewsUseCase;
   private final CreateBookUseCase createBookUseCase;
+  private final BookAdapterRest bookAdapterRest;
+  private final TotalReviewsAdapterRest totalReviewsAdapterRest;
 
-  public BookController(BookService bookService,
-      ReviewService reviewService,
-      CalculateReviewsUseCase calculateReviewsUseCase,
-      CreateBookUseCase createBookUseCase) {
+  public BookController(
+      final BookService bookService,
+      final ReviewService reviewService,
+      final CalculateReviewsUseCase calculateReviewsUseCase,
+      final CreateBookUseCase createBookUseCase,
+      final BookAdapterRest bookAdapterRest,
+      final TotalReviewsAdapterRest totalReviewsAdapterRest) {
     this.bookService = bookService;
     this.reviewService = reviewService;
     this.calculateReviewsUseCase = calculateReviewsUseCase;
     this.createBookUseCase = createBookUseCase;
+    this.bookAdapterRest = bookAdapterRest;
+    this.totalReviewsAdapterRest = totalReviewsAdapterRest;
   }
 
   @GetMapping
@@ -50,9 +57,9 @@ public class BookController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public BookDTO post(@RequestBody BookDTO input) {
-    var result = createBookUseCase.create(BookAdapterRest.toDomain(input));
-    return BookAdapterRest.toDTO(result);
+  public BookDTO post(@RequestBody final BookDTO input) {
+    final var result = createBookUseCase.create(bookAdapterRest.toDomain(input));
+    return bookAdapterRest.toDTO(result);
   }
 
   @PostMapping("/{bookId}/reviews")
@@ -70,7 +77,7 @@ public class BookController {
 
   @GetMapping("/{bookId}/reviews/calculate")
   public TotalReviewsDTO getAllCalculateReview(@PathVariable Integer bookId) {
-    return TotalReviewsAdapterRest.toDTO(calculateReviewsUseCase.calculateReviewsByBook(bookId));
+    return totalReviewsAdapterRest.toDTO(calculateReviewsUseCase.calculateReviewsByBook(bookId));
   }
 
 }
