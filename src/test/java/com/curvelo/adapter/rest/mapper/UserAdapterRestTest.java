@@ -10,9 +10,9 @@ class UserAdapterRestTest {
 
   @Test
   void shouldMapperUserDomainToUserDto() {
-    var book = User.of(12, "Igor");
+    final var book = User.of(12, "Igor");
 
-    var result = new UserAdapterRest().toDTO(book);
+    final var result = new UserAdapterRest().toDTO(book);
 
     assertThat(result.getId()).isEqualTo(12);
     assertThat(result.getName()).isEqualTo("Igor");

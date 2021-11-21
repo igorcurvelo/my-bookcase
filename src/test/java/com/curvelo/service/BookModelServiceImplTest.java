@@ -28,13 +28,12 @@ class BookModelServiceImplTest {
 
   @Test
   void shouldReturnAListWith3Books() {
-
-    var book = BookModel.builder().build();
+    final var book = BookModel.builder().build();
 
     when(bookRepository.findAll())
         .thenReturn(List.of(book, book, book));
 
-    var result = bookService.findAll();
+    final var result = bookService.findAll();
 
     assertThat(result).hasSize(3);
 
@@ -43,8 +42,7 @@ class BookModelServiceImplTest {
 
   @Test
   void shouldCreateABookWithSuccess() {
-
-    var book = BookModel.builder()
+    final var book = BookModel.builder()
         .isbn("123456789")
         .numberOfPages(250)
         .author("J.R.R. Tolkien")
@@ -60,7 +58,7 @@ class BookModelServiceImplTest {
             .title("Hobbit")
             .build());
 
-    var result = bookService.create(book);
+    final var result = bookService.create(book);
 
     assertThat(result.getId()).isNotNull();
     assertThat(result.getIsbn()).isEqualTo("123456789");
@@ -74,8 +72,7 @@ class BookModelServiceImplTest {
 
   @Test
   void shouldReturnEntityExistsExceptionWhenExistABookWithTheSameIsbn() {
-
-    var book = BookModel.builder()
+    final var book = BookModel.builder()
         .isbn("123456789")
         .numberOfPages(250)
         .author("J.R.R. Tolkien")

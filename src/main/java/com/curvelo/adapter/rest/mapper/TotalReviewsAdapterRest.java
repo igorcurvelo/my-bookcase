@@ -13,8 +13,9 @@ public class TotalReviewsAdapterRest {
   private final BookAdapterRest bookAdapterRest;
   private final UserReviewAdapterRest userReviewAdapterRest;
 
-  public TotalReviewsAdapterRest(BookAdapterRest bookAdapterRest,
-      UserReviewAdapterRest userReviewAdapterRest) {
+  public TotalReviewsAdapterRest(
+      final BookAdapterRest bookAdapterRest,
+      final UserReviewAdapterRest userReviewAdapterRest) {
     this.bookAdapterRest = bookAdapterRest;
     this.userReviewAdapterRest = userReviewAdapterRest;
   }

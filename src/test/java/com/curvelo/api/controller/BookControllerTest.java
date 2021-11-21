@@ -30,7 +30,7 @@ class BookControllerTest {
 
   @Test
   void shouldCreateABookWithSuccess() {
-    var bookDto = BookDTO.builder()
+    final var bookDto = BookDTO.builder()
         .id(12)
         .isbn("978-8532530783")
         .numberOfPages(253)
