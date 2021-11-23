@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import com.curvelo.database.model.BookModel;
 import com.curvelo.database.repository.BookRepository;
-import java.util.List;
 import javax.persistence.EntityExistsException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,20 +24,6 @@ class BookModelServiceImplTest {
 
   @InjectMocks
   private BookServiceImpl bookService;
-
-  @Test
-  void shouldReturnAListWith3Books() {
-    final var book = BookModel.builder().build();
-
-    when(bookRepository.findAll())
-        .thenReturn(List.of(book, book, book));
-
-    final var result = bookService.findAll();
-
-    assertThat(result).hasSize(3);
-
-    verify(bookRepository, times(1)).findAll();
-  }
 
   @Test
   void shouldCreateABookWithSuccess() {

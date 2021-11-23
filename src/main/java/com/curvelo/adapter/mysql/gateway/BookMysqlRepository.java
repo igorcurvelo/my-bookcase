@@ -5,6 +5,8 @@ import com.curvelo.core.domain.Book;
 import com.curvelo.core.repository.BookDomainRepository;
 import com.curvelo.database.repository.BookRepository;
 import com.curvelo.database.repository.ReviewRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -33,5 +35,12 @@ public class BookMysqlRepository implements BookDomainRepository {
   public Book save(Book book) {
     var bookSaved = bookRepository.save(BookAdapterMysql.toModel(book));
     return BookAdapterMysql.toDomain(bookSaved);
+  }
+
+  @Override
+  public List<Book> findAll() {
+    return bookRepository.findAll()
+        .stream().map(BookAdapterMysql::toDomain)
+        .collect(Collectors.toList());
   }
 }
