@@ -12,8 +12,9 @@ public class CreateBookUseCase {
   private final BookDomainRepository bookDomainRepository;
   private final IsbnDomainRepository isbnDomainRepository;
 
-  public CreateBookUseCase(BookDomainRepository bookDomainRepository,
-      IsbnDomainRepository isbnDomainRepository) {
+  public CreateBookUseCase(
+      final BookDomainRepository bookDomainRepository,
+      final IsbnDomainRepository isbnDomainRepository) {
     this.bookDomainRepository = bookDomainRepository;
     this.isbnDomainRepository = isbnDomainRepository;
   }

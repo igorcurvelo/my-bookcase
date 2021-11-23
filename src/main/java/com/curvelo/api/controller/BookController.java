@@ -2,15 +2,15 @@ package com.curvelo.api.controller;
 
 import com.curvelo.adapter.rest.mapper.BookAdapterRest;
 import com.curvelo.adapter.rest.mapper.TotalReviewsAdapterRest;
-import com.curvelo.api.dto.ReviewDTO;
 import com.curvelo.api.dto.BookDTO;
+import com.curvelo.api.dto.ReviewDTO;
 import com.curvelo.api.dto.TotalReviewsDTO;
 import com.curvelo.core.usecase.CalculateReviewsUseCase;
 import com.curvelo.core.usecase.CreateBookUseCase;
+import com.curvelo.core.usecase.GetterBookUseCase;
 import com.curvelo.mapper.ReviewMapper;
-import com.curvelo.mapper.BookMapper;
-import com.curvelo.service.ReviewService;
 import com.curvelo.service.BookService;
+import com.curvelo.service.ReviewService;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
@@ -30,6 +30,7 @@ public class BookController {
   private final ReviewService reviewService;
   private final CalculateReviewsUseCase calculateReviewsUseCase;
   private final CreateBookUseCase createBookUseCase;
+  private final GetterBookUseCase getterBookUseCase;
   private final BookAdapterRest bookAdapterRest;
   private final TotalReviewsAdapterRest totalReviewsAdapterRest;
 
@@ -38,20 +39,22 @@ public class BookController {
       final ReviewService reviewService,
       final CalculateReviewsUseCase calculateReviewsUseCase,
       final CreateBookUseCase createBookUseCase,
+      final GetterBookUseCase getterBookUseCase,
       final BookAdapterRest bookAdapterRest,
       final TotalReviewsAdapterRest totalReviewsAdapterRest) {
     this.bookService = bookService;
     this.reviewService = reviewService;
     this.calculateReviewsUseCase = calculateReviewsUseCase;
     this.createBookUseCase = createBookUseCase;
+    this.getterBookUseCase = getterBookUseCase;
     this.bookAdapterRest = bookAdapterRest;
     this.totalReviewsAdapterRest = totalReviewsAdapterRest;
   }
 
   @GetMapping
   public List<BookDTO> get() {
-    return bookService.findAll().stream()
-        .map(BookMapper::toDTO)
+    return getterBookUseCase.findAll().stream()
+        .map(bookAdapterRest::toDTO)
         .collect(Collectors.toList());
   }
 
