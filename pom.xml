@@ -16,23 +16,23 @@
 	<description>App to organize my books and evaluate my readings</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<jacoco-maven-plugin.version>0.8.1</jacoco-maven-plugin.version>
 		<springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
-		<mysql-connector-java.version>8.0.25</mysql-connector-java.version>
+		<mysql-connector-java.version>8.0.30</mysql-connector-java.version>
 		<mysql.version>1.16.0</mysql.version>
 		<assertj-core.version>3.20.2</assertj-core.version>
 		<javafaker.version>1.0.2</javafaker.version>
-		<flyway-core.version>7.14.1</flyway-core.version>
+		<flyway-core.version>9.8.3</flyway-core.version>
 		<rest-assured.version>4.4.0</rest-assured.version>
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<spring-boot-starter-parent.version>2.5.2</spring-boot-starter-parent.version>
 
 		<coverage.line>1</coverage.line>
 		<coverage.branch>1</coverage.branch>
-		<pitest-maven.version>1.6.7</pitest-maven.version>
-		<pitest.version>0.12</pitest.version>
-		<mutation.threshold>100</mutation.threshold>
+		<pitest-maven.version>1.9.11</pitest-maven.version>
+		<pitest.version>1.1.0</pitest.version>
+		<mutation.threshold>87</mutation.threshold>
 		<mutation.scan.code>com.curvelo*</mutation.scan.code>
 		<mutation.scan.test>com.curvelo*</mutation.scan.test>
 		<mutation.skip>false</mutation.skip>
@@ -154,12 +154,12 @@
 			<plugin>
 				<groupId>org.pitest</groupId>
 				<artifactId>pitest-maven</artifactId>
-				<version>1.6.7</version>
+				<version>${pitest-maven.version}</version>
 				<dependencies>
 					<dependency>
 						<groupId>org.pitest</groupId>
 						<artifactId>pitest-junit5-plugin</artifactId>
-						<version>0.12</version>
+						<version>${pitest.version}</version>
 					</dependency>
 				</dependencies>
 				<executions>
@@ -171,9 +171,14 @@
 					</execution>
 				</executions>
 				<configuration>
+					<mutationThreshold>${mutation.threshold}</mutationThreshold>
 					<targetClasses>
 						<param>${mutation.scan.code}</param>
 					</targetClasses>
+					<targetTests>
+						<param>${mutation.scan.test}</param>
+					</targetTests>
+					<skip>${mutation.skip}</skip>
 				</configuration>
 			</plugin>
 		</plugins>
