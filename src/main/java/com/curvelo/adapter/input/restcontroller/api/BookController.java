@@ -1,10 +1,10 @@
-package com.curvelo.api.controller;
+package com.curvelo.adapter.input.restcontroller.api;
 
 import com.curvelo.adapter.rest.mapper.BookAdapterRest;
 import com.curvelo.adapter.rest.mapper.TotalReviewsAdapterRest;
-import com.curvelo.api.dto.BookDTO;
-import com.curvelo.api.dto.ReviewDTO;
-import com.curvelo.api.dto.TotalReviewsDTO;
+import com.curvelo.adapter.input.restcontroller.dto.ReviewDTO;
+import com.curvelo.adapter.input.restcontroller.dto.BookDTO;
+import com.curvelo.adapter.input.restcontroller.dto.TotalReviewsDTO;
 import com.curvelo.core.usecase.CalculateReviewsUseCase;
 import com.curvelo.core.usecase.CreateBookUseCase;
 import com.curvelo.core.usecase.GetterBookUseCase;

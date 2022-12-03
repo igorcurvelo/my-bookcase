@@ -1,6 +1,6 @@
 package com.curvelo.adapter.rest.mapper;
 
-import com.curvelo.api.dto.BookDTO;
+import com.curvelo.adapter.input.restcontroller.dto.BookDTO;
 import com.curvelo.core.domain.Author;
 import com.curvelo.core.domain.Book;
 import com.curvelo.core.domain.Isbn;

@@ -1,4 +1,4 @@
-package com.curvelo.api.dto;
+package com.curvelo.adapter.input.restcontroller.dto;
 
 import java.util.List;
 import lombok.Builder;

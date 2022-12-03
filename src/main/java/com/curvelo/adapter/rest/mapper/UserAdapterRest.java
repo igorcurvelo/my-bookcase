@@ -1,6 +1,6 @@
 package com.curvelo.adapter.rest.mapper;
 
-import com.curvelo.api.dto.UserDTO;
+import com.curvelo.adapter.input.restcontroller.dto.UserDTO;
 import com.curvelo.core.domain.User;
 import java.util.Optional;
 import org.springframework.stereotype.Component;

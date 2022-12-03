@@ -1,6 +1,6 @@
 package com.curvelo.adapter.rest.mapper;
 
-import com.curvelo.api.dto.TotalReviewsDTO;
+import com.curvelo.adapter.input.restcontroller.dto.TotalReviewsDTO;
 import com.curvelo.core.domain.TotalReviews;
 import org.springframework.stereotype.Component;
 

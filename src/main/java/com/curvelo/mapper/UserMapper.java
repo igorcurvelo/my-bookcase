@@ -1,6 +1,6 @@
 package com.curvelo.mapper;
 
-import com.curvelo.api.dto.UserDTO;
+import com.curvelo.adapter.input.restcontroller.dto.UserDTO;
 import com.curvelo.database.model.UserModel;
 
 public class UserMapper {

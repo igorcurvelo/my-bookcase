@@ -59,4 +59,14 @@ class BookMysqlRepositoryTest {
         .hasMessageContaining("Book not found");
   }
 
+  @Test
+  void shouldReturnExceptionWhenBook() {
+    when(bookRepository.findById(123))
+        .thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> bookMysqlRepository.findById(123))
+        .isInstanceOf(EntityNotFoundException.class)
+        .hasMessageContaining("Book not found");
+  }
+
 }

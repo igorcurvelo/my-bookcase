@@ -1,6 +1,6 @@
 package com.curvelo.mapper;
 
-import com.curvelo.api.dto.ReviewDTO;
+import com.curvelo.adapter.input.restcontroller.dto.ReviewDTO;
 import com.curvelo.database.model.ReviewModel;
 
 public class ReviewMapper {

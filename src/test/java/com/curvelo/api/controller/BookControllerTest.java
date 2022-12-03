@@ -6,7 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.curvelo.adapter.rest.mapper.BookAdapterRest;
-import com.curvelo.api.dto.BookDTO;
+import com.curvelo.adapter.input.restcontroller.api.BookController;
+import com.curvelo.adapter.input.restcontroller.dto.BookDTO;
 import com.curvelo.core.domain.Author;
 import com.curvelo.core.domain.Book;
 import com.curvelo.core.domain.Isbn;
