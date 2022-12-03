@@ -2,7 +2,7 @@ package com.curvelo.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.curvelo.api.dto.BookDTO;
+import com.curvelo.adapter.input.restcontroller.dto.BookDTO;
 import com.curvelo.database.model.BookModel;
 import java.util.List;
 import org.junit.jupiter.api.Test;

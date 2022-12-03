@@ -1,6 +1,6 @@
 package com.curvelo.mapper;
 
-import com.curvelo.api.dto.BookDTO;
+import com.curvelo.adapter.input.restcontroller.dto.BookDTO;
 import com.curvelo.constant.Constants;
 import com.curvelo.database.model.BookModel;
 import java.util.List;

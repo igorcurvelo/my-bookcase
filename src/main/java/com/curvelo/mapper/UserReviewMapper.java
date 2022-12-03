@@ -1,7 +1,7 @@
 package com.curvelo.mapper;
 
-import com.curvelo.api.dto.UserReviewDTO;
-import com.curvelo.api.dto.UserDTO;
+import com.curvelo.adapter.input.restcontroller.dto.UserReviewDTO;
+import com.curvelo.adapter.input.restcontroller.dto.UserDTO;
 
 public class UserReviewMapper {
 

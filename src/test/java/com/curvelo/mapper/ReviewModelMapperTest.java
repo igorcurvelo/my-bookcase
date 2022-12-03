@@ -2,8 +2,8 @@ package com.curvelo.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.curvelo.api.dto.ReviewDTO;
-import com.curvelo.api.dto.UserDTO;
+import com.curvelo.adapter.input.restcontroller.dto.ReviewDTO;
+import com.curvelo.adapter.input.restcontroller.dto.UserDTO;
 import com.curvelo.database.model.BookModel;
 import com.curvelo.database.model.ReviewModel;
 import com.curvelo.database.model.UserModel;
