@@ -4,9 +4,9 @@ import static com.curvelo.ComposeDomain.createBook;
 import static com.curvelo.ComposeDomain.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.curvelo.api.dto.BookDTO;
-import com.curvelo.api.dto.UserDTO;
-import com.curvelo.api.dto.UserReviewDTO;
+import com.curvelo.adapter.input.restcontroller.dto.BookDTO;
+import com.curvelo.adapter.input.restcontroller.dto.UserDTO;
+import com.curvelo.adapter.input.restcontroller.dto.UserReviewDTO;
 import com.curvelo.core.domain.TotalReviews;
 import com.curvelo.core.domain.User;
 import com.curvelo.core.domain.UserReview;
