@@ -67,8 +67,10 @@ public class BookController {
 
   @PostMapping("/{bookId}/reviews")
   @ResponseStatus(HttpStatus.CREATED)
-  public ReviewDTO postReview(@PathVariable Integer bookId, @RequestBody ReviewDTO body) {
-    var result = reviewService.create(bookId, ReviewMapper.toEntity(body));
+  public ReviewDTO postReview(
+      @PathVariable final Integer bookId,
+      @RequestBody final ReviewDTO body) {
+    final var result = reviewService.create(bookId, ReviewMapper.toEntity(body));
     return ReviewMapper.toDTO(result);
   }
 
