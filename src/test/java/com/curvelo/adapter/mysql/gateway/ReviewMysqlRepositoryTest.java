@@ -9,6 +9,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.curvelo.adapter.mysql.mapper.ReviewAdapterMysql;
+import com.curvelo.core.domain.Review;
+import com.curvelo.core.domain.User;
 import com.curvelo.database.repository.ReviewRepository;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
@@ -24,24 +27,45 @@ class ReviewMysqlRepositoryTest {
   @Mock
   private ReviewRepository reviewRepository;
 
+  @Mock
+  private ReviewAdapterMysql reviewAdapterMysql;
+
   @InjectMocks
   private ReviewMysqlRepository reviewMysqlRepository;
 
   @Test
   void shouldReturnABookById() {
 
-    var bookModel1 = createBook(11).build();
-    var bookModel2 = createBook(11).build();
+    final var bookModel1 = createBook(11).build();
 
-    var user1 = createUser(21).build();
-    var user2 = createUser(22).build();
+    final var user1 = createUser(21).build();
+    final var user2 = createUser(22).build();
 
-    var review1 = createReview(121, user1, bookModel1).build();
-    var review2 = createReview(122, user2, bookModel1).build();
-    var review3 = createReview(123, user2, bookModel2).build();
+    final var reviewModel1 = createReview(121, user1, bookModel1).build();
+    final var reviewModel2 = createReview(122, user2, bookModel1).build();
+
+    final var review1 = Review.of(
+        121,
+        4,
+        "excelente leitura",
+        User.of(21, "name")
+    );
+
+    final var review2 = Review.of(
+        122,
+        4,
+        "excelente leitura",
+        User.of(22, "name")
+    );
 
     when(reviewRepository.findByBookId(12))
-        .thenReturn(List.of(review1, review2));
+        .thenReturn(List.of(reviewModel1, reviewModel2));
+
+    when(reviewAdapterMysql.toDomain(reviewModel1))
+        .thenReturn(review1);
+
+    when(reviewAdapterMysql.toDomain(reviewModel2))
+        .thenReturn(review2);
 
     var result = reviewMysqlRepository.findByBookId(12);
 

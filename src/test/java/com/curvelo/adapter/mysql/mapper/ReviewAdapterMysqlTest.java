@@ -1,13 +1,26 @@
 package com.curvelo.adapter.mysql.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+import com.curvelo.core.domain.User;
 import com.curvelo.database.model.BookModel;
 import com.curvelo.database.model.ReviewModel;
 import com.curvelo.database.model.UserModel;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class ReviewAdapterMysqlTest {
+
+  @Mock
+  private UserAdapterMysql userAdapterMysql;
+
+  @InjectMocks
+  private ReviewAdapterMysql reviewAdapterMysql;
 
   @Test
   void shouldMapperReviewModelToReviewDomain() {
@@ -32,7 +45,10 @@ class ReviewAdapterMysqlTest {
         .score(9)
         .build();
 
-    var result = ReviewAdapterMysql.toDomain(review);
+    when(userAdapterMysql.toDomain(user))
+        .thenReturn(User.of(99, "Igor"));
+
+    var result = reviewAdapterMysql.toDomain(review);
 
     assertThat(result.getId()).isEqualTo(21);
     assertThat(result.getUser().getId()).isEqualTo(99);

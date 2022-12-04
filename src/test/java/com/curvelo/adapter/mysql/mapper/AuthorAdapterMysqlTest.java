@@ -5,12 +5,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class AuthorAdapterMysqlTest {
+
+  @InjectMocks
+  private AuthorAdapterMysql authorAdapterMysql;
 
   @Test
   void shouldMapperAuthorModelWithOnlyOneAuthorToListAuthorDomain() {
-    var result = AuthorAdapterMysql.toDomain("J.R.R. Tolkien");
+    var result = authorAdapterMysql.toDomain("J.R.R. Tolkien");
 
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getName()).isEqualTo("J.R.R. Tolkien");
@@ -20,7 +27,7 @@ class AuthorAdapterMysqlTest {
   void shouldMapperAuthorModelWithThreeAuthorsToListAuthorDomain() {
     var authors = "Geoffrey G. Parker" + SEPARATOR_AUTHOR_MODEL + "Marshall W. Van Alstyne"
         + SEPARATOR_AUTHOR_MODEL + "Sangeet Paul Choudary";
-    var result = AuthorAdapterMysql.toDomain(authors);
+    var result = authorAdapterMysql.toDomain(authors);
 
     assertThat(result).hasSize(3);
     assertThat(result.get(0).getName()).isEqualTo("Geoffrey G. Parker");
@@ -30,14 +37,14 @@ class AuthorAdapterMysqlTest {
 
   @Test
   void shouldReturnIllegalArgumentExceptionWhenAuthorModelIsNull() {
-    assertThatThrownBy(() -> AuthorAdapterMysql.toDomain(null))
+    assertThatThrownBy(() -> authorAdapterMysql.toDomain(null))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Author is required");
   }
 
   @Test
   void shouldReturnIllegalArgumentExceptionWhenAuthorModelIsEmpty() {
-    assertThatThrownBy(() -> AuthorAdapterMysql.toDomain(""))
+    assertThatThrownBy(() -> authorAdapterMysql.toDomain(""))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Author is required");
   }

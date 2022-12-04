@@ -15,11 +15,15 @@ public class BookMysqlRepository implements BookDomainRepository {
 
   private final BookRepository bookRepository;
   private final ReviewRepository reviewRepository;
+  private final BookAdapterMysql bookAdapterMysql;
 
-  public BookMysqlRepository(BookRepository bookRepository,
-      ReviewRepository reviewRepository) {
+  public BookMysqlRepository(
+      final BookRepository bookRepository,
+      final ReviewRepository reviewRepository,
+      final BookAdapterMysql bookAdapterMysql) {
     this.bookRepository = bookRepository;
     this.reviewRepository = reviewRepository;
+    this.bookAdapterMysql = bookAdapterMysql;
   }
 
   @Override
@@ -27,20 +31,20 @@ public class BookMysqlRepository implements BookDomainRepository {
     var reviewsModel = reviewRepository.findByBookId(bookId);
 
     return bookRepository.findById(bookId)
-        .map(model -> BookAdapterMysql.toDomain(model, reviewsModel))
+        .map(model -> bookAdapterMysql.toDomain(model, reviewsModel))
         .orElseThrow(() -> new EntityNotFoundException("Book not found"));
   }
 
   @Override
   public Book save(Book book) {
-    var bookSaved = bookRepository.save(BookAdapterMysql.toModel(book));
-    return BookAdapterMysql.toDomain(bookSaved);
+    var bookSaved = bookRepository.save(bookAdapterMysql.toModel(book));
+    return bookAdapterMysql.toDomain(bookSaved);
   }
 
   @Override
   public List<Book> findAll() {
     return bookRepository.findAll()
-        .stream().map(BookAdapterMysql::toDomain)
+        .stream().map(bookAdapterMysql::toDomain)
         .collect(Collectors.toList());
   }
 }
