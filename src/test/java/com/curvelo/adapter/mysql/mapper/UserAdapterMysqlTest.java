@@ -4,8 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.curvelo.database.model.UserModel;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class UserAdapterMysqlTest {
+
+  @InjectMocks
+  private UserAdapterMysql userAdapterMysql;
 
   @Test
   void shouldMapperUserModelToUserDomain() {
@@ -14,7 +21,7 @@ class UserAdapterMysqlTest {
         .name("Igor")
         .build();
 
-    var result = UserAdapterMysql.toDomain(user);
+    var result = userAdapterMysql.toDomain(user);
 
     assertThat(result.getId()).isEqualTo(99);
     assertThat(result.getName()).isEqualTo("Igor");

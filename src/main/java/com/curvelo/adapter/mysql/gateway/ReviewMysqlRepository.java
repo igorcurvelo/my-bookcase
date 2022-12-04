@@ -12,16 +12,19 @@ import org.springframework.stereotype.Component;
 public class ReviewMysqlRepository implements ReviewDomainRepository {
 
   private final ReviewRepository reviewRepository;
+  private final ReviewAdapterMysql reviewAdapterMysql;
 
   public ReviewMysqlRepository(
-      ReviewRepository reviewRepository) {
+      final ReviewRepository reviewRepository,
+      final ReviewAdapterMysql reviewAdapterMysql) {
     this.reviewRepository = reviewRepository;
+    this.reviewAdapterMysql = reviewAdapterMysql;
   }
 
   @Override
   public List<Review> findByBookId(int bookId) {
     return reviewRepository.findByBookId(bookId)
-        .stream().map(ReviewAdapterMysql::toDomain)
+        .stream().map(reviewAdapterMysql::toDomain)
         .collect(Collectors.toList());
   }
 }

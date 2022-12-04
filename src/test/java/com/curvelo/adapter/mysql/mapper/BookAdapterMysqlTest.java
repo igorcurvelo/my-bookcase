@@ -4,11 +4,29 @@ import static com.curvelo.ComposeModel.createBook;
 import static com.curvelo.ComposeModel.createReview;
 import static com.curvelo.ComposeModel.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
+import com.curvelo.core.domain.Author;
+import com.curvelo.core.domain.Review;
+import com.curvelo.core.domain.User;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class BookAdapterMysqlTest {
+
+  @Mock
+  private AuthorAdapterMysql authorAdapterMysql;
+
+  @Mock
+  private ReviewAdapterMysql reviewAdapterMysql;
+
+  @InjectMocks
+  private BookAdapterMysql bookAdapterMysql;
 
   @Test
   void shouldMapperBookModelToBookDomain() {
@@ -16,7 +34,18 @@ class BookAdapterMysqlTest {
     var user = createUser(2).build();
     var review = createReview(3, user, book).build();
 
-    var result = BookAdapterMysql.toDomain(book, List.of(review));
+    when(authorAdapterMysql.toDomain(book.getAuthor()))
+        .thenReturn(List.of(Author.of("J.R.R. Tolkien")));
+
+    when(reviewAdapterMysql.toDomain(review))
+        .thenReturn(Review.of(
+            3,
+            4,
+            "excelente leitura",
+            User.of(2, "Igor")
+        ));
+
+    var result = bookAdapterMysql.toDomain(book, List.of(review));
 
     assertThat(result.getId()).isEqualTo(1);
     assertThat(result.getIsbn().getValue()).isEqualTo("9788533615540");

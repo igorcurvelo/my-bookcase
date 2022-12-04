@@ -7,10 +7,15 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.curvelo.adapter.mysql.mapper.BookAdapterMysql;
 import com.curvelo.core.domain.Author;
 import com.curvelo.core.domain.Book;
 import com.curvelo.core.domain.Isbn;
+import com.curvelo.core.domain.Review;
+import com.curvelo.core.domain.User;
 import com.curvelo.database.model.BookModel;
+import com.curvelo.database.model.ReviewModel;
+import com.curvelo.database.model.UserModel;
 import com.curvelo.database.repository.BookRepository;
 import com.curvelo.database.repository.ReviewRepository;
 import java.util.List;
@@ -31,18 +36,49 @@ class BookMysqlRepositoryTest {
   @Mock
   private ReviewRepository reviewRepository;
 
+  @Mock
+  private BookAdapterMysql bookAdapterMysql;
+
   @InjectMocks
   private BookMysqlRepository bookMysqlRepository;
 
   @Test
   void shouldReturnABookById() {
 
-    var bookModel = createBook(12).build();
+    final var bookModel = createBook(12).build();
+
+    final var reviewsModel = List.of(ReviewModel.builder()
+        .id(123)
+        .score(4)
+        .comment("great book")
+        .book(bookModel)
+        .user(UserModel.builder().id(321).name("Name").build())
+        .build());
+
+    final var book = Book.of(
+        12,
+        "Hobbit",
+        Isbn.of("9788533615540"),
+        List.of(Author.of("J.R.R. Tolkien")),
+        250,
+        List.of(Review.of(
+            123,
+            4,
+            "great book",
+            User.of(321, "Name")
+        ))
+    );
 
     when(bookRepository.findById(12))
         .thenReturn(Optional.of(bookModel));
 
-    var result = bookMysqlRepository.findById(12);
+    when(reviewRepository.findByBookId(12))
+        .thenReturn(reviewsModel);
+
+    when(bookAdapterMysql.toDomain(bookModel, reviewsModel))
+        .thenReturn(book);
+
+    final var result = bookMysqlRepository.findById(12);
 
     assertThat(result.getId()).isEqualTo(12);
     assertThat(result.getIsbn().getValue()).isEqualTo("9788533615540");
@@ -89,13 +125,24 @@ class BookMysqlRepositoryTest {
         .isbn("978-8532530783")
         .numberOfPages(253)
         .build();
-    when(bookRepository.save(bookModel))
-        .thenReturn(bookModelSaved);
-
     final var book =  Book.of(null, "Hobbit",
         Isbn.of("978-8532530783"),
         List.of(Author.of("J.R.R. Tolkien")),
         253, List.of());
+
+    final var bookResult =  Book.of(24, "Hobbit",
+        Isbn.of("978-8532530783"),
+        List.of(Author.of("J.R.R. Tolkien")),
+        253, List.of());
+
+    when(bookAdapterMysql.toModel(book))
+        .thenReturn(bookModel);
+
+    when(bookRepository.save(bookModel))
+        .thenReturn(bookModelSaved);
+
+    when(bookAdapterMysql.toDomain(bookModelSaved))
+        .thenReturn(bookResult);
 
     final var result = bookMysqlRepository.save(book);
     assertThat(result.getId()).isEqualTo(24);
@@ -111,8 +158,16 @@ class BookMysqlRepositoryTest {
 
     var bookModel = createBook(12).build();
 
+    final var bookResult =  Book.of(12, "Hobbit",
+        Isbn.of("9788533615540"),
+        List.of(Author.of("J.R.R. Tolkien")),
+        250, List.of());
+
     when(bookRepository.findAll())
         .thenReturn(List.of(bookModel));
+
+    when(bookAdapterMysql.toDomain(bookModel))
+        .thenReturn(bookResult);
 
     var result = bookMysqlRepository.findAll();
 

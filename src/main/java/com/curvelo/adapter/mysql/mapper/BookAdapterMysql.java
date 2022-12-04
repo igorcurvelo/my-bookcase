@@ -7,35 +7,45 @@ import com.curvelo.database.model.ReviewModel;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BookAdapterMysql {
 
-  private BookAdapterMysql() {}
+  private final AuthorAdapterMysql authorAdapterMysql;
+  private final ReviewAdapterMysql reviewAdapterMysql;
 
-  public static Book toDomain(final BookModel bookModel) {
+  public BookAdapterMysql(
+      final AuthorAdapterMysql authorAdapterMysql,
+      final ReviewAdapterMysql reviewAdapterMysql) {
+    this.authorAdapterMysql = authorAdapterMysql;
+    this.reviewAdapterMysql = reviewAdapterMysql;
+  }
+
+  public Book toDomain(final BookModel bookModel) {
     return Book.of(
             bookModel.getId(),
             bookModel.getTitle(),
             Isbn.of(bookModel.getIsbn()),
-            AuthorAdapterMysql.toDomain(bookModel.getAuthor()),
+            authorAdapterMysql.toDomain(bookModel.getAuthor()),
             bookModel.getNumberOfPages(), null);
   }
 
-  public static Book toDomain(final BookModel bookModel,
+  public Book toDomain(final BookModel bookModel,
                               final List<ReviewModel> reviews) {
     return Book.of(
             bookModel.getId(),
             bookModel.getTitle(),
             Isbn.of(bookModel.getIsbn()),
-            AuthorAdapterMysql.toDomain(bookModel.getAuthor()),
+            authorAdapterMysql.toDomain(bookModel.getAuthor()),
             bookModel.getNumberOfPages(),
-            reviews.stream().map(ReviewAdapterMysql::toDomain).collect(Collectors.toList()));
+            reviews.stream().map(reviewAdapterMysql::toDomain).collect(Collectors.toList()));
   }
 
-  public static BookModel toModel(final Book book) {
+  public BookModel toModel(final Book book) {
     return BookModel.builder()
         .id(book.getId())
-        .author(AuthorAdapterMysql.toModel(book.getAuthors()))
+        .author(authorAdapterMysql.toModel(book.getAuthors()))
         .title(book.getTitle())
         .isbn(book.getIsbn().getValue())
         .numberOfPages(book.getNumberOfPages())
