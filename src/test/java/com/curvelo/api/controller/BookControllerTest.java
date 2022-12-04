@@ -9,11 +9,18 @@ import static org.mockito.Mockito.when;
 import com.curvelo.adapter.input.restcontroller.api.BookController;
 import com.curvelo.adapter.input.restcontroller.dto.BookDTO;
 import com.curvelo.adapter.input.restcontroller.dto.ReviewDTO;
+import com.curvelo.adapter.input.restcontroller.dto.TotalReviewsDTO;
 import com.curvelo.adapter.input.restcontroller.dto.UserDTO;
+import com.curvelo.adapter.input.restcontroller.dto.UserReviewDTO;
 import com.curvelo.adapter.rest.mapper.BookAdapterRest;
+import com.curvelo.adapter.rest.mapper.TotalReviewsAdapterRest;
 import com.curvelo.core.domain.Author;
 import com.curvelo.core.domain.Book;
 import com.curvelo.core.domain.Isbn;
+import com.curvelo.core.domain.TotalReviews;
+import com.curvelo.core.domain.User;
+import com.curvelo.core.domain.UserReview;
+import com.curvelo.core.usecase.CalculateReviewsUseCase;
 import com.curvelo.core.usecase.CreateBookUseCase;
 import com.curvelo.core.usecase.GetterBookUseCase;
 import com.curvelo.database.model.BookModel;
@@ -43,6 +50,12 @@ class BookControllerTest {
 
   @Mock
   private ReviewService reviewService;
+
+  @Mock
+  private CalculateReviewsUseCase calculateReviewsUseCase;
+
+  @Mock
+  private TotalReviewsAdapterRest totalReviewsAdapterRest;
 
   @InjectMocks
   private BookController bookController;
@@ -145,6 +158,99 @@ class BookControllerTest {
     final var result = bookController.postReview(bookId, reviewDto);
 
     assertThat(result.getId()).isEqualTo(23);
-
   }
+
+  @Test
+  void shouldReturnAListOfReviewsWithSuccess() {
+    final var bookId = Integer.valueOf(12);
+    final var reviewModel1 = ReviewModel.builder()
+        .id(23)
+        .book(BookModel.builder()
+            .id(bookId)
+            .isbn("978-8532530783")
+            .numberOfPages(253)
+            .author("J.R.R. Tolkien")
+            .title("Hobbit")
+            .build())
+        .score(4)
+        .user(UserModel.builder()
+            .id(21)
+            .name("Name")
+            .build())
+        .comment("great reading")
+        .build();
+    final var reviewModel2 = ReviewModel.builder()
+        .id(24)
+        .book(BookModel.builder()
+            .id(bookId)
+            .isbn("978-8532530783")
+            .numberOfPages(253)
+            .author("J.R.R. Tolkien")
+            .title("Hobbit")
+            .build())
+        .score(4)
+        .user(UserModel.builder()
+            .id(21)
+            .name("Name")
+            .build())
+        .comment("great reading")
+        .build();
+
+
+    when(reviewService.findByBook(eq(bookId)))
+        .thenReturn(List.of(reviewModel1,reviewModel2));
+
+    final var result = bookController.getAllReview(bookId);
+
+    assertThat(result).hasSize(2);
+    assertThat(result.get(0).getId()).isEqualTo(23);
+    assertThat(result.get(1).getId()).isEqualTo(24);
+  }
+
+  @Test
+  void shouldReturnATotalOfReviewsWithSuccess() {
+    final var bookId = Integer.valueOf(12);
+    final var totalReviews = TotalReviews.of(
+        4.0,
+        List.of(UserReview.of("comment1", User.of(1, "Igor"))),
+        Book.of(12, "Hobbit",
+            Isbn.of("978-8532530783"),
+            List.of(Author.of("J.R.R. Tolkien")),
+        253, List.of()));
+
+    final var totalDto = TotalReviewsDTO.builder()
+        .score(4.0)
+        .book(BookDTO.builder()
+            .id(12)
+            .isbn("978-8532530783")
+            .numberOfPages(253)
+            .authors(List.of("J.R.R. Tolkien"))
+            .title("Hobbit")
+            .build())
+        .comments(List.of(
+            UserReviewDTO.builder()
+                .comment("comment1")
+                .user(UserDTO.builder()
+                    .id(23)
+                    .name("name")
+                    .build())
+                .build()
+        ))
+        .build();
+
+
+    when(calculateReviewsUseCase.calculateReviewsByBook(eq(bookId)))
+        .thenReturn(totalReviews);
+
+    when(totalReviewsAdapterRest.toDTO(totalReviews))
+        .thenReturn(totalDto);
+
+    final var result = bookController.getAllCalculateReview(bookId);
+
+    assertThat(result.getScore()).isEqualTo(4.0);
+    assertThat(result.getBook().getId()).isEqualTo(12);
+    assertThat(result.getComments()).hasSize(1);
+    assertThat(result.getComments().get(0).getComment()).isEqualTo("comment1");
+  }
+
 }
