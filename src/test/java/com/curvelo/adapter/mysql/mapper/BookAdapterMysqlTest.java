@@ -7,6 +7,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.curvelo.core.domain.Author;
+import com.curvelo.core.domain.Book;
+import com.curvelo.core.domain.Isbn;
 import com.curvelo.core.domain.Review;
 import com.curvelo.core.domain.User;
 import java.util.List;
@@ -30,9 +32,9 @@ class BookAdapterMysqlTest {
 
   @Test
   void shouldMapperBookModelToBookDomain() {
-    var book = createBook(1).build();
-    var user = createUser(2).build();
-    var review = createReview(3, user, book).build();
+    final var book = createBook(1).build();
+    final var user = createUser(2).build();
+    final var review = createReview(3, user, book).build();
 
     when(authorAdapterMysql.toDomain(book.getAuthor()))
         .thenReturn(List.of(Author.of("J.R.R. Tolkien")));
@@ -45,7 +47,7 @@ class BookAdapterMysqlTest {
             User.of(2, "Igor")
         ));
 
-    var result = bookAdapterMysql.toDomain(book, List.of(review));
+    final var result = bookAdapterMysql.toDomain(book, List.of(review));
 
     assertThat(result.getId()).isEqualTo(1);
     assertThat(result.getIsbn().getValue()).isEqualTo("9788533615540");
@@ -63,4 +65,49 @@ class BookAdapterMysqlTest {
     assertThat(result.getReviews().get(0).getUser().getName()).isEqualTo("Igor");
   }
 
+  @Test
+  void shouldMapperBookModelToBookDomainWithoutReviews() {
+    final var book = createBook(1).build();
+
+    when(authorAdapterMysql.toDomain(book.getAuthor()))
+        .thenReturn(List.of(Author.of("J.R.R. Tolkien")));
+
+    final var result = bookAdapterMysql.toDomain(book);
+
+    assertThat(result.getId()).isEqualTo(1);
+    assertThat(result.getIsbn().getValue()).isEqualTo("9788533615540");
+    assertThat(result.getNumberOfPages()).isEqualTo(250);
+    assertThat(result.getAuthors()).hasSize(1);
+    assertThat(result.getAuthors().get(0).getName()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.getTitle()).isEqualTo("Hobbit");
+    assertThat(result.getReviews()).hasSize(0);
+  }
+
+  @Test
+  void shouldMapperBookDomainToBookModel() {
+    final var book = Book.of(
+        12,
+        "Hobbit",
+        Isbn.of("9788533615540"),
+        List.of(Author.of("J.R.R. Tolkien")),
+        250,
+        List.of(Review.of(
+            123,
+            4,
+            "great book",
+            User.of(321, "Name")
+        ))
+    );
+
+    when(authorAdapterMysql.toModel(book.getAuthors()))
+        .thenReturn("J.R.R. Tolkien");
+
+    final var result = bookAdapterMysql.toModel(book);
+
+    assertThat(result.getId()).isEqualTo(12);
+    assertThat(result.getIsbn()).isEqualTo("9788533615540");
+    assertThat(result.getNumberOfPages()).isEqualTo(250);
+    assertThat(result.getAuthor()).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.getTitle()).isEqualTo("Hobbit");
+  }
 }
