@@ -4,6 +4,8 @@ import static com.curvelo.constant.Constants.SEPARATOR_AUTHOR_MODEL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.curvelo.core.domain.Author;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,7 +19,7 @@ class AuthorAdapterMysqlTest {
 
   @Test
   void shouldMapperAuthorModelWithOnlyOneAuthorToListAuthorDomain() {
-    var result = authorAdapterMysql.toDomain("J.R.R. Tolkien");
+    final var result = authorAdapterMysql.toDomain("J.R.R. Tolkien");
 
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getName()).isEqualTo("J.R.R. Tolkien");
@@ -25,9 +27,9 @@ class AuthorAdapterMysqlTest {
 
   @Test
   void shouldMapperAuthorModelWithThreeAuthorsToListAuthorDomain() {
-    var authors = "Geoffrey G. Parker" + SEPARATOR_AUTHOR_MODEL + "Marshall W. Van Alstyne"
+    final var authors = "Geoffrey G. Parker" + SEPARATOR_AUTHOR_MODEL + "Marshall W. Van Alstyne"
         + SEPARATOR_AUTHOR_MODEL + "Sangeet Paul Choudary";
-    var result = authorAdapterMysql.toDomain(authors);
+    final var result = authorAdapterMysql.toDomain(authors);
 
     assertThat(result).hasSize(3);
     assertThat(result.get(0).getName()).isEqualTo("Geoffrey G. Parker");
@@ -47,6 +49,14 @@ class AuthorAdapterMysqlTest {
     assertThatThrownBy(() -> authorAdapterMysql.toDomain(""))
         .isInstanceOf(IllegalArgumentException.class)
         .hasMessage("Author is required");
+  }
+
+  @Test
+  void shouldMapperAuthorDomainToAuthorModel() {
+    final var authors = List.of(Author.of("J.R.R. Tolkien"), Author.of("Geoffrey G. Parker"));
+    final var result = authorAdapterMysql.toModel(authors);
+
+    assertThat(result).isEqualTo("J.R.R. Tolkien" + SEPARATOR_AUTHOR_MODEL + "Geoffrey G. Parker");
   }
 
 }

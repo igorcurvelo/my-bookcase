@@ -32,7 +32,7 @@
 		<coverage.branch>1</coverage.branch>
 		<pitest-maven.version>1.9.11</pitest-maven.version>
 		<pitest.version>1.1.0</pitest.version>
-		<mutation.threshold>87</mutation.threshold>
+		<mutation.threshold>96</mutation.threshold>
 		<mutation.scan.code>com.curvelo*</mutation.scan.code>
 		<mutation.scan.test>com.curvelo*</mutation.scan.test>
 		<mutation.skip>false</mutation.skip>

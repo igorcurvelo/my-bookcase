@@ -17,11 +17,6 @@ public class BookServiceImpl implements BookService {
   }
 
   @Override
-  public List<BookModel> findAll() {
-    return bookRepository.findAll();
-  }
-
-  @Override
   public BookModel create(BookModel entity) {
     if(bookRepository.existsByIsbn(entity.getIsbn())) {
       throw new EntityExistsException("book already registered");
