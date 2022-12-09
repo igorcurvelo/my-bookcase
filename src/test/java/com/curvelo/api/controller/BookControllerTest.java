@@ -7,11 +7,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.curvelo.adapter.input.restcontroller.api.BookController;
-import com.curvelo.adapter.input.restcontroller.dto.BookDTO;
-import com.curvelo.adapter.input.restcontroller.dto.ReviewDTO;
-import com.curvelo.adapter.input.restcontroller.dto.TotalReviewsDTO;
-import com.curvelo.adapter.input.restcontroller.dto.UserDTO;
-import com.curvelo.adapter.input.restcontroller.dto.UserReviewDTO;
+import com.curvelo.adapter.input.restcontroller.dto.BookDto;
+import com.curvelo.adapter.input.restcontroller.dto.ReviewDto;
+import com.curvelo.adapter.input.restcontroller.dto.TotalReviewsDto;
+import com.curvelo.adapter.input.restcontroller.dto.UserDto;
+import com.curvelo.adapter.input.restcontroller.dto.UserReviewDto;
 import com.curvelo.adapter.rest.mapper.BookAdapterRest;
 import com.curvelo.adapter.rest.mapper.TotalReviewsAdapterRest;
 import com.curvelo.core.domain.Author;
@@ -62,7 +62,7 @@ class BookControllerTest {
 
   @Test
   void shouldCreateABookWithSuccess() {
-    final var bookDto = BookDTO.builder()
+    final var bookDto = BookDto.builder()
         .id(12)
         .isbn("978-8532530783")
         .numberOfPages(253)
@@ -76,7 +76,7 @@ class BookControllerTest {
 
     Mockito.when(bookAdapterRest.toDomain(bookDto)).thenReturn(book);
     Mockito.when(createBookUseCase.create(book)).thenReturn(book);
-    Mockito.when(bookAdapterRest.toDTO(book)).thenReturn(bookDto);
+    Mockito.when(bookAdapterRest.toDto(book)).thenReturn(bookDto);
 
     final var result = bookController.post(bookDto);
 
@@ -94,7 +94,7 @@ class BookControllerTest {
         .of(12,"Hobbit", Isbn.of("978-8532530783"),
             List.of(Author.of("J.R.R. Tolkien")), 253, null);
 
-    final var bookDto = BookDTO.builder()
+    final var bookDto = BookDto.builder()
         .id(12)
         .isbn("978-8532530783")
         .numberOfPages(253)
@@ -105,7 +105,7 @@ class BookControllerTest {
     when(getterBookUseCase.findAll())
         .thenReturn(List.of(book, book, book));
 
-    when(bookAdapterRest.toDTO(book)).thenReturn(bookDto);
+    when(bookAdapterRest.toDto(book)).thenReturn(bookDto);
 
     final var result = bookController.get();
 
@@ -117,8 +117,8 @@ class BookControllerTest {
   @Test
   void shouldCreateAReviewWithSuccess() {
     final var bookId = Integer.valueOf(12);
-    final var reviewDto = ReviewDTO.builder()
-        .book(BookDTO.builder()
+    final var reviewDto = ReviewDto.builder()
+        .book(BookDto.builder()
             .id(bookId)
             .isbn("978-8532530783")
             .numberOfPages(253)
@@ -126,7 +126,7 @@ class BookControllerTest {
             .title("Hobbit")
             .build())
         .score(4)
-        .user(UserDTO.builder()
+        .user(UserDto.builder()
             .id(21)
             .name("Name")
             .build())
@@ -218,9 +218,9 @@ class BookControllerTest {
             List.of(Author.of("J.R.R. Tolkien")),
         253, List.of()));
 
-    final var totalDto = TotalReviewsDTO.builder()
+    final var totalDto = TotalReviewsDto.builder()
         .score(4.0)
-        .book(BookDTO.builder()
+        .book(BookDto.builder()
             .id(12)
             .isbn("978-8532530783")
             .numberOfPages(253)
@@ -228,9 +228,9 @@ class BookControllerTest {
             .title("Hobbit")
             .build())
         .comments(List.of(
-            UserReviewDTO.builder()
+            UserReviewDto.builder()
                 .comment("comment1")
-                .user(UserDTO.builder()
+                .user(UserDto.builder()
                     .id(23)
                     .name("name")
                     .build())
@@ -242,7 +242,7 @@ class BookControllerTest {
     when(calculateReviewsUseCase.calculateReviewsByBook(eq(bookId)))
         .thenReturn(totalReviews);
 
-    when(totalReviewsAdapterRest.toDTO(totalReviews))
+    when(totalReviewsAdapterRest.toDto(totalReviews))
         .thenReturn(totalDto);
 
     final var result = bookController.getAllCalculateReview(bookId);

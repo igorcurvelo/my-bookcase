@@ -1,14 +1,14 @@
 package com.curvelo.mapper;
 
-import com.curvelo.adapter.input.restcontroller.dto.UserReviewDTO;
-import com.curvelo.adapter.input.restcontroller.dto.UserDTO;
+import com.curvelo.adapter.input.restcontroller.dto.UserDto;
+import com.curvelo.adapter.input.restcontroller.dto.UserReviewDto;
 
 public class UserReviewMapper {
 
   private UserReviewMapper() {}
 
-  public static UserReviewDTO toDTO(final String comment, final UserDTO user) {
-    return UserReviewDTO.builder()
+  public static UserReviewDto toDto(final String comment, final UserDto user) {
+    return UserReviewDto.builder()
         .comment(comment)
         .user(user)
         .build();

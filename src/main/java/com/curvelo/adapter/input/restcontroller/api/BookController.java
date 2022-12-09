@@ -1,10 +1,10 @@
 package com.curvelo.adapter.input.restcontroller.api;
 
+import com.curvelo.adapter.input.restcontroller.dto.BookDto;
+import com.curvelo.adapter.input.restcontroller.dto.ReviewDto;
+import com.curvelo.adapter.input.restcontroller.dto.TotalReviewsDto;
 import com.curvelo.adapter.rest.mapper.BookAdapterRest;
 import com.curvelo.adapter.rest.mapper.TotalReviewsAdapterRest;
-import com.curvelo.adapter.input.restcontroller.dto.ReviewDTO;
-import com.curvelo.adapter.input.restcontroller.dto.BookDTO;
-import com.curvelo.adapter.input.restcontroller.dto.TotalReviewsDTO;
 import com.curvelo.core.usecase.CalculateReviewsUseCase;
 import com.curvelo.core.usecase.CreateBookUseCase;
 import com.curvelo.core.usecase.GetterBookUseCase;
@@ -52,37 +52,37 @@ public class BookController {
   }
 
   @GetMapping
-  public List<BookDTO> get() {
+  public List<BookDto> get() {
     return getterBookUseCase.findAll().stream()
-        .map(bookAdapterRest::toDTO)
+        .map(bookAdapterRest::toDto)
         .collect(Collectors.toList());
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public BookDTO post(@RequestBody final BookDTO input) {
+  public BookDto post(@RequestBody final BookDto input) {
     final var result = createBookUseCase.create(bookAdapterRest.toDomain(input));
-    return bookAdapterRest.toDTO(result);
+    return bookAdapterRest.toDto(result);
   }
 
   @PostMapping("/{bookId}/reviews")
   @ResponseStatus(HttpStatus.CREATED)
-  public ReviewDTO postReview(
+  public ReviewDto postReview(
       @PathVariable final Integer bookId,
-      @RequestBody final ReviewDTO body) {
+      @RequestBody final ReviewDto body) {
     final var result = reviewService.create(bookId, ReviewMapper.toEntity(body));
-    return ReviewMapper.toDTO(result);
+    return ReviewMapper.toDto(result);
   }
 
   @GetMapping("/{bookId}/reviews")
-  public List<ReviewDTO> getAllReview(@PathVariable Integer bookId) {
+  public List<ReviewDto> getAllReview(@PathVariable Integer bookId) {
     var result = reviewService.findByBook(bookId);
-    return result.stream().map(ReviewMapper::toDTO).collect(Collectors.toList());
+    return result.stream().map(ReviewMapper::toDto).collect(Collectors.toList());
   }
 
   @GetMapping("/{bookId}/reviews/calculate")
-  public TotalReviewsDTO getAllCalculateReview(@PathVariable Integer bookId) {
-    return totalReviewsAdapterRest.toDTO(calculateReviewsUseCase.calculateReviewsByBook(bookId));
+  public TotalReviewsDto getAllCalculateReview(@PathVariable Integer bookId) {
+    return totalReviewsAdapterRest.toDto(calculateReviewsUseCase.calculateReviewsByBook(bookId));
   }
 
 }

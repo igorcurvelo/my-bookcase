@@ -14,11 +14,11 @@ public class CalculateReviewsUseCase {
     this.bookDomainRepository = bookDomainRepository;
   }
 
-  public TotalReviews calculateReviewsByBook(final int bookId){
-    var book = bookDomainRepository.findById(bookId);
+  public TotalReviews calculateReviewsByBook(final int bookId) {
+    final var book = bookDomainRepository.findById(bookId);
 
-    var average = book.getAverageScore();
-    var commentsByUser = book.getComments();
+    final var average = book.getAverageScore();
+    final var commentsByUser = book.getComments();
 
     return TotalReviews.of(average, commentsByUser, book);
   }

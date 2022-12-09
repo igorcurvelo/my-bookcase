@@ -4,7 +4,6 @@ import com.curvelo.core.domain.Book;
 import com.curvelo.core.domain.Isbn;
 import com.curvelo.database.model.BookModel;
 import com.curvelo.database.model.ReviewModel;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;

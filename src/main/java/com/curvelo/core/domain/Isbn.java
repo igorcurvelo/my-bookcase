@@ -25,7 +25,7 @@ public class Isbn {
         .orElseThrow(() -> new IllegalArgumentException("ISBN is invalid"));
 
     if (isbn.length() != 13) {
-        throw new IllegalArgumentException("ISBN must have 13 characters");
+      throw new IllegalArgumentException("ISBN must have 13 characters");
     }
 
     if (!StringUtils.isNumeric(isbn)) {

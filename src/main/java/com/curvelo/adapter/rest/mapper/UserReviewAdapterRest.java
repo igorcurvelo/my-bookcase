@@ -1,6 +1,6 @@
 package com.curvelo.adapter.rest.mapper;
 
-import com.curvelo.adapter.input.restcontroller.dto.UserReviewDTO;
+import com.curvelo.adapter.input.restcontroller.dto.UserReviewDto;
 import com.curvelo.core.domain.UserReview;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
@@ -14,12 +14,12 @@ public class UserReviewAdapterRest {
     this.userAdapterRest = userAdapterRest;
   }
 
-  public UserReviewDTO toDTO(final UserReview userReview) {
+  public UserReviewDto toDto(final UserReview userReview) {
     return Optional.ofNullable(userReview)
         .map(entity ->
-            UserReviewDTO.builder()
+            UserReviewDto.builder()
                 .comment(userReview.getComment())
-                .user(userAdapterRest.toDTO(userReview.getUser())).build()
+                .user(userAdapterRest.toDto(userReview.getUser())).build()
         ).orElseThrow(IllegalArgumentException::new);
   }
 }

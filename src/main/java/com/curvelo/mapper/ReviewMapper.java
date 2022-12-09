@@ -1,25 +1,25 @@
 package com.curvelo.mapper;
 
-import com.curvelo.adapter.input.restcontroller.dto.ReviewDTO;
+import com.curvelo.adapter.input.restcontroller.dto.ReviewDto;
 import com.curvelo.database.model.ReviewModel;
 
 public class ReviewMapper {
 
   private ReviewMapper() {}
 
-  public static ReviewModel toEntity(final ReviewDTO reviewDTO) {
+  public static ReviewModel toEntity(final ReviewDto reviewDto) {
     return ReviewModel.builder()
-                .id(reviewDTO.getId())
-                .user(UserMapper.toEntity(reviewDTO.getUser()))
-                .score(reviewDTO.getScore())
-                .comment(reviewDTO.getComment()).build();
+                .id(reviewDto.getId())
+                .user(UserMapper.toEntity(reviewDto.getUser()))
+                .score(reviewDto.getScore())
+                .comment(reviewDto.getComment()).build();
   }
 
-  public static ReviewDTO toDTO(final ReviewModel reviewModel) {
-    return ReviewDTO.builder()
+  public static ReviewDto toDto(final ReviewModel reviewModel) {
+    return ReviewDto.builder()
                 .id(reviewModel.getId())
-                .book(BookMapper.toDTO(reviewModel.getBook()))
-                .user(UserMapper.toDTO(reviewModel.getUser()))
+                .book(BookMapper.toDto(reviewModel.getBook()))
+                .user(UserMapper.toDto(reviewModel.getUser()))
                 .score(reviewModel.getScore())
                 .comment(reviewModel.getComment()).build();
   }

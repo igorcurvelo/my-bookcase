@@ -6,10 +6,10 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class TotalReviewsDTO {
+public class TotalReviewsDto {
 
   private final Double score;
-  private final List<UserReviewDTO> comments;
-  private final BookDTO book;
+  private final List<UserReviewDto> comments;
+  private final BookDto book;
 
 }

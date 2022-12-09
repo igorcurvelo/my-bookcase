@@ -1,20 +1,20 @@
 package com.curvelo.mapper;
 
-import com.curvelo.adapter.input.restcontroller.dto.UserDTO;
+import com.curvelo.adapter.input.restcontroller.dto.UserDto;
 import com.curvelo.database.model.UserModel;
 
 public class UserMapper {
 
   private UserMapper() {}
 
-  public static UserModel toEntity(final UserDTO userDTO) {
+  public static UserModel toEntity(final UserDto userDto) {
     return UserModel.builder()
-                .id(userDTO.getId())
-                .name(userDTO.getName()).build();
+                .id(userDto.getId())
+                .name(userDto.getName()).build();
   }
 
-  public static UserDTO toDTO(final UserModel userModel) {
-    return UserDTO.builder()
+  public static UserDto toDto(final UserModel userModel) {
+    return UserDto.builder()
                 .id(userModel.getId())
                 .name(userModel.getName()).build();
   }

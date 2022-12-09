@@ -1,18 +1,17 @@
 package com.curvelo.adapter.rest.mapper;
 
-import com.curvelo.adapter.input.restcontroller.dto.BookDTO;
+import com.curvelo.adapter.input.restcontroller.dto.BookDto;
 import com.curvelo.core.domain.Author;
 import com.curvelo.core.domain.Book;
 import com.curvelo.core.domain.Isbn;
-import org.springframework.stereotype.Component;
-
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 @Component
 public class BookAdapterRest {
 
-  public BookDTO toDTO(final Book book) {
-    return BookDTO.builder()
+  public BookDto toDto(final Book book) {
+    return BookDto.builder()
         .id(book.getId())
         .authors(book.getAuthors().stream()
             .map(Author::getName).collect(Collectors.toList()))
@@ -21,7 +20,7 @@ public class BookAdapterRest {
         .numberOfPages(book.getNumberOfPages()).build();
   }
 
-  public Book toDomain(final BookDTO dto) {
+  public Book toDomain(final BookDto dto) {
     return Book.of(
             dto.getId(),
             dto.getTitle(),

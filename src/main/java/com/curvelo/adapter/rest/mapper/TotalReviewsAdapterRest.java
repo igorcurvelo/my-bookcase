@@ -1,11 +1,10 @@
 package com.curvelo.adapter.rest.mapper;
 
-import com.curvelo.adapter.input.restcontroller.dto.TotalReviewsDTO;
+import com.curvelo.adapter.input.restcontroller.dto.TotalReviewsDto;
 import com.curvelo.core.domain.TotalReviews;
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 @Component
 public class TotalReviewsAdapterRest {
@@ -20,15 +19,15 @@ public class TotalReviewsAdapterRest {
     this.userReviewAdapterRest = userReviewAdapterRest;
   }
 
-  public TotalReviewsDTO toDTO(final TotalReviews totalReviews) {
+  public TotalReviewsDto toDto(final TotalReviews totalReviews) {
     return Optional.ofNullable(totalReviews)
         .map(domain ->
-            TotalReviewsDTO.builder()
+            TotalReviewsDto.builder()
                 .score(domain.getScore())
-                .book(bookAdapterRest.toDTO(domain.getBook()))
+                .book(bookAdapterRest.toDto(domain.getBook()))
                 .comments(domain.getComments()
                     .stream()
-                    .map(userReviewAdapterRest::toDTO)
+                    .map(userReviewAdapterRest::toDto)
                     .collect(Collectors.toList()))
                 .build()
         ).orElseThrow(IllegalArgumentException::new);
