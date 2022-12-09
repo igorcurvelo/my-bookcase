@@ -4,9 +4,9 @@ import static com.curvelo.ComposeDomain.createBook;
 import static com.curvelo.ComposeDomain.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.curvelo.adapter.input.restcontroller.dto.BookDTO;
-import com.curvelo.adapter.input.restcontroller.dto.UserDTO;
-import com.curvelo.adapter.input.restcontroller.dto.UserReviewDTO;
+import com.curvelo.adapter.input.restcontroller.dto.BookDto;
+import com.curvelo.adapter.input.restcontroller.dto.UserDto;
+import com.curvelo.adapter.input.restcontroller.dto.UserReviewDto;
 import com.curvelo.core.domain.TotalReviews;
 import com.curvelo.core.domain.User;
 import com.curvelo.core.domain.UserReview;
@@ -33,7 +33,7 @@ class TotalReviewsAdapterRestTest {
   @Test
   void shouldMapperTotalReviewDomainToTotalReviewDto() {
     final var book = createBook(22);
-    final var bookDto = new BookDTO(book.getId(),
+    final var bookDto = new BookDto(book.getId(),
         book.getTitle(), book.getIsbn().getValue(), List.of("J.R.R. Tolkien"), 250);
 
     final var user1 = createUser(11);
@@ -45,15 +45,15 @@ class TotalReviewsAdapterRestTest {
     final var totalReviewsDomain = TotalReviews.of(
         4D, List.of(userReviewDomain1, userReviewDomain2), book);
 
-    Mockito.when(bookAdapterRest.toDTO(book)).thenReturn(bookDto);
-    Mockito.when(userReviewAdapterRest.toDTO(userReviewDomain1))
-        .thenReturn(new UserReviewDTO(userReviewDomain1.getComment(),
-            new UserDTO(11, "Igor")));
-    Mockito.when(userReviewAdapterRest.toDTO(userReviewDomain2))
-        .thenReturn(new UserReviewDTO(userReviewDomain2.getComment(),
-            new UserDTO(12, "Luiza")));
+    Mockito.when(bookAdapterRest.toDto(book)).thenReturn(bookDto);
+    Mockito.when(userReviewAdapterRest.toDto(userReviewDomain1))
+        .thenReturn(new UserReviewDto(userReviewDomain1.getComment(),
+            new UserDto(11, "Igor")));
+    Mockito.when(userReviewAdapterRest.toDto(userReviewDomain2))
+        .thenReturn(new UserReviewDto(userReviewDomain2.getComment(),
+            new UserDto(12, "Luiza")));
 
-    final var result = totalReviewsAdapterRest.toDTO(totalReviewsDomain);
+    final var result = totalReviewsAdapterRest.toDto(totalReviewsDomain);
 
     assertThat(result.getBook().getId()).isEqualTo(22);
     assertThat(result.getBook().getTitle()).isEqualTo("Hobbit");

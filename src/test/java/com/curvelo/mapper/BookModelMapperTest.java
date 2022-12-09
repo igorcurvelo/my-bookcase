@@ -2,7 +2,7 @@ package com.curvelo.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.curvelo.adapter.input.restcontroller.dto.BookDTO;
+import com.curvelo.adapter.input.restcontroller.dto.BookDto;
 import com.curvelo.database.model.BookModel;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class BookModelMapperTest {
         .title("Hobbit")
         .build();
 
-    var result = BookMapper.toDTO(book);
+    var result = BookMapper.toDto(book);
 
     assertThat(result.getId()).isEqualTo(12);
     assertThat(result.getIsbn()).isEqualTo("123456789");
@@ -31,7 +31,7 @@ class BookModelMapperTest {
 
   @Test
   void shouldMapperBookDtoToBookEntity() {
-    var dto = BookDTO.builder()
+    var dto = BookDto.builder()
         .id(12)
         .isbn("123456789")
         .numberOfPages(250)

@@ -1,5 +1,6 @@
 package com.curvelo.adapter.input.restcontroller.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,9 +8,12 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 @Getter
-public class UserDTO {
+public class BookDto {
 
   private final Integer id;
-  private final String name;
+  private final String title;
+  private final String isbn;
+  private final List<String> authors;
+  private final Integer numberOfPages;
 
 }

@@ -12,7 +12,7 @@ class UserAdapterRestTest {
   void shouldMapperUserDomainToUserDto() {
     final var book = User.of(12, "Igor");
 
-    final var result = new UserAdapterRest().toDTO(book);
+    final var result = new UserAdapterRest().toDto(book);
 
     assertThat(result.getId()).isEqualTo(12);
     assertThat(result.getName()).isEqualTo("Igor");
@@ -20,7 +20,7 @@ class UserAdapterRestTest {
 
   @Test
   void shouldReturnIllegalArgumentExceptionWhenDomainIsNull() {
-    assertThatThrownBy(() -> new UserAdapterRest().toDTO(null))
+    assertThatThrownBy(() -> new UserAdapterRest().toDto(null))
         .isInstanceOf(IllegalArgumentException.class);
   }
 

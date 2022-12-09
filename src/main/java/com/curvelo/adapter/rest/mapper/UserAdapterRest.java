@@ -1,6 +1,6 @@
 package com.curvelo.adapter.rest.mapper;
 
-import com.curvelo.adapter.input.restcontroller.dto.UserDTO;
+import com.curvelo.adapter.input.restcontroller.dto.UserDto;
 import com.curvelo.core.domain.User;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserAdapterRest {
 
-  public UserDTO toDTO(final User user) {
+  public UserDto toDto(final User user) {
     return Optional.ofNullable(user)
         .map(entity ->
-            UserDTO.builder()
+            UserDto.builder()
                 .id(entity.getId())
                 .name(entity.getName()).build()
         ).orElseThrow(IllegalArgumentException::new);

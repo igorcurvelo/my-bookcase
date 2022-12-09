@@ -2,8 +2,8 @@ package com.curvelo.mapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.curvelo.adapter.input.restcontroller.dto.ReviewDTO;
-import com.curvelo.adapter.input.restcontroller.dto.UserDTO;
+import com.curvelo.adapter.input.restcontroller.dto.ReviewDto;
+import com.curvelo.adapter.input.restcontroller.dto.UserDto;
 import com.curvelo.database.model.BookModel;
 import com.curvelo.database.model.ReviewModel;
 import com.curvelo.database.model.UserModel;
@@ -34,7 +34,7 @@ class ReviewModelMapperTest {
         .score(9)
         .build();
 
-    var result = ReviewMapper.toDTO(review);
+    var result = ReviewMapper.toDto(review);
 
     assertThat(result.getId()).isEqualTo(21);
     assertThat(result.getBook().getId()).isEqualTo(12);
@@ -45,12 +45,12 @@ class ReviewModelMapperTest {
 
   @Test
   void shouldMapperReviewDtoToReviewEntity() {
-    var user = UserDTO.builder()
+    var user = UserDto.builder()
         .id(99)
         .name("Igor")
         .build();
 
-    var review = ReviewDTO.builder()
+    var review = ReviewDto.builder()
         .id(21)
         .user(user)
         .comment("excelente livro")

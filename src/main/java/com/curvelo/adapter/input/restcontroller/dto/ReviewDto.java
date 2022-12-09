@@ -1,15 +1,16 @@
 package com.curvelo.adapter.input.restcontroller.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Builder
 @Getter
-public class UserReviewDTO {
+public class ReviewDto {
 
+  private final Integer id;
+  private final Integer score;
   private final String comment;
-  private final UserDTO user;
+  private final BookDto book;
+  private final UserDto user;
 
 }

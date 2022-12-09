@@ -20,7 +20,7 @@ public class CreateBookUseCase {
   }
 
   public Book create(Book book) {
-    if(isbnDomainRepository.existsByIsbn(book.getIsbn())) {
+    if (isbnDomainRepository.existsByIsbn(book.getIsbn())) {
       throw new EntityExistsException("book already registered");
     }
 
