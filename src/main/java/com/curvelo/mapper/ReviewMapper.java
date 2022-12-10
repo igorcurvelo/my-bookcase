@@ -18,7 +18,6 @@ public class ReviewMapper {
   public static ReviewDto toDto(final ReviewModel reviewModel) {
     return ReviewDto.builder()
                 .id(reviewModel.getId())
-                .book(BookMapper.toDto(reviewModel.getBook()))
                 .user(UserMapper.toDto(reviewModel.getUser()))
                 .score(reviewModel.getScore())
                 .comment(reviewModel.getComment()).build();

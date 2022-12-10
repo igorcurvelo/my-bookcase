@@ -2,7 +2,6 @@ package com.curvelo.service;
 
 import com.curvelo.database.model.ReviewModel;
 import com.curvelo.database.repository.ReviewRepository;
-import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,11 +23,6 @@ public class ReviewServiceImpl implements ReviewService {
     reviewModel.setBook(book);
 
     return reviewRepository.save(reviewModel);
-  }
-
-  @Override
-  public List<ReviewModel> findByBook(Integer book) {
-    return reviewRepository.findByBookId(book);
   }
 
 }

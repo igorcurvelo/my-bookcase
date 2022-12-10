@@ -6,6 +6,5 @@ import lombok.Builder;
 public record ReviewDto(Integer id,
                         Integer score,
                         String comment,
-                        BookDto book,
                         UserDto user) {
 }
