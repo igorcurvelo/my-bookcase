@@ -24,13 +24,9 @@ import com.curvelo.core.domain.User;
 import com.curvelo.core.domain.UserReview;
 import com.curvelo.core.usecase.CalculateReviewsUseCase;
 import com.curvelo.core.usecase.CreateBookUseCase;
+import com.curvelo.core.usecase.CreatorReviewUseCase;
 import com.curvelo.core.usecase.GetterBookUseCase;
 import com.curvelo.core.usecase.GetterReviewUseCase;
-import com.curvelo.database.model.BookModel;
-import com.curvelo.database.model.ReviewModel;
-import com.curvelo.database.model.UserModel;
-import com.curvelo.mapper.ReviewMapper;
-import com.curvelo.service.ReviewService;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,6 +42,9 @@ class BookControllerTest {
   private CreateBookUseCase createBookUseCase;
 
   @Mock
+  private CreatorReviewUseCase creatorReviewUseCase;
+
+  @Mock
   private GetterBookUseCase getterBookUseCase;
 
   @Mock
@@ -59,9 +58,6 @@ class BookControllerTest {
 
   @Mock
   private ReviewAdapterRest reviewAdapterRest;
-
-  @Mock
-  private ReviewService reviewService;
 
   @Mock
   private TotalReviewsAdapterRest totalReviewsAdapterRest;
@@ -135,27 +131,38 @@ class BookControllerTest {
         .comment("great reading")
         .build();
 
-    final var reviewModelMapping = ReviewMapper.toEntity(reviewDto);
-    final var reviewModel = ReviewModel.builder()
+    final var reviewDtoResponse = ReviewDto.builder()
         .id(23)
-        .book(BookModel.builder()
-            .id(bookId)
-            .isbn("978-8532530783")
-            .numberOfPages(253)
-            .author("J.R.R. Tolkien")
-            .title("Hobbit")
-            .build())
         .score(4)
-        .user(UserModel.builder()
+        .user(UserDto.builder()
             .id(21)
             .name("Name")
             .build())
         .comment("great reading")
         .build();
 
+    final var reviewSaved = Review.of(
+            23,
+            4,
+            "great reading",
+            User.of(21, "Name")
+        );
 
-    when(reviewService.create(eq(bookId), eq(reviewModelMapping)))
-        .thenReturn(reviewModel);
+    final var review = Review.of(
+        null,
+        4,
+        "great reading",
+        User.of(21, "Name")
+    );
+
+    when(reviewAdapterRest.toDomain(reviewDto))
+        .thenReturn(review);
+
+    when(creatorReviewUseCase.create(bookId, review))
+        .thenReturn(reviewSaved);
+
+    when(reviewAdapterRest.toDto(reviewSaved))
+        .thenReturn(reviewDtoResponse);
 
     final var result = bookController.postReview(bookId, reviewDto);
 

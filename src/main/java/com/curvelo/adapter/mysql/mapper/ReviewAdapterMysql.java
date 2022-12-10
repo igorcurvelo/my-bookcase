@@ -21,4 +21,12 @@ public class ReviewAdapterMysql {
         userAdapterMysql.toDomain(reviewModel.getUser()));
   }
 
+  public ReviewModel toModel(Review review) {
+    return ReviewModel.builder()
+        .id(review.getId())
+        .score(review.getScore())
+        .comment(review.getComment())
+        .user(userAdapterMysql.toModel(review.getUser()))
+        .build();
+  }
 }

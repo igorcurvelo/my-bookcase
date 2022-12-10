@@ -8,10 +8,9 @@ import com.curvelo.adapter.rest.mapper.ReviewAdapterRest;
 import com.curvelo.adapter.rest.mapper.TotalReviewsAdapterRest;
 import com.curvelo.core.usecase.CalculateReviewsUseCase;
 import com.curvelo.core.usecase.CreateBookUseCase;
+import com.curvelo.core.usecase.CreatorReviewUseCase;
 import com.curvelo.core.usecase.GetterBookUseCase;
 import com.curvelo.core.usecase.GetterReviewUseCase;
-import com.curvelo.mapper.ReviewMapper;
-import com.curvelo.service.ReviewService;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("books")
 public class BookController {
 
-  private final ReviewService reviewService;
+  private final CreatorReviewUseCase creatorReviewUseCase;
   private final CalculateReviewsUseCase calculateReviewsUseCase;
   private final CreateBookUseCase createBookUseCase;
   private final GetterBookUseCase getterBookUseCase;
@@ -37,7 +36,7 @@ public class BookController {
   private final TotalReviewsAdapterRest totalReviewsAdapterRest;
 
   public BookController(
-      final ReviewService reviewService,
+      final CreatorReviewUseCase creatorReviewUseCase,
       final CalculateReviewsUseCase calculateReviewsUseCase,
       final CreateBookUseCase createBookUseCase,
       final GetterBookUseCase getterBookUseCase,
@@ -45,7 +44,7 @@ public class BookController {
       final BookAdapterRest bookAdapterRest,
       final ReviewAdapterRest reviewAdapterRest,
       final TotalReviewsAdapterRest totalReviewsAdapterRest) {
-    this.reviewService = reviewService;
+    this.creatorReviewUseCase = creatorReviewUseCase;
     this.calculateReviewsUseCase = calculateReviewsUseCase;
     this.createBookUseCase = createBookUseCase;
     this.getterBookUseCase = getterBookUseCase;
@@ -74,8 +73,8 @@ public class BookController {
   public ReviewDto postReview(
       @PathVariable final Integer bookId,
       @RequestBody final ReviewDto body) {
-    final var result = reviewService.create(bookId, ReviewMapper.toEntity(body));
-    return ReviewMapper.toDto(result);
+    final var result = creatorReviewUseCase.create(bookId, reviewAdapterRest.toDomain(body));
+    return reviewAdapterRest.toDto(result);
   }
 
   @GetMapping("/{bookId}/reviews")
