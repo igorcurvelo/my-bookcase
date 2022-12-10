@@ -19,9 +19,9 @@ class UserModelDomainReviewModelMapperTest {
 
     var result = UserReviewMapper.toDto(comment, user);
 
-    assertThat(result.getUser().getId()).isEqualTo(99);
-    assertThat(result.getUser().getName()).isEqualTo("Igor");
-    assertThat(result.getComment()).isEqualTo("uma boa leitura");
+    assertThat(result.user().id()).isEqualTo(99);
+    assertThat(result.user().name()).isEqualTo("Igor");
+    assertThat(result.comment()).isEqualTo("uma boa leitura");
   }
 
 }

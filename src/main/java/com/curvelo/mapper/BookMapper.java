@@ -14,11 +14,11 @@ public class BookMapper {
 
   public static BookModel toEntity(final BookDto bookDto) {
     return BookModel.builder()
-                .id(bookDto.getId())
-                .author(String.join(Constants.SEPARATOR_AUTHOR_MODEL, bookDto.getAuthors()))
-                .title(bookDto.getTitle())
-                .isbn(bookDto.getIsbn())
-                .numberOfPages(bookDto.getNumberOfPages()).build();
+                .id(bookDto.id())
+                .author(String.join(Constants.SEPARATOR_AUTHOR_MODEL, bookDto.authors()))
+                .title(bookDto.title())
+                .isbn(bookDto.isbn())
+                .numberOfPages(bookDto.numberOfPages()).build();
   }
 
   public static BookDto toDto(final BookModel bookModel) {

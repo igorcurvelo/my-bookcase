@@ -17,8 +17,8 @@ class UserModelDomainMapperTest {
 
     var result = UserMapper.toDto(user);
 
-    assertThat(result.getId()).isEqualTo(99);
-    assertThat(result.getName()).isEqualTo("Igor");
+    assertThat(result.id()).isEqualTo(99);
+    assertThat(result.name()).isEqualTo("Igor");
   }
 
   @Test

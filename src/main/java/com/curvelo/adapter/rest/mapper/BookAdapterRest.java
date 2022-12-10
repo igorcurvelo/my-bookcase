@@ -22,10 +22,10 @@ public class BookAdapterRest {
 
   public Book toDomain(final BookDto dto) {
     return Book.of(
-            dto.getId(),
-            dto.getTitle(),
-            Isbn.of(dto.getIsbn()),
-            dto.getAuthors().stream().map(Author::of).collect(Collectors.toList()),
-            dto.getNumberOfPages(), null);
+            dto.id(),
+            dto.title(),
+            Isbn.of(dto.isbn()),
+            dto.authors().stream().map(Author::of).collect(Collectors.toList()),
+            dto.numberOfPages(), null);
   }
 }

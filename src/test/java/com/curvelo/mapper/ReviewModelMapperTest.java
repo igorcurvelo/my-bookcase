@@ -36,11 +36,11 @@ class ReviewModelMapperTest {
 
     var result = ReviewMapper.toDto(review);
 
-    assertThat(result.getId()).isEqualTo(21);
-    assertThat(result.getBook().getId()).isEqualTo(12);
-    assertThat(result.getUser().getId()).isEqualTo(99);
-    assertThat(result.getComment()).isEqualTo("excelente livro");
-    assertThat(result.getScore()).isEqualTo(9);
+    assertThat(result.id()).isEqualTo(21);
+    assertThat(result.book().id()).isEqualTo(12);
+    assertThat(result.user().id()).isEqualTo(99);
+    assertThat(result.comment()).isEqualTo("excelente livro");
+    assertThat(result.score()).isEqualTo(9);
   }
 
   @Test

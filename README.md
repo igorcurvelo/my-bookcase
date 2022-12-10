@@ -3,7 +3,7 @@
 
 ## Tecnologias e versões:
 
-- Java 11
+- Java 17
 - Maven 3.8.1
 - Spring Boot 2.5.2
 - Swagger 2

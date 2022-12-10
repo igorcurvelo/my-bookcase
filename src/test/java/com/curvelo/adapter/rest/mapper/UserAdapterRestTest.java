@@ -14,8 +14,8 @@ class UserAdapterRestTest {
 
     final var result = new UserAdapterRest().toDto(book);
 
-    assertThat(result.getId()).isEqualTo(12);
-    assertThat(result.getName()).isEqualTo("Igor");
+    assertThat(result.id()).isEqualTo(12);
+    assertThat(result.name()).isEqualTo("Igor");
   }
 
   @Test

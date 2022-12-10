@@ -20,8 +20,8 @@
 		<jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
 		<springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
 		<mysql-connector-java.version>8.0.30</mysql-connector-java.version>
-		<mysql.version>1.16.0</mysql.version>
-		<assertj-core.version>3.20.2</assertj-core.version>
+		<mysql.version>1.17.6</mysql.version>
+		<assertj-core.version>3.23.1</assertj-core.version>
 		<javafaker.version>1.0.2</javafaker.version>
 		<flyway-core.version>9.8.3</flyway-core.version>
 		<rest-assured.version>4.4.0</rest-assured.version>

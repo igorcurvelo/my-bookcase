@@ -55,23 +55,23 @@ class TotalReviewsAdapterRestTest {
 
     final var result = totalReviewsAdapterRest.toDto(totalReviewsDomain);
 
-    assertThat(result.getBook().getId()).isEqualTo(22);
-    assertThat(result.getBook().getTitle()).isEqualTo("Hobbit");
-    assertThat(result.getBook().getAuthors()).hasSize(1);
-    assertThat(result.getBook().getAuthors().get(0)).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.getBook().getIsbn()).isEqualTo("9788533615540");
-    assertThat(result.getBook().getNumberOfPages()).isEqualTo(250);
+    assertThat(result.book().id()).isEqualTo(22);
+    assertThat(result.book().title()).isEqualTo("Hobbit");
+    assertThat(result.book().authors()).hasSize(1);
+    assertThat(result.book().authors().get(0)).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.book().isbn()).isEqualTo("9788533615540");
+    assertThat(result.book().numberOfPages()).isEqualTo(250);
 
-    assertThat(result.getComments()).hasSize(2);
-    assertThat(result.getComments().get(0).getUser().getId()).isEqualTo(11);
-    assertThat(result.getComments().get(0).getUser().getName()).isEqualTo("Igor");
-    assertThat(result.getComments().get(0).getComment()).isEqualTo("Ótimo livro");
+    assertThat(result.comments()).hasSize(2);
+    assertThat(result.comments().get(0).user().id()).isEqualTo(11);
+    assertThat(result.comments().get(0).user().name()).isEqualTo("Igor");
+    assertThat(result.comments().get(0).comment()).isEqualTo("Ótimo livro");
 
-    assertThat(result.getComments().get(1).getUser().getId()).isEqualTo(12);
-    assertThat(result.getComments().get(1).getUser().getName()).isEqualTo("Luiza");
-    assertThat(result.getComments().get(1).getComment()).isEqualTo("Boa leitura");
+    assertThat(result.comments().get(1).user().id()).isEqualTo(12);
+    assertThat(result.comments().get(1).user().name()).isEqualTo("Luiza");
+    assertThat(result.comments().get(1).comment()).isEqualTo("Boa leitura");
 
-    assertThat(result.getScore()).isEqualTo(4D);
+    assertThat(result.score()).isEqualTo(4D);
 
   }
 
