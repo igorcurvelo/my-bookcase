@@ -22,4 +22,12 @@ public class ReviewAdapterRest {
         .build();
   }
 
+  public Review toDomain(ReviewDto dto) {
+    return Review.of(
+        dto.id(),
+        dto.score(),
+        dto.comment(),
+        userAdapterRest.toDomain(dto.user())
+    );
+  }
 }

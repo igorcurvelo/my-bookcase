@@ -16,4 +16,10 @@ public class UserAdapterRest {
                 .name(entity.getName()).build()
         ).orElseThrow(IllegalArgumentException::new);
   }
+
+  public User toDomain(UserDto user) {
+    return User.of(
+        user.id(), user.name()
+    );
+  }
 }
