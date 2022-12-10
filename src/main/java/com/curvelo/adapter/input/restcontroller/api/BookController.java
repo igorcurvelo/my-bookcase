@@ -4,12 +4,13 @@ import com.curvelo.adapter.input.restcontroller.dto.BookDto;
 import com.curvelo.adapter.input.restcontroller.dto.ReviewDto;
 import com.curvelo.adapter.input.restcontroller.dto.TotalReviewsDto;
 import com.curvelo.adapter.rest.mapper.BookAdapterRest;
+import com.curvelo.adapter.rest.mapper.ReviewAdapterRest;
 import com.curvelo.adapter.rest.mapper.TotalReviewsAdapterRest;
 import com.curvelo.core.usecase.CalculateReviewsUseCase;
 import com.curvelo.core.usecase.CreateBookUseCase;
 import com.curvelo.core.usecase.GetterBookUseCase;
+import com.curvelo.core.usecase.GetterReviewUseCase;
 import com.curvelo.mapper.ReviewMapper;
-import com.curvelo.service.BookService;
 import com.curvelo.service.ReviewService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,22 +31,27 @@ public class BookController {
   private final CalculateReviewsUseCase calculateReviewsUseCase;
   private final CreateBookUseCase createBookUseCase;
   private final GetterBookUseCase getterBookUseCase;
+  private final GetterReviewUseCase getterReviewUseCase;
   private final BookAdapterRest bookAdapterRest;
+  private final ReviewAdapterRest reviewAdapterRest;
   private final TotalReviewsAdapterRest totalReviewsAdapterRest;
 
   public BookController(
-      final BookService bookService,
       final ReviewService reviewService,
       final CalculateReviewsUseCase calculateReviewsUseCase,
       final CreateBookUseCase createBookUseCase,
       final GetterBookUseCase getterBookUseCase,
+      final GetterReviewUseCase getterReviewUseCase,
       final BookAdapterRest bookAdapterRest,
+      final ReviewAdapterRest reviewAdapterRest,
       final TotalReviewsAdapterRest totalReviewsAdapterRest) {
     this.reviewService = reviewService;
     this.calculateReviewsUseCase = calculateReviewsUseCase;
     this.createBookUseCase = createBookUseCase;
     this.getterBookUseCase = getterBookUseCase;
+    this.getterReviewUseCase = getterReviewUseCase;
     this.bookAdapterRest = bookAdapterRest;
+    this.reviewAdapterRest = reviewAdapterRest;
     this.totalReviewsAdapterRest = totalReviewsAdapterRest;
   }
 
@@ -74,8 +80,8 @@ public class BookController {
 
   @GetMapping("/{bookId}/reviews")
   public List<ReviewDto> getAllReview(@PathVariable Integer bookId) {
-    var result = reviewService.findByBook(bookId);
-    return result.stream().map(ReviewMapper::toDto).collect(Collectors.toList());
+    final var result = getterReviewUseCase.findByBook(bookId);
+    return result.stream().map(reviewAdapterRest::toDto).collect(Collectors.toList());
   }
 
   @GetMapping("/{bookId}/reviews/calculate")

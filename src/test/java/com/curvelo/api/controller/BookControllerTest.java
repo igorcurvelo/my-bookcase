@@ -13,16 +13,19 @@ import com.curvelo.adapter.input.restcontroller.dto.TotalReviewsDto;
 import com.curvelo.adapter.input.restcontroller.dto.UserDto;
 import com.curvelo.adapter.input.restcontroller.dto.UserReviewDto;
 import com.curvelo.adapter.rest.mapper.BookAdapterRest;
+import com.curvelo.adapter.rest.mapper.ReviewAdapterRest;
 import com.curvelo.adapter.rest.mapper.TotalReviewsAdapterRest;
 import com.curvelo.core.domain.Author;
 import com.curvelo.core.domain.Book;
 import com.curvelo.core.domain.Isbn;
+import com.curvelo.core.domain.Review;
 import com.curvelo.core.domain.TotalReviews;
 import com.curvelo.core.domain.User;
 import com.curvelo.core.domain.UserReview;
 import com.curvelo.core.usecase.CalculateReviewsUseCase;
 import com.curvelo.core.usecase.CreateBookUseCase;
 import com.curvelo.core.usecase.GetterBookUseCase;
+import com.curvelo.core.usecase.GetterReviewUseCase;
 import com.curvelo.database.model.BookModel;
 import com.curvelo.database.model.ReviewModel;
 import com.curvelo.database.model.UserModel;
@@ -46,13 +49,19 @@ class BookControllerTest {
   private GetterBookUseCase getterBookUseCase;
 
   @Mock
-  private BookAdapterRest bookAdapterRest;
-
-  @Mock
-  private ReviewService reviewService;
+  private GetterReviewUseCase getterReviewUseCase;
 
   @Mock
   private CalculateReviewsUseCase calculateReviewsUseCase;
+
+  @Mock
+  private BookAdapterRest bookAdapterRest;
+
+  @Mock
+  private ReviewAdapterRest reviewAdapterRest;
+
+  @Mock
+  private ReviewService reviewService;
 
   @Mock
   private TotalReviewsAdapterRest totalReviewsAdapterRest;
@@ -118,13 +127,6 @@ class BookControllerTest {
   void shouldCreateAReviewWithSuccess() {
     final var bookId = Integer.valueOf(12);
     final var reviewDto = ReviewDto.builder()
-        .book(BookDto.builder()
-            .id(bookId)
-            .isbn("978-8532530783")
-            .numberOfPages(253)
-            .authors(List.of("J.R.R. Tolkien"))
-            .title("Hobbit")
-            .build())
         .score(4)
         .user(UserDto.builder()
             .id(21)
@@ -163,42 +165,44 @@ class BookControllerTest {
   @Test
   void shouldReturnAListOfReviewsWithSuccess() {
     final var bookId = Integer.valueOf(12);
-    final var reviewModel1 = ReviewModel.builder()
+    final var review1 = Review.of(23,
+        4,
+        "great reading",
+        User.of(21, "Name"));
+    final var review2 = Review.of(24,
+        4,
+        "great reading",
+        User.of(21, "Name"));
+
+    final var reviewDto1 = ReviewDto.builder()
         .id(23)
-        .book(BookModel.builder()
-            .id(bookId)
-            .isbn("978-8532530783")
-            .numberOfPages(253)
-            .author("J.R.R. Tolkien")
-            .title("Hobbit")
-            .build())
         .score(4)
-        .user(UserModel.builder()
+        .comment("great reading")
+        .user(UserDto.builder()
             .id(21)
             .name("Name")
             .build())
-        .comment("great reading")
         .build();
-    final var reviewModel2 = ReviewModel.builder()
+
+    final var reviewDto2 = ReviewDto.builder()
         .id(24)
-        .book(BookModel.builder()
-            .id(bookId)
-            .isbn("978-8532530783")
-            .numberOfPages(253)
-            .author("J.R.R. Tolkien")
-            .title("Hobbit")
-            .build())
         .score(4)
-        .user(UserModel.builder()
+        .comment("great reading")
+        .user(UserDto.builder()
             .id(21)
             .name("Name")
             .build())
-        .comment("great reading")
         .build();
 
 
-    when(reviewService.findByBook(eq(bookId)))
-        .thenReturn(List.of(reviewModel1,reviewModel2));
+    when(getterReviewUseCase.findByBook(eq(bookId)))
+        .thenReturn(List.of(review1,review2));
+
+    when(reviewAdapterRest.toDto(review1))
+        .thenReturn(reviewDto1);
+
+    when(reviewAdapterRest.toDto(review2))
+        .thenReturn(reviewDto2);
 
     final var result = bookController.getAllReview(bookId);
 
