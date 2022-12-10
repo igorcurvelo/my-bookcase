@@ -21,12 +21,12 @@ class BookModelMapperTest {
 
     var result = BookMapper.toDto(book);
 
-    assertThat(result.getId()).isEqualTo(12);
-    assertThat(result.getIsbn()).isEqualTo("123456789");
-    assertThat(result.getNumberOfPages()).isEqualTo(250);
-    assertThat(result.getAuthors()).hasSize(1);
-    assertThat(result.getAuthors().get(0)).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.getTitle()).isEqualTo("Hobbit");
+    assertThat(result.id()).isEqualTo(12);
+    assertThat(result.isbn()).isEqualTo("123456789");
+    assertThat(result.numberOfPages()).isEqualTo(250);
+    assertThat(result.authors()).hasSize(1);
+    assertThat(result.authors().get(0)).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.title()).isEqualTo("Hobbit");
   }
 
   @Test

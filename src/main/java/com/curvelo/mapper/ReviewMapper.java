@@ -9,10 +9,10 @@ public class ReviewMapper {
 
   public static ReviewModel toEntity(final ReviewDto reviewDto) {
     return ReviewModel.builder()
-                .id(reviewDto.getId())
-                .user(UserMapper.toEntity(reviewDto.getUser()))
-                .score(reviewDto.getScore())
-                .comment(reviewDto.getComment()).build();
+                .id(reviewDto.id())
+                .user(UserMapper.toEntity(reviewDto.user()))
+                .score(reviewDto.score())
+                .comment(reviewDto.comment()).build();
   }
 
   public static ReviewDto toDto(final ReviewModel reviewModel) {

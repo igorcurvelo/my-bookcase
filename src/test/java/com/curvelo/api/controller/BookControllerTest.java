@@ -80,12 +80,12 @@ class BookControllerTest {
 
     final var result = bookController.post(bookDto);
 
-    assertThat(result.getId()).isEqualTo(12);
-    assertThat(result.getIsbn()).isEqualTo("978-8532530783");
-    assertThat(result.getNumberOfPages()).isEqualTo(253);
-    assertThat(result.getAuthors()).hasSize(1);
-    assertThat(result.getAuthors().get(0)).isEqualTo("J.R.R. Tolkien");
-    assertThat(result.getTitle()).isEqualTo("Hobbit");
+    assertThat(result.id()).isEqualTo(12);
+    assertThat(result.isbn()).isEqualTo("978-8532530783");
+    assertThat(result.numberOfPages()).isEqualTo(253);
+    assertThat(result.authors()).hasSize(1);
+    assertThat(result.authors().get(0)).isEqualTo("J.R.R. Tolkien");
+    assertThat(result.title()).isEqualTo("Hobbit");
   }
 
   @Test
@@ -157,7 +157,7 @@ class BookControllerTest {
 
     final var result = bookController.postReview(bookId, reviewDto);
 
-    assertThat(result.getId()).isEqualTo(23);
+    assertThat(result.id()).isEqualTo(23);
   }
 
   @Test
@@ -203,8 +203,8 @@ class BookControllerTest {
     final var result = bookController.getAllReview(bookId);
 
     assertThat(result).hasSize(2);
-    assertThat(result.get(0).getId()).isEqualTo(23);
-    assertThat(result.get(1).getId()).isEqualTo(24);
+    assertThat(result.get(0).id()).isEqualTo(23);
+    assertThat(result.get(1).id()).isEqualTo(24);
   }
 
   @Test
@@ -247,10 +247,10 @@ class BookControllerTest {
 
     final var result = bookController.getAllCalculateReview(bookId);
 
-    assertThat(result.getScore()).isEqualTo(4.0);
-    assertThat(result.getBook().getId()).isEqualTo(12);
-    assertThat(result.getComments()).hasSize(1);
-    assertThat(result.getComments().get(0).getComment()).isEqualTo("comment1");
+    assertThat(result.score()).isEqualTo(4.0);
+    assertThat(result.book().id()).isEqualTo(12);
+    assertThat(result.comments()).hasSize(1);
+    assertThat(result.comments().get(0).comment()).isEqualTo("comment1");
   }
 
 }

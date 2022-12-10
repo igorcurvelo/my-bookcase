@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("books")
 public class BookController {
 
-  private final BookService bookService;
   private final ReviewService reviewService;
   private final CalculateReviewsUseCase calculateReviewsUseCase;
   private final CreateBookUseCase createBookUseCase;
@@ -42,7 +41,6 @@ public class BookController {
       final GetterBookUseCase getterBookUseCase,
       final BookAdapterRest bookAdapterRest,
       final TotalReviewsAdapterRest totalReviewsAdapterRest) {
-    this.bookService = bookService;
     this.reviewService = reviewService;
     this.calculateReviewsUseCase = calculateReviewsUseCase;
     this.createBookUseCase = createBookUseCase;

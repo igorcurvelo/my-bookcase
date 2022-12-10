@@ -9,8 +9,8 @@ public class UserMapper {
 
   public static UserModel toEntity(final UserDto userDto) {
     return UserModel.builder()
-                .id(userDto.getId())
-                .name(userDto.getName()).build();
+                .id(userDto.id())
+                .name(userDto.name()).build();
   }
 
   public static UserDto toDto(final UserModel userModel) {

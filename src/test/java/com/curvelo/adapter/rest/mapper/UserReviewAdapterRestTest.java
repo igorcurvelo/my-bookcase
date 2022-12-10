@@ -31,9 +31,9 @@ class UserReviewAdapterRestTest {
 
     final var result = userReviewAdapterRest.toDto(userReviewDomain);
 
-    assertThat(result.getUser().getId()).isEqualTo(11);
-    assertThat(result.getUser().getName()).isEqualTo("Igor");
-    assertThat(result.getComment()).isEqualTo("Ótimo livro");
+    assertThat(result.user().id()).isEqualTo(11);
+    assertThat(result.user().name()).isEqualTo("Igor");
+    assertThat(result.comment()).isEqualTo("Ótimo livro");
   }
 
 }
