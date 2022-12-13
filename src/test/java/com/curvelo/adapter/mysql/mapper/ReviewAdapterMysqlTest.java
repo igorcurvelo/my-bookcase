@@ -3,6 +3,7 @@ package com.curvelo.adapter.mysql.mapper;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+import com.curvelo.core.domain.Review;
 import com.curvelo.core.domain.User;
 import com.curvelo.database.model.BookModel;
 import com.curvelo.database.model.ReviewModel;
@@ -24,7 +25,7 @@ class ReviewAdapterMysqlTest {
 
   @Test
   void shouldMapperReviewModelToReviewDomain() {
-    var book = BookModel.builder()
+    final var book = BookModel.builder()
         .id(12)
         .isbn("123456789")
         .numberOfPages(250)
@@ -32,12 +33,12 @@ class ReviewAdapterMysqlTest {
         .title("Hobbit")
         .build();
 
-    var user = UserModel.builder()
+    final var user = UserModel.builder()
         .id(99)
         .name("Igor")
         .build();
 
-    var review = ReviewModel.builder()
+    final var review = ReviewModel.builder()
         .id(21)
         .book(book)
         .user(user)
@@ -48,12 +49,34 @@ class ReviewAdapterMysqlTest {
     when(userAdapterMysql.toDomain(user))
         .thenReturn(User.of(99, "Igor"));
 
-    var result = reviewAdapterMysql.toDomain(review);
+    final var result = reviewAdapterMysql.toDomain(review);
 
     assertThat(result.getId()).isEqualTo(21);
     assertThat(result.getUser().getId()).isEqualTo(99);
     assertThat(result.getComment()).isEqualTo("excelente livro");
     assertThat(result.getScore()).isEqualTo(9);
+  }
+
+  @Test
+  void shouldMapperReviewDomainToReviewModel() {
+    final var user = User.of(21, "name");
+
+    final var review = Review.of(
+        121,
+        4,
+        "excelente leitura",
+        user
+    );
+
+    when(userAdapterMysql.toModel(user))
+        .thenReturn(UserModel.builder().id(21).name("name").build());
+
+    final var result = reviewAdapterMysql.toModel(review);
+
+    assertThat(result.getId()).isEqualTo(121);
+    assertThat(result.getUser().getId()).isEqualTo(21);
+    assertThat(result.getComment()).isEqualTo("excelente leitura");
+    assertThat(result.getScore()).isEqualTo(4);
   }
 
 }

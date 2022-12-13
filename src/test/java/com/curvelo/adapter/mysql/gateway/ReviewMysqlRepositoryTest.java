@@ -5,6 +5,7 @@ import static com.curvelo.ComposeModel.createReview;
 import static com.curvelo.ComposeModel.createUser;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,13 +13,18 @@ import static org.mockito.Mockito.when;
 import com.curvelo.adapter.mysql.mapper.ReviewAdapterMysql;
 import com.curvelo.core.domain.Review;
 import com.curvelo.core.domain.User;
+import com.curvelo.database.model.BookModel;
+import com.curvelo.database.model.ReviewModel;
+import com.curvelo.database.repository.BookRepository;
 import com.curvelo.database.repository.ReviewRepository;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,6 +35,9 @@ class ReviewMysqlRepositoryTest {
 
   @Mock
   private ReviewAdapterMysql reviewAdapterMysql;
+
+  @Mock
+  private BookRepository bookRepository;
 
   @InjectMocks
   private ReviewMysqlRepository reviewMysqlRepository;
@@ -91,6 +100,61 @@ class ReviewMysqlRepositoryTest {
     assertThatThrownBy(() -> reviewMysqlRepository.findByBookId(123))
         .isInstanceOf(EntityNotFoundException.class)
         .hasMessageContaining("Book not found");
+  }
+
+  @Test
+  void shouldCreateANewReview() {
+    final var bookId = 123;
+    final var review = Review.of(
+        null,
+        4,
+        "comment",
+        User.of(1, "name")
+    );
+
+    final var bookModel = BookModel.builder().id(123).build();
+    when(bookRepository.findById(bookId))
+        .thenReturn(Optional.of(bookModel));
+
+    final var reviewModel = Mockito.mock(ReviewModel.class);
+
+    when(reviewAdapterMysql.toModel(review))
+        .thenReturn(reviewModel);
+
+    final var reviewSaved = Review.of(
+        121,
+        4,
+        "comment",
+        User.of(1, "name")
+    );
+    when(reviewAdapterMysql.toDomain(reviewModel))
+        .thenReturn(reviewSaved);
+
+    final var result = reviewMysqlRepository.save(bookId, review);
+
+    verify(reviewRepository).save(reviewModel);
+    verify(reviewModel).setBook(eq(bookModel));
+
+    assertThat(result.getId()).isEqualTo(121);
+  }
+
+  @Test
+  void shouldReturnEntityNotFoundExceptionWhenBookDoesNotExistOnSaveReview() {
+    final var bookId = 123;
+    final var review = Review.of(
+        121,
+        4,
+        "excelente leitura",
+        User.of(21, "name")
+    );
+
+    when(bookRepository.findById(bookId))
+        .thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> reviewMysqlRepository.save(bookId, review))
+        .isInstanceOf(EntityNotFoundException.class)
+        .hasMessageContaining("Book not found");
+
   }
 
 }
